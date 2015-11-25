@@ -1,0 +1,37 @@
+.panel-default{
+    background-color: #394EA1;
+    font-weight:bold;
+    padding: 2px;
+    color:#B2BEEA
+}
+.btn-answers{
+    width:100%;
+    height:70%;
+    padding:2px;
+        
+}
+.btn-answer1{
+    background-color: #37E671;
+    height:33.3%;
+    font-weight: 800;
+}
+.btn-answer1:hover{
+    background-color: #50F0A0;
+}
+
+.btn-answer2{
+    background-color: #40C32C;
+    height:33.3%;
+    font-weight: 800;
+}
+.btn-answer3{
+    background-color: #16C461;
+    height:33.3%;
+    font-weight: 800;
+}
+body{
+    margin:0;
+}
+header{
+    margin:0;
+}

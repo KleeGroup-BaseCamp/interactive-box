@@ -1,0 +1,44 @@
+
+body{
+    background-color: #f88007;
+    height: 100%;
+    width:100%;
+}
+
+.user-h1{
+    text-align: center;
+    color: #994d00;
+    font-weight:bold;
+    font-size: 600%;
+}
+.h1-div{
+    height:20%;
+}
+.div-p{
+    height:30%;
+}
+.user-p{
+    font-size: 500%;
+    margin-top: 20%;
+    color: #b35900;
+    font-weight: bolder;
+    text-align: center;
+}
+
+.user-button{
+    background-color: #ffcc99;
+    font-weight: bold;
+    color: #b35900;
+    font-size: 300%;
+}
+.input{
+    
+    background-color: #ffcc99;
+    font-family: sans-serif;
+    font-weight: bold;
+    color: #b35900;
+    font-size:300%
+}
+.input-block{
+
+}

@@ -1,0 +1,47 @@
+html, body
+{
+    padding: 0px;
+    margin: 0px;
+    height: 100%;
+}
+
+h1, h2{
+	font-family: helvetica;
+	text-align: center;
+}
+
+#adminZone{
+	height:80%;
+}
+
+.columnZone{
+	height:95%;
+	display:inline-block;
+	margin-top:5px;
+	margin-bottom:5px;
+	border-color:gray;
+	border-radius:5px;
+	border-width:2px;
+	border-style: solid;
+}
+
+#questionListColumn{
+	width:20%;
+	margin-left:5px;
+}
+
+#questionEditColumn{
+	width:70%;
+	margin-right:5px;
+}
+
+.adminBar{
+	background-color:#eeeeee;
+	padding:5px;
+}
+
+button{
+	border-radius:6px;
+	background-color: transparent;
+	border-color: blue;
+}

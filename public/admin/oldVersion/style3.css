@@ -1,0 +1,49 @@
+html{
+  height: 100%;
+}
+body {
+  height: 100%;
+}
+h1{
+	height:10%;
+	line-height:200%;
+	text-align: center;
+}
+
+h1, h2{
+	font-family: helvetica;
+}
+
+
+.column{
+	background-color:yellow;
+	height:100%;
+	display:inline-block;
+	vertical-align:bottom;
+	margin:0px;
+	white-space-collapsing:discard;
+}
+#adminZone{
+	height:80%;
+	padding:0px;
+}
+
+.adminBar{
+	background-color:#eeeeee;
+	height:5%;
+	line-height:200%;
+	padding-left:5px;
+}
+
+button{
+	border-radius:6px;
+	background-color: #cccccc;
+	border-color: blue;
+	height:80%;
+	width:80px;
+}
+
+*{
+	margin:0px;
+	padding:0px;
+}

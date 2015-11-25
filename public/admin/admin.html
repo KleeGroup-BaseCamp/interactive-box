@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>Administration</title>
+      <meta charset="utf-8">
+      <link rel="stylesheet" href="style.css" />
+      <script src="adminScript.js"></script>
+      <script src="../socket.io/socket.io.js"></script>
+   </head>
+   <body>
+
+      <h1>Administration du questionnaire</h1>
+
+      <div class="adminBar">
+         <span>
+            <button class="adminButtons">Open</button>
+            <button class="adminButtons" id="saveButton">Save</button>
+            <button class="adminButtons" id="templateButton">Template</button>
+            <button class="adminButtons" id="resetButton">Reset</button>
+            <button class="adminButtons" id="launchButton">Lancer le questionnaire</button>
+         </span>
+      </div>
+
+      <div id="adminZone">
+         <div class="column" id="column1">
+            <h2>Questions</h2>
+            <div>
+               <button id="addQuestionButton" class="addRemoveButtons">+</button>
+               <button id="removeQuestionButton" class="addRemoveButtons">-</button>
+            </div>
+            <div id="listWrapper">
+               <ul id="questionsList">
+               </ul>
+            </div>
+         </div>
+         <div class="column" id="column2">
+            <br></br>
+            <input class="textInput" id="questionTitle"></input><br></br>
+            <p> Réponses : <button id="addAnswerButton">+</button>
+            </p><br>
+            <ul id ="answersList">
+            </ul>
+            <br></br>
+         </div>
+      </div>
+   </body>
+</html>

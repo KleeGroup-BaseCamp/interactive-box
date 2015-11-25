@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>Administration</title>
+      <meta charset="utf-8">
+      <link rel="stylesheet" href="../style.css" />
+      <script src="../socket.io/socket.io.js"></script>
+      <script src="clientAdmin.js"></script>
+   </head>
+   <body>
+      <h1>Administration du questionnaire</h1>
+      <button id="startButton">Commencer le quizz</button>
+      <p>Ajouter une question : </p>
+      <p>Enoncé de la question : <input id="title"></input></p>
+      <p>Réponse 1 : <input id="r1"></input></p>
+      <p>Réponse 2 : <input id="r2"></input></p>
+      <p>Réponse 3 : <input id="r3"></input></p>
+      <button id="sendButton">Enregistrer la question</button>
+      <p> Les questions : </p>
+      <ul id="preguntasList"></ul>
+   </body>
+</html>

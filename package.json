@@ -1,0 +1,9 @@
+{
+	"name": "quizzserver", 
+	"description": "Serveur de quizz", 
+	"author": "Antoine", 
+	"dependencies": {
+		"express":"4.x",
+		"socket.io": "*"
+	}
+}
