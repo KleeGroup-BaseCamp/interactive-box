@@ -1,6 +1,9 @@
 {
   "name": "quizzserver",
   "description": "Serveur de quizz",
+  "scripts": {
+    "start": "node server.js"
+  },
   "author": "Antoine",
   "dependencies": {
     "express": "^4.13.3",
