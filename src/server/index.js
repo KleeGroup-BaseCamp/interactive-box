@@ -6,10 +6,15 @@ var express = require('express'),
     path = require("path"),
     socketIo = require('socket.io'),
     session = require("express-session")({secret:"shhhhh", resave:true, saveUninitialized:true}),
-    sharedSession = require('express-socket.io-session');
+    sharedSession = require('express-socket.io-session'),
+	webpackDevMiddleware = require('webpack-dev-middleware'),
+	webpack = require('webpack');
 
-app.use(express.static(__dirname + '/public'));
+var webpackConfig = require('../../webpack.config');
+
 app.use(session);
+
+app.use(webpackDevMiddleware(webpack(webpackConfig)));
 
 app.get('/admin',function (req,res){res.sendFile(path.join(__dirname+'../client/admin/admin.html'));});
 app.get('/user',function (req,res){res.sendFile(path.join(__dirname+'../client/user/user.html'));});
