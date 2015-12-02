@@ -2,7 +2,7 @@
   "name": "quizzserver",
   "description": "Serveur de quizz",
   "scripts": {
-    "start": "node server.js"
+    "start": "node src/server/index.js"
   },
   "author": "Antoine",
   "dependencies": {

@@ -2,19 +2,19 @@
 var express = require('express'),
 	app = express(),
 	port = process.env.PORT || 8080,
-	http = require('http'), 
+	http = require('http'),
     path = require("path"),
-    socketIo = require('socket.io'), 
-    session = require("express-session")({secret:"shhhhh", resave:true, saveUninitialized:true}), 
+    socketIo = require('socket.io'),
+    session = require("express-session")({secret:"shhhhh", resave:true, saveUninitialized:true}),
     sharedSession = require('express-socket.io-session');
 
 app.use(express.static(__dirname + '/public'));
 app.use(session);
 
-app.get('/admin',function (req,res){res.sendFile(path.join(__dirname+'/public/admin/admin.html'));});
-app.get('/user',function (req,res){res.sendFile(path.join(__dirname+'/public/user/user.html'));});
-app.get('/user/room',function (req,res){res.sendFile(path.join(__dirname+'/public/user/room/index.html'));});
-app.get('/user/room/quizz',function (req,res){res.sendFile(path.join(__dirname+'/public/user/room/quizz/index.html'));});
+app.get('/admin',function (req,res){res.sendFile(path.join(__dirname+'../client/admin/admin.html'));});
+app.get('/user',function (req,res){res.sendFile(path.join(__dirname+'../client/user/user.html'));});
+app.get('/user/room',function (req,res){res.sendFile(path.join(__dirname+'../client/user/room/index.html'));});
+app.get('/user/room/quizz',function (req,res){res.sendFile(path.join(__dirname+'../client/user/room/quizz/index.html'));});
 app.get('/session-index', function (req, res, next) {
   req.session.index = (req.session.index || 0) + 1;
   res.write("Index : " + req.session.index + " : " + req.sessionID);
@@ -76,7 +76,7 @@ function user (socket){
 	}
 
 	socket.emit("confirmConnection");
-	
+
 	console.log("Connected : " + sessionID + " via socket " + socket.id);
 
 	//  LOGIN
@@ -107,6 +107,3 @@ function user (socket){
 		}
 	});
 }
-
-
-	
