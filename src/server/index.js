@@ -113,10 +113,10 @@ function user (socket){
 		}
 	});
     
-    /* TEST BOOBA SENDING ANSWERS
+    //TEST BOOBA SENDING ANSWERS
     
     socket.on('answered', function () {
     socket.broadcast.emit('Reponse3');
-  });*/
+  });
     
 }

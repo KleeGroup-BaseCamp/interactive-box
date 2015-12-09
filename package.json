@@ -19,16 +19,17 @@
     "babel-preset-es2015": "^6.1.18",
     "babel-preset-react": "^6.1.18",
     "babel-preset-stage-0": "^6.1.18",
+    "chart.js": "*",
     "express": "^4.13.3",
     "express-session": "^1.12.1",
     "express-socket.io-session": "^1.3.1",
     "html-webpack-plugin": "^1.7.0",
     "react": "^0.14.3",
+    "react-chartjs": "*",
     "react-dom": "^0.14.3",
     "socket.io": "^1.3.7",
+    "socket.io-client": "^1.3.7",
     "webpack": "^1.12.9",
-    "webpack-dev-middleware": "^1.4.0",
-    "chart.js":"*",
-    "react-chartjs":"*"
+    "webpack-dev-middleware": "^1.4.0"
   }
 }
