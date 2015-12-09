@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Barchart from 'react-chartjs';
-//var io = require("socket.io");
+
 import io from 'socket.io-client';
 const socket = io('http://localhost:8080');
-//var socket = io.connect();
+
 var BarChart = require("react-chartjs").Bar;
 var value1 = 0;
 var value2 = 1;
@@ -39,9 +39,9 @@ const MyFirstComponent = React.createClass({
     }
         };
     },
-//    componentDidMount() {
-  //    socket.on('Reponse3', this.actuReponse2);
-  //},
+    componentDidMount() {
+      socket.on('Reponse3', this.actuReponse3);
+  },
       actuReponse1: function(){
         this.state.data.datasets[0].data[0]++;  
         this.setState({ data: this.state.data });
@@ -49,7 +49,7 @@ const MyFirstComponent = React.createClass({
         actuReponse2: function(){
         this.state.data.datasets[0].data[1]++;  
         this.setState({ data: this.state.data });
-        //socket.emit('answered');
+        socket.emit('answered');
 },
         actuReponse3: function(){
         this.state.data.datasets[0].data[2]++;  
