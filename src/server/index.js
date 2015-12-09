@@ -1,5 +1,6 @@
 // import dependencies
 var express = require('express'),
+    BarChart = require('react-chartjs'),
 	app = express(),
 	port = process.env.PORT || 8080,
 	http = require('http'),
