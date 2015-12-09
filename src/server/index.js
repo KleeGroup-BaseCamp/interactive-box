@@ -112,4 +112,11 @@ function user (socket){
 			console.log("Sending " + userSession.pseudo + " to " + socket.id);
 		}
 	});
+    
+    /* TEST BOOBA SENDING ANSWERS
+    
+    socket.on('answered', function () {
+    socket.broadcast.emit('Reponse3');
+  });*/
+    
 }
