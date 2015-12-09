@@ -1,0 +1,25 @@
+.index-body{
+    background-color: #394EA1;
+}
+.index-title{
+    font-weight: 600;
+    text-align: center;
+    color:#8ba0c0;
+    font-size:400%;
+    font-family:sans-serif;
+}
+
+.index-button{
+    font-size: 200%;
+    font-weight: bold;
+    background-color: #8ba0c0;
+    margin-top: 30%;
+    color: #3e0495;
+}
+.div-button{
+    display: inline;
+}
+#adminButton{
+}
+#userButton{
+}
