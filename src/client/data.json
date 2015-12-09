@@ -1,0 +1,9 @@
+{
+    labels: ['Reponse 1', 'Reponse 2', 'Reponse 3'],
+    datasets: [
+        {
+            label: 'Resultats',
+            data: [value1, value2, value3]
+        }
+    ]
+};
