@@ -35,6 +35,22 @@ console.log("Server running on 127.0.0.1:"+port);
 var io = require("socket.io")(server);
 io.use(sharedSession(session));
 
+    
+
+
+io.on("connection", function(socket){
+	socket.emit("who are you ?");
+	socket.on("admin", function(){admin(socket);});
+	socket.on("user", function(){user(socket);});
+
+    //TEST BOOBA SENDING ANSWERS
+
+	socket.on("answered", function() {
+    socket.emit("Reponse3");
+
+});
+
+});
 // server behaviour
 
 
@@ -61,12 +77,6 @@ function admin(socket){
 
 	});
 }
-
-io.on("connection", function(socket){
-	socket.emit("who are you ?");
-	socket.on("admin", function(){admin(socket);});
-	socket.on("user", function(){user(socket);});
-});
 
 
 
@@ -112,11 +122,4 @@ function user (socket){
 			console.log("Sending " + userSession.pseudo + " to " + socket.id);
 		}
 	});
-    
-    //TEST BOOBA SENDING ANSWERS
-    
-    socket.on("answered", function () {
-        socket.emit("Reponse3");
-  });
-    
 }
