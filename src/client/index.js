@@ -39,20 +39,26 @@ const MyFirstComponent = React.createClass({
     }
         };
     },
-    componentDidMount() {
-      socket.on('Reponse3', this.actuReponse3);
+    componentDidMount: function() {
+
+        this.socket = io();
+        this.socket.on("Reponse3", this.actuReponse3());
   },
       actuReponse1: function(){
-        this.state.data.datasets[0].data[0]++;  
+        const newData = {...this.state.data};
+        newData.datasets[0].data[0]++;  
         this.setState({ data: this.state.data });
 },
         actuReponse2: function(){
-        this.state.data.datasets[0].data[1]++;  
+        const newData = {...this.state.data};
+        newData.datasets[0].data[1]++; 
         this.setState({ data: this.state.data });
-        socket.emit('answered');
+        this.socket = io();
+        this.socket.emit("answered");
 },
         actuReponse3: function(){
-        this.state.data.datasets[0].data[2]++;  
+        const newData = {...this.state.data};
+        newData.datasets[0].data[2]++; 
         this.setState({ data: this.state.data });
 },
     render() {

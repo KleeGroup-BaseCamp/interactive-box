@@ -115,8 +115,8 @@ function user (socket){
     
     //TEST BOOBA SENDING ANSWERS
     
-    socket.on('answered', function () {
-        socket.broadcast.emit('Reponse3');
+    socket.on("answered", function () {
+        socket.emit("Reponse3");
   });
     
 }
