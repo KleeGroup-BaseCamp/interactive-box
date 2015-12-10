@@ -1,0 +1,70 @@
+{
+    "title":"Présentation Klee Group",
+    "id":1,
+    "author":"Interactive Box Team",
+    "questions":[
+        {
+            "qid":1,
+            "text":"Quelle est la spécialité de Klee Group?",
+            "answers": ["1.1","1.2", "1.3" ]
+                    },
+        
+         {
+            "qid":2,
+            "text":"Combien de collaborateurs y a-t-il?",
+            "answers":["2.1", "2.2", "2.3"]
+            },   
+        {
+            "qid":3,
+            "text": "Quel est le taux d'embauche après un stage?",
+            "answers":["3.1", "3.2", "3.3"]
+        }
+        ],
+    "answers":[ 
+                    {
+                    "rid":"1.1",
+                    "label":"Le conseil en Supply Chain",
+                    "correct":false
+                    },
+                    {
+                    "rid":"1.2",
+                    "label":"L'accompagnement pour solutions digitales",
+                    "correct":true
+                    },
+                    {
+                        "rid":"1.3",
+                        "label":"La transition énergétique",
+                        "correct":false
+                    },
+                    {
+                    "rid":"2.1",
+                    "label":"50",
+                    "correct":false
+                    },
+                    {
+                    "rid":"2.2",
+                    "label":"400",
+                    "correct":true
+                    },
+                    {
+                    "rid":"2.3",
+                    "label":"plus de 1000",
+                    "correct":false
+                    },
+                    {
+                    "rid":"3.1",
+                    "label":"51%",
+                    "correct":false
+                    },
+                    {
+                    "rid":"3.2",
+                    "label":"65%",
+                    "correct":true
+                    },
+                    {
+                    "rid":"2.3",
+                    "label":"75%",
+                    "correct":false
+                    }
+              ]
+}
