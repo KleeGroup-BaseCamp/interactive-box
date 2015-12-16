@@ -11,6 +11,9 @@ function createLink(key, adress){
 createLink("/admin", "../client/admin/admin.html");
 createLink("/login", "../newClient/login.html");
 createLink("/loginJS", "../newClient/login.js");
+createLink("/login/room", "../newClient/room.html");
+createLink("/roomJS", "../newClient/roomJS.js");
+
 
 
 app.get('/user/room',function (req,res){res.sendFile(path.join(__dirname+'../client/user/room/index.html'));});
@@ -20,4 +23,15 @@ app.get('/session-index', function (req, res, next) {
   res.write("Index : " + req.session.index + " : " + req.sessionID);
   res.end();
 });
+
+
+// Ce que j'aimerai bien faire : 
+
+/*
+var react = require("react-dom");
+
+app.get('/test', function(req, res){
+  res.send(react.render("../newClient/login.js"));
+});
+*/
 

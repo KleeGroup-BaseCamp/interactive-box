@@ -1,11 +1,32 @@
 var LoginBox = React.createClass({
+  getInitialState: function() {
+    return {pseudo: ''};
+  },
+  updatePseudo: function(e){
+    this.setState({pseudo: e.target.value});
+  },
+  handleSubmit: function() {
+    console.log("LETS LOG IN !");
+    var pseudo = this.state.pseudo;
+    if(!pseudo){
+      return;
+    }
+
+    var socket  = io.connect();
+    socket.emit("user");
+    socket.emit("loginRequest", pseudo);
+    socket.on("loginValid", function(){
+      window.location+="/room";
+    });
+
+  },
   render: function(){
     return(
       <div>
         <h1 className="index-title">Et si vous entriez votre pseudo ?</h1>
         <div className="div-button">
-          <TextInput placeholder="Pseudo"/>
-          <ActionButton className="col-xs-6 col-md-6 index-button" text="Continuer"/>
+          <TextInput placeholder="Pseudo" onChange={this.updatePseudo} onEnter={this.handleSubmit}/>
+          <button className={this.props.className} onClick={this.handleSubmit}>Continuer</button>
         </div>
       </div>
     );
@@ -14,20 +35,14 @@ var LoginBox = React.createClass({
 
 
 var TextInput = React.createClass({
-  render: function(){
-    return(
-      <input placeholder={this.props.placeholder}></input>
-    );
-  }
-});
-
-var ActionButton = React.createClass({
-  action: function(){
-    console.log("ACTION IS NOT SET");
+  keyDown: function(e){
+    if(e.keyCode == 13){
+      this.props.onEnter();
+    }
   },
   render: function(){
     return(
-      <button className={this.props.className} onClick={this.action}>{this.props.text}</button>
+      <input placeholder={this.props.placeholder} onChange={this.props.onChange} onKeyDown={this.keyDown}></input>
     );
   }
 });
