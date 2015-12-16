@@ -33,8 +33,11 @@ function admin(socket){
 
 io.on("connection", function(socket){
 	socket.emit("who are you ?");
+	console.log("Connection of socket " + socket.id);
 	socket.on("admin", function(){admin(socket);});
 	socket.on("user", function(){user(socket);});
+
+
     // Barchart Answers Handling
     socket.on("answered3", function() {
     socket.broadcast.emit("Answer3");
@@ -56,7 +59,8 @@ io.on("connection", function(socket){
 
 
 function user (socket){
-//  SESSION HANDLING
+
+	//  SESSION HANDLING
 
 	var sessionID = socket.handshake.sessionID;
 	if(sessionID in sessions){
@@ -70,7 +74,6 @@ function user (socket){
 	console.log("Connected : " + sessionID + " via socket " + socket.id);
 
 	//  LOGIN
-
 
 	socket.on("loginRequest", function(data){
 		console.log("suscribing session for " + data +" ...");
@@ -96,4 +99,8 @@ function user (socket){
 			console.log("Sending " + userSession.pseudo + " to " + socket.id);
 		}
 	});
+
+	//  REGISTRATION CONFIRMATION
+
+	socket.emit("registered");
 }
