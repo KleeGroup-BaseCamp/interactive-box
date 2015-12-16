@@ -9,7 +9,7 @@ var WelcomeBox = React.createClass({
         <div className="div-button">
           <LinkButton className="col-xs-6 col-md-6 index-button" text="Administrateur" url="admin"/>
           <p></p>
-          <LinkButton className="col-xs-6 col-md-6 index-button" text="Utilisateur" url="user"/>
+          <LinkButton className="col-xs-6 col-md-6 index-button" text="Utilisateur" url="login"/>
         </div>
       </div>
     );

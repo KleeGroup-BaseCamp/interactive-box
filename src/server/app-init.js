@@ -17,8 +17,8 @@ app.use(webpackDevMiddleware(webpack(webpackConfig)));
 
 app.get('/admin',function (req,res){res.sendFile(path.join(__dirname, "../client/admin/admin.html"));});
 
-app.get('/user',function (req,res){res.sendFile(path.join(__dirname,'../newClient/user/login.html'));});
-app.get('/loginJS',function (req,res){res.sendFile(path.join(__dirname,'../newClient/user/login.js'));});
+app.get('/login',function (req,res){res.sendFile(path.join(__dirname,'../newClient/login.html'));});
+app.get('/loginJS',function (req,res){res.sendFile(path.join(__dirname,'../newClient/login.js'));});
 
 app.get('/user/room',function (req,res){res.sendFile(path.join(__dirname+'../client/user/room/index.html'));});
 app.get('/user/room/quizz',function (req,res){res.sendFile(path.join(__dirname+'../client/user/room/quizz/index.html'));});
