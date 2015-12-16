@@ -1,39 +1,8 @@
 // import dependencies
-var express = require('express'),
-	app = express(),
-	port = process.env.PORT || 8080,
-	http = require('http'),
-    path = require("path"),
-    socketIo = require('socket.io'),
-    session = require("express-session")({secret:"shhhhh", resave:true, saveUninitialized:true}),
-    sharedSession = require('express-socket.io-session'),
-	webpackDevMiddleware = require('webpack-dev-middleware'),
-	webpack = require('webpack');
 
-var webpackConfig = require('../../webpack.config');
 
-app.use(session);
-
-app.use(webpackDevMiddleware(webpack(webpackConfig)));
-
-app.get('/admin',function (req,res){res.sendFile(path.join(__dirname, "../client/admin/admin.html"));});
-app.get('/user',function (req,res){res.sendFile(path.join(__dirname,'../newClient/user/login.html'));});
-app.get('/testJS',function (req,res){res.sendFile(path.join(__dirname,'../newClient/user/login.js'));});
-app.get('/user/room',function (req,res){res.sendFile(path.join(__dirname+'../client/user/room/index.html'));});
-app.get('/user/room/quizz',function (req,res){res.sendFile(path.join(__dirname+'../client/user/room/quizz/index.html'));});
-app.get('/session-index', function (req, res, next) {
-  req.session.index = (req.session.index || 0) + 1;
-  res.write("Index : " + req.session.index + " : " + req.sessionID);
-  res.end();
-});
-
-// start webserver on port 8080
-var server =  http.createServer(app);
-server.listen(port);
-console.log("Server running on 127.0.0.1:"+port);
-
-var io = require("socket.io")(server);
-io.use(sharedSession(session));
+var appInit =  require('./app-init.js');
+var io = appInit.io;
 
 // server behaviour
 
@@ -56,7 +25,7 @@ function admin(socket){
 			});
 			sessions[sessionID].socket.emit("startPoll");
 		}
-		console.log("RECEIVED POLL : " + data);
+		console.log("RECEIVED POLLl : " + data);
 
 
 	});

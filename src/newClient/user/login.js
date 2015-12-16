@@ -4,7 +4,7 @@ var LoginBox = React.createClass({
       <div>
         <h1 className="index-title">Et si vous entriez votre pseudo ?</h1>
         <div className="div-button">
-          <TextInput placeholder="Pseudo">
+          <TextInput placeholder="Pseudo"/>
           <ActionButton className="col-xs-6 col-md-6 index-button" text="Continuer"/>
         </div>
       </div>
