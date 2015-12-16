@@ -13,6 +13,7 @@ createLink("/login", "../newClient/login.html");
 createLink("/loginJS", "../newClient/login.js");
 createLink("/login/room", "../newClient/room.html");
 createLink("/roomJS", "../newClient/roomJS.js");
+createLink("/answers", "../newClient/answers-barchart.js");
 
 
 
