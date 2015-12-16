@@ -29,6 +29,9 @@ var RoomiesList = React.createClass({
 	    		console.log("I've received " + userName);
 	    	});
 	    	socket.emit("readyToReceiveUsers");
+	    	socket.on("startPoll", function(){
+	    		console.log("I've received a poll");
+	    	});
 		});
 
 	},

@@ -1,62 +1,10 @@
-// import dependencies
-
-
 var appInit =  require('./app-init.js');
 var io = appInit.io;
 
-// server behaviour
-
 
 var sessions = {};
+
 var adminSocket, adminSession;
-
-	//TODO : handle disconnecting
-	//TODO : handle refreshing
-	//TODO : handle return to last page
-
-function admin(socket){
-	console.log("ADMIN CONNECTS");
-	adminSocket = socket;
-	adminSession = socket.handshake.sessionID;
-	socket.on("submitPoll", function (data){
-		for(sessionID in sessions){
-			sessions[sessionID].socket.on("readyToReceiveQuestion", function(){
-				console.log("Ready from " + sessions[sessionID].pseudo);
-			});
-			sessions[sessionID].socket.emit("startPoll");
-		}
-		console.log("RECEIVED POLLl : " + data);
-
-
-	});
-}
-
-io.on("connection", function(socket){
-	socket.emit("who are you ?");
-	console.log("Connection of socket " + socket.id);
-	socket.on("admin", function(){admin(socket);});
-	socket.on("user", function(){user(socket);});
-
-
-    // Barchart Answers Handling
-    socket.on("answered3", function() {
-    socket.broadcast.emit("Answer3");
-    socket.emit("Answer3");
-
-    });
-    socket.on("answered2", function() {
-    socket.emit("Answer2");
-    socket.broadcast.emit("Answer2");
-    });
-    
-    socket.on("answered1", function(){
-    socket.emit("Answer1");
-    socket.broadcast.emit("Answer1");
-    });
-});
-
-
-
 
 function user (socket){
 
@@ -104,3 +52,55 @@ function user (socket){
 
 	socket.emit("registered");
 }
+
+
+
+function admin (socket){
+
+	console.log("ADMIN connects : " + socket.handshake.sessionID + " via socket " + socket.id);
+
+	adminSocket = socket;
+
+	if(!adminSession){
+
+		adminSession = socket.handshake.sessionID;
+
+		socket.on("launchPoll", function (data){
+			for(sessionID in sessions){
+				sessions[sessionID].socket.on("readyToReceiveQuestion", function(){
+					console.log("Ready from " + sessions[sessionID].pseudo);
+				});
+				sessions[sessionID].socket.emit("startPoll");
+			}
+			console.log("RECEIVED POLL : " + data);
+		});
+
+		socket.emit("registered");
+	} 
+}
+
+
+
+io.on("connection", function(socket){
+	socket.emit("who are you ?");
+	console.log("Connection of socket " + socket.id);
+	socket.on("admin", function(){admin(socket);});
+	socket.on("user", function(){user(socket);});
+
+
+    // Barchart Answers Handling
+    socket.on("answered3", function() {
+    socket.broadcast.emit("Answer3");
+    socket.emit("Answer3");
+
+    });
+    socket.on("answered2", function() {
+    socket.emit("Answer2");
+    socket.broadcast.emit("Answer2");
+    });
+    
+    socket.on("answered1", function(){
+    socket.emit("Answer1");
+    socket.broadcast.emit("Answer1");
+    });
+});
