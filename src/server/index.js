@@ -1,6 +1,10 @@
 var appInit =  require('./app-init.js');
 var io = appInit.io;
-
+var fs = require('fs');
+var path = require("path");
+var QUESTIONNARIES_FILE = path.join(__dirname, '/questionnaries.json');
+var questionnary;
+var maxCount = 0;
 
 var sessions = {};
 
@@ -60,23 +64,41 @@ function admin (socket){
 	console.log("ADMIN connects : " + socket.handshake.sessionID + " via socket " + socket.id);
 
 	adminSocket = socket;
+	adminSession = socket.handshake.sessionID;
+	var questionCount = 0;
 
-	if(!adminSession){
-
-		adminSession = socket.handshake.sessionID;
-
-		socket.on("launchPoll", function (data){
-			for(sessionID in sessions){
-				sessions[sessionID].socket.on("readyToReceiveQuestion", function(){
-					console.log("Ready from " + sessions[sessionID].pseudo);
-				});
-				sessions[sessionID].socket.emit("startPoll");
-			}
-			console.log("RECEIVED POLL : " + data);
+	socket.on("launchPoll", function (pollId){
+		console.log("Launching poll n°" + pollId);
+		fs.readFile(QUESTIONNARIES_FILE, function(err, data) {
+		    if (err) {
+		      console.error(err);
+		      process.exit(1);
+		    }
+		var questionnaries = JSON.parse(data);
+		var length = questionnaries.length;
+        for(var i=0;i<length;i++){
+        	if(!questionnary){
+	        	if(questionnaries[i].id == pollId){
+	        		questionnary = questionnaries[i];
+	        		maxCount = questionnary.questions.length;
+	        	}
+        	}
+        }
+        console.log("FOUND " + questionnary.title);
+		socket.emit("goToPollPage");
 		});
+	});
 
-		socket.emit("registered");
-	} 
+	socket.on("readyToReceiveQuestion", function(){
+		if(questionCount<maxCount){
+			socket.emit("question", questionnary.questions[questionCount]);
+			questionCount++;
+		} else {
+			socket.emit("no-more-questions");
+		}
+	});
+
+	socket.emit("registered");
 }
 
 

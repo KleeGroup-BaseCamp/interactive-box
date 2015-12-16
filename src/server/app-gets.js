@@ -19,6 +19,9 @@ createLink("/answers", "../newClient/answers-barchart.js");
 createLink("/admin", "../newClient/admin.html");
 createLink("/adminJS", "../newClient/admin.js");
 
+createLink("/admin/quizz", "../newClient/quizz.html");
+createLink("/quizzJS", "../newClient/quizz.js");
+
 // QUESTIONNARIES FILE
 var QUESTIONNARIES_FILE = path.join(__dirname, '/questionnaries.json');
 app.get('/questionnaries/', function(req, res) {
@@ -31,6 +34,7 @@ app.get('/questionnaries/', function(req, res) {
     res.json(JSON.parse(data));
   });
 });
+exports.questFile = QUESTIONNARIES_FILE;
 
 
 

@@ -72,9 +72,9 @@ var Questionnary = React.createClass({
     var key = this.props.id;
 
       socket.emit("launchPoll", key);
-      socket.on("pollReady", function(){
-          console.log("letsgo");
-        });
+      socket.on("goToPollPage", function(){
+        window.location+="/quizz";
+      });
 
   },
   render: function() {
