@@ -13,7 +13,9 @@ createLink("/login", "../newClient/login.html");
 createLink("/loginJS", "../newClient/login.js");
 createLink("/login/room", "../newClient/room.html");
 createLink("/roomJS", "../newClient/roomJS.js");
-
+createLink("/answers", "../newClient/answers-barchart.js");
+createLink("/question", "../newClient/question.html");
+createLink("/questionJS", "../newClient/question.js");
 
 
 app.get('/user/room',function (req,res){res.sendFile(path.join(__dirname+'../client/user/room/index.html'));});
