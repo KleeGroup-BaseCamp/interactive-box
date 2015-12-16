@@ -35,6 +35,21 @@ io.on("connection", function(socket){
 	socket.emit("who are you ?");
 	socket.on("admin", function(){admin(socket);});
 	socket.on("user", function(){user(socket);});
+    // Barchart Answers Handling
+    socket.on("answered3", function() {
+    socket.broadcast.emit("Answer3");
+    socket.emit("Answer3");
+
+    });
+    socket.on("answered2", function() {
+    socket.emit("Answer2");
+    socket.broadcast.emit("Answer2");
+    });
+    
+    socket.on("answered1", function(){
+    socket.emit("Answer1");
+    socket.broadcast.emit("Answer1");
+    });
 });
 
 
