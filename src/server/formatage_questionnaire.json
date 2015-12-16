@@ -5,65 +5,65 @@
     "questions":[
         {
             "qid":1,
-            "text":"Quelle est la spécialité de Klee Group?",
+            "text":"Quelle est la part de développement que vous envisagez pour votre stage?",
             "answers": ["1.1","1.2", "1.3" ]
                     },
         
          {
             "qid":2,
-            "text":"Combien de collaborateurs y a-t-il?",
+            "text":"Préférez-vous rencontrer des opérationnels ou des RH?",
             "answers":["2.1", "2.2", "2.3"]
             },   
         {
             "qid":3,
-            "text": "Quel est le taux d'embauche après un stage?",
+            "text": "Combien souhaiteraient postuler pour un stage de fin d'études?",
             "answers":["3.1", "3.2", "3.3"]
         }
         ],
     "answers":[ 
                     {
                     "rid":"1.1",
-                    "label":"Le conseil en Supply Chain",
+                    "label":"0%",
                     "correct":false
                     },
                     {
                     "rid":"1.2",
-                    "label":"L'accompagnement pour solutions digitales",
-                    "correct":true
+                    "label":"40-60%",
+                    "correct":false
                     },
                     {
                         "rid":"1.3",
-                        "label":"La transition énergétique",
+                        "label":"90-100%",
                         "correct":false
                     },
                     {
                     "rid":"2.1",
-                    "label":"50",
+                    "label":"Opérationnels",
                     "correct":false
                     },
                     {
                     "rid":"2.2",
-                    "label":"400",
-                    "correct":true
+                    "label":"Les 2 en même temps",
+                    "correct":false
                     },
                     {
                     "rid":"2.3",
-                    "label":"plus de 1000",
+                    "label":"RH",
                     "correct":false
                     },
                     {
                     "rid":"3.1",
-                    "label":"51%",
+                    "label":"Je veux postuler",
                     "correct":false
                     },
                     {
                     "rid":"3.2",
-                    "label":"65%",
-                    "correct":true
+                    "label":"J'hésite à postuler",
+                    "correct":false
                     },
                     {
                     "rid":"2.3",
-                    "label":"75%",
+                    "label":"Je ne suis pas intéessé(e)",
                     "correct":false
                     }
               ]
