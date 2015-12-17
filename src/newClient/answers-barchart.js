@@ -4,7 +4,7 @@ import Barchart from 'react-chartjs';
 
 import io from 'socket.io-client';
 
-var BarChart = require("react-chartjs").Bar;
+//var BarChart = require("react-chartjs").Bar;
 
 
 
