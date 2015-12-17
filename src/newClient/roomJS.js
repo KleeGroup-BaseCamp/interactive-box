@@ -34,7 +34,10 @@ var RoomiesList = React.createClass({
 	    	});
 		});
         socket.on("goToPollPage", function(){
-            window.location+="/quizz";});
+            window.location+="/quizz";
+            socket.emit("MovedPage");
+        });
+        
 
 	},
 	addElement: function(userName){

@@ -46,7 +46,7 @@ function user (socket){
 
 	//  SENDING USERS
 
-	socket.on("readyToReceiveUsers", function(){
+	   socket.on("readyToReceiveUsers", function(){
 		console.log("Receive ready from : " + socket.id);
 		for(var sessionID in sessions){
 			var userSession = sessions[sessionID];
@@ -61,11 +61,34 @@ function user (socket){
     
     // SENDING ANSWERS
     
-    /*socket.on("readyToReceiveAnswers", function(){
-            console.log("received answers demand from user" + questionCount);
+    socket.on("MovedPage", function(){
+        socket.emit("AskAnswers");
+        console.log("emitted AskAnswers(2) to user on quizz");
+    });
+    
+    socket.on("userWaitingForAnswers", function(){
+            console.log("received answers demand from user, questionCount = " + questionCount);
+        fs.readFile(QUESTIONNARIES_FILE, function(err, data) {
+		    if (err) {
+		      console.error(err);
+		      process.exit(1);
+		    }
+		var questionnaries = JSON.parse(data);
+		var length = questionnaries.length;
+        for(var i=0;i<length;i++){
+        	if(!questionnary){
+	        	if(questionnaries[i].id == 0){
+	        		questionnary = questionnaries[i];
+	        		maxCount = questionnary.questions.length;
+	        	}
+        	}
+        }
+        //console.log("FOUND for user " + questionnary.title);
+
+		});
             var ans = questionnary.questions[questionCount].answers;
             var answersList = [];
-            for(var i=0;i<list.length;i++){
+            for(var i=0;i<ans.length;i++){
 	        	for (var j = 0; j<questionnary.answers.length; j++){
                     if (questionnary.answers[j].rid == ans[i]){
                         answersList.push(questionnary.answers[j].label);
@@ -74,11 +97,16 @@ function user (socket){
             }
             console.log("answers list for user is" + answersList);
 			socket.emit("answers", answersList); 
-            console.log("sent answers");
-	});*/
+            console.log("sent answers to user");
+	});
+    socket.on("answers", function(answers){
+        console.log("serveur on client session sent answers, as received from admin session of server");
+       socket.emit("answers", answers); 
+    });
 }
 
 
+//ADMIN
 
 function admin (socket){
     
@@ -106,17 +134,18 @@ function admin (socket){
 	        	}
         	}
         }
-        console.log("FOUND " + questionnary.title);
+       // console.log("FOUND " + questionnary.title);
 		socket.emit("goToPollPage");
-        io.to('clientRoom').emit("goToPollPage");
+
 		});
+        io.to('clientRoom').emit("goToPollPage");
+        console.log("sentQuestionnary to client");
 	});
 
 	socket.on("readyToReceiveQuestion", function(){
         console.log("received READY TO RECEIVE QUESTION");
 		if(questionCount<maxCount){
 			socket.emit("question", questionnary.questions[questionCount]);
-			questionCount++;
 		} else {
 			socket.emit("no-more-questions");
 		}
@@ -134,23 +163,32 @@ function admin (socket){
             }
             console.log("answers list is" + answersList);
 			socket.emit("answers", answersList); 
-            io.to('clientRoom').emit("answers", answersList);
-            console.log("sent answers to admin and users");
+            io.to('clientRoom').emit("AskAnswers");
+                console.log("sent AskAnswers to user from readytoreceive answers admin");
+            //socket.on("userWaitingForAnswers", function(){
+                
+           // });
+            questionCount++;
+            console.log("incremented questionCount");
+            console.log("sent answers to admin");
 	});
+    /*socket.on("AskAnswers", function(){
+       console.log("received AskAnswers from admin");
+        io.to('clientRoom').emit("AskAnswers2"); 
+        
+        console.log("emitted AskAnswers to client room");
+    });*/
 
 	socket.emit("registered");
 }
 
-/*var bd_ans = function (answerList) {
-    socket.emit("answers", answerList);
-    console.log("sent answers to everyone");
-};*/
 
 io.on("connection", function(socket){
 	socket.emit("who are you ?");
 	console.log("Connection of socket " + socket.id);
 	socket.on("admin", function(){admin(socket);});
 	socket.on("user", function(){user(socket);});
+    socket.on("user-quizz", function(){userquizz(socket);});
     
     // Barchart Answers Handling
     socket.on("answered3", function() {

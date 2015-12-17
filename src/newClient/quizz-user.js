@@ -1,25 +1,31 @@
-
+var socket = io.connect();
 var test =0;
+socket.emit("user");
+
 
 var QuizzUserBox = React.createClass({
   getInitialState: function() {
     return {answers:undefined};
   },
+    
   componentDidMount: function() {
-      test = 2;
-    socket.on("answers", function(answers){
-       this.setState({answers:answers});
-       test = 1; 
-    });
+      console.log("entering consoleDidMount");
+      socket.on("AskAnswers", function(){
+         socket.emit("userWaitingForAnswers") ;
+          console.log("sent UserWaitingForAnswers");
+      });
+      socket.on("Questionnary", function(){
+          socket.emit("LoadQuestionnary", questionnary);
+          console.log("user received questionnary");
+      });
+   
 
   },
   render: function() {
+      console.log("rendering");
     return (
       <div>
-        <p>testUserBox</p>
-        <p>{test}</p>
-        <p>{this.state.answers}</p>
-        <Reponses data = {this.state.answers}/>
+        <Reponses/>
       </div>
     );
   }
@@ -28,17 +34,37 @@ var QuizzUserBox = React.createClass({
 
 
 var Reponses = React.createClass({
-   render: function() {
-       if (this.props.data){
-           var answersList = this.state.data.map(function(ans) {return(<li>{ans}</li>);});
-       }
-     return(
+   componentDidMount: function(){
+       var component = this;
+       console.log("reponse did mount");
+        socket.on("answers", function(answers){
+        console.log(answers);
+       component.setState({answers:answers}); 
+        console.log("user received answers" + component.state.answers);
+    });
+   },
+      getInitialState: function() {
+    return {answers:undefined};
+  },
+    render: function() {
+        if(this.state.answers) {
+        var answersList = this.state.answers.map(function(ans) {
+            return(
+            <li>
+                <button>{ans}</button>
+            </li>
+            );
+        });
+        console.log("answerList est " + answersList);
+                                                               
+        return(
         <div>
-        <p>test</p>
-        
-          <ul> {answersList} </ul>
+            <ul> {answersList} </ul>
         </div>
-            ) ; 
+        ) ; 
+        } else{
+            return(<p>nn</p>);
+        }
    } 
     
 });

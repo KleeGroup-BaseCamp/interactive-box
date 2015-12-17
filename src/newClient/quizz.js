@@ -24,6 +24,8 @@ var QuizzAdminBox = React.createClass({
     });
     this.nextQuestion();
     socket.on("answers", function(answers){
+       socket.emit("AskAnswers");
+        console.log("emitted askAnswers");
        component.setState({answers:answers}); 
     });
 
