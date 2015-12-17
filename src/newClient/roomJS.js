@@ -33,6 +33,8 @@ var RoomiesList = React.createClass({
 	    		console.log("I've received a poll");
 	    	});
 		});
+        socket.on("goToPollPage", function(){
+            window.location+="/quizz";});
 
 	},
 	addElement: function(userName){

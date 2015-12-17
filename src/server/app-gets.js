@@ -16,6 +16,9 @@ createLink("/login/room", "../newClient/room.html");
 createLink("/roomJS", "../newClient/roomJS.js");
 createLink("/answers", "../newClient/answers-barchart.js");
 
+createLink("/login/room/quizz", "../newClient/quizz-user.html");
+createLink("/user-quizzJS", "../newClient/quizz-user.js");
+
 createLink("/admin", "../newClient/admin.html");
 createLink("/adminJS", "../newClient/admin.js");
 

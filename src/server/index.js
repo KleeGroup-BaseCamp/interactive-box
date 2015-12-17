@@ -5,6 +5,8 @@ var path = require("path");
 var QUESTIONNARIES_FILE = path.join(__dirname, '/questionnaries.json');
 var questionnary;
 var maxCount = 0;
+var questionCount = 0;
+var answerCount = 0;
 
 var sessions = {};
 
@@ -12,6 +14,7 @@ var adminSocket, adminSession;
 
 function user (socket){
 
+    socket.join('clientRoom');
 	//  SESSION HANDLING
 
 	var sessionID = socket.handshake.sessionID;
@@ -55,18 +58,36 @@ function user (socket){
 	//  REGISTRATION CONFIRMATION
 
 	socket.emit("registered");
+    
+    // SENDING ANSWERS
+    
+    /*socket.on("readyToReceiveAnswers", function(){
+            console.log("received answers demand from user" + questionCount);
+            var ans = questionnary.questions[questionCount].answers;
+            var answersList = [];
+            for(var i=0;i<list.length;i++){
+	        	for (var j = 0; j<questionnary.answers.length; j++){
+                    if (questionnary.answers[j].rid == ans[i]){
+                        answersList.push(questionnary.answers[j].label);
+                    }
+                }
+            }
+            console.log("answers list for user is" + answersList);
+			socket.emit("answers", answersList); 
+            console.log("sent answers");
+	});*/
 }
 
 
 
 function admin (socket){
+    
+    socket.join('adminRoom');
 
 	console.log("ADMIN connects : " + socket.handshake.sessionID + " via socket " + socket.id);
 
 	adminSocket = socket;
 	adminSession = socket.handshake.sessionID;
-	var questionCount = 0;
-    var answerCount = 0;
 
 	socket.on("launchPoll", function (pollId){
 		console.log("Launching poll n°" + pollId);
@@ -87,6 +108,7 @@ function admin (socket){
         }
         console.log("FOUND " + questionnary.title);
 		socket.emit("goToPollPage");
+        io.to('clientRoom').emit("goToPollPage");
 		});
 	});
 
@@ -112,21 +134,24 @@ function admin (socket){
             }
             console.log("answers list is" + answersList);
 			socket.emit("answers", answersList); 
-            console.log("sent answers");
+            io.to('clientRoom').emit("answers", answersList);
+            console.log("sent answers to admin and users");
 	});
 
 	socket.emit("registered");
 }
 
-
+/*var bd_ans = function (answerList) {
+    socket.emit("answers", answerList);
+    console.log("sent answers to everyone");
+};*/
 
 io.on("connection", function(socket){
 	socket.emit("who are you ?");
 	console.log("Connection of socket " + socket.id);
 	socket.on("admin", function(){admin(socket);});
 	socket.on("user", function(){user(socket);});
-
-
+    
     // Barchart Answers Handling
     socket.on("answered3", function() {
     socket.broadcast.emit("Answer3");
