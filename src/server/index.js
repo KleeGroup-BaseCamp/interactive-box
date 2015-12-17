@@ -95,6 +95,7 @@ function user (socket){
                     }
                 }
             }
+            questionCount++;
             console.log("answers list for user is" + answersList);
 			socket.emit("answers", answersList); 
             console.log("sent answers to user");
@@ -168,7 +169,7 @@ function admin (socket){
             //socket.on("userWaitingForAnswers", function(){
                 
            // });
-            questionCount++;
+            
             console.log("incremented questionCount");
             console.log("sent answers to admin");
 	});
