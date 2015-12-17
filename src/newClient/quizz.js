@@ -7,22 +7,32 @@ var QuizzAdminBox = React.createClass({
   },
   nextQuestion: function(){
     socket.emit("readyToReceiveQuestion");
+    console.log("sent READY TO RECEIVEQUESTION");
   },
   componentDidMount: function() {
     var component = this;
     socket.on("question", function(question){
       component.setState({question:question});
+    console.log("received question" + question);
+    var ans = question.answers;
+    socket.emit("readyToReceiveAnswers", ans);
+    console.log("sent READYTORECEIVEANSWERS" + ans);
     });
     socket.on("no-more-questions", function(question){
       component.setState({question:undefined});
       alert("no more questions !");
     });
     this.nextQuestion();
+    socket.on("answers", function(answers){
+       component.setState({answers:answers}); 
+    });
+
   },
   render: function() {
     return (
       <div>
         <Question data={this.state.question}/>
+        <Reponses data = {this.state.answers}/>
         <button onClick={this.nextQuestion}>Prochaine question</button>
       </div>
     );
@@ -32,11 +42,9 @@ var QuizzAdminBox = React.createClass({
 var Question = React.createClass({
   render: function() {
     if(this.props.data){
-    var answersList = this.props.data.answers.map(function(ans) {return (<li>{ans}</li>);});
       return (
         <div>
           <p> {this.props.data.text} </p>
-          <ul> {answersList} </ul>
         </div>
       );
     } else {
@@ -45,6 +53,19 @@ var Question = React.createClass({
   }
 });
 
+var Reponses = React.createClass({
+   render: function() {
+       if (this.props.data){
+           var answersList = this.props.data.map(function(ans) {return(<li>{ans}</li>);});
+       }
+     return(
+        <div>
+          <ul> {answersList} </ul>
+        </div>
+            ) ; 
+   } 
+    
+});
 
 ReactDOM.render(
   <QuizzAdminBox/>,

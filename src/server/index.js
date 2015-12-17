@@ -66,6 +66,7 @@ function admin (socket){
 	adminSocket = socket;
 	adminSession = socket.handshake.sessionID;
 	var questionCount = 0;
+    var answerCount = 0;
 
 	socket.on("launchPoll", function (pollId){
 		console.log("Launching poll n°" + pollId);
@@ -90,12 +91,28 @@ function admin (socket){
 	});
 
 	socket.on("readyToReceiveQuestion", function(){
+        console.log("received READY TO RECEIVE QUESTION");
 		if(questionCount<maxCount){
 			socket.emit("question", questionnary.questions[questionCount]);
 			questionCount++;
 		} else {
 			socket.emit("no-more-questions");
 		}
+	});
+    
+    socket.on("readyToReceiveAnswers", function(list){
+            console.log("received answers demand" + list);
+            var answersList = [];
+            for(var i=0;i<list.length;i++){
+	        	for (var j = 0; j<questionnary.answers.length; j++){
+                    if (questionnary.answers[j].rid == list[i]){
+                        answersList.push(questionnary.answers[j].label);
+                    }
+                }
+            }
+            console.log("answers list is" + answersList);
+			socket.emit("answers", answersList); 
+            console.log("sent answers");
 	});
 
 	socket.emit("registered");
