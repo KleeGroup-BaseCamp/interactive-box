@@ -1,3 +1,8 @@
+import io from 'socket.io-client';
+import React from 'react';
+import $ from 'jquery';
+
+
 var socket = io.connect();
 socket.emit("admin");
 
@@ -86,8 +91,13 @@ var Questionnary = React.createClass({
   }
 });
 
+// Ca, ca ne sert plus à rien vu que maintenant le composant est importé par un parent (src/client/index.js)
 
-ReactDOM.render(
-  <AdminBox url="/questionnaries"/>,
-  document.getElementById('content')
-);
+// ReactDOM.render(
+//   <AdminBox url="/questionnaries"/>,
+//   document.getElementById('content')
+// );
+
+// Par contre, comme il est importé, il faut bien spécifier quel composant le fichier expose
+
+export default AdminBox;

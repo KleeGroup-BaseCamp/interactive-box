@@ -1,3 +1,6 @@
+import io from 'socket.io-client';
+import React from 'react';
+
 var LoginBox = React.createClass({
   getInitialState: function() {
     return {pseudo: ''};
@@ -47,7 +50,11 @@ var TextInput = React.createClass({
   }
 });
 
-ReactDOM.render(
-  <LoginBox/>,
-  document.getElementById('content')
-);
+// Pareil que pour admin.js
+
+// ReactDOM.render(
+//   <LoginBox/>,
+//   document.getElementById('content')
+// );
+
+export default LoginBox;
