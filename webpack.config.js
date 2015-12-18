@@ -22,7 +22,7 @@ var config = {
                 test: /.jsx?$/,
                 loaders: ['babel'],
                 include: [
-                    path.resolve(__dirname, './src/client')
+                    path.resolve(__dirname, './src')
                 ]
             }
         ]
