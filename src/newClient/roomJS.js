@@ -1,3 +1,5 @@
+import io from 'socket.io-client';
+import React from 'react';
 
 
 var RoomBox = React.createClass({
@@ -24,11 +26,13 @@ var RoomiesList = React.createClass({
 		socket.emit("user");
 
 		socket.on("registered", function(){
+            console.log("received registered");
 			socket.on("userName", function(userName){
 	    		component.addElement(userName);
 	    		console.log("I've received " + userName);
 	    	});
 	    	socket.emit("readyToReceiveUsers");
+            console.log("I've sent readyToReceiveUsers");
 	    	socket.on("startPoll", function(){
 	    		console.log("I've received a poll");
 	    	});
@@ -65,7 +69,9 @@ var RoomiesList = React.createClass({
   }
 });
 
-ReactDOM.render(
+/*ReactDOM.render(
   <RoomBox/>,
   document.getElementById('content')
-);
+);*/
+
+export default RoomBox;

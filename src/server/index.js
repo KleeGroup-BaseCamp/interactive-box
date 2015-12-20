@@ -13,6 +13,7 @@ var sessions = {};
 var adminSocket, adminSession;
 
 function user (socket){
+    console.log("I've receive user");
 
     socket.join('clientRoom');
 	//  SESSION HANDLING
@@ -37,6 +38,8 @@ function user (socket){
 			if(userSession.socket.id == socket.id){
 				userSession.pseudo = data;
 				socket.emit("loginValid");
+                socket.emit("registered");
+                console.log("sent registered");
 			} else {
 				userSession.socket.emit("userName", data);
 				console.log("Sending " + data + " to " + userSession.pseudo);
@@ -57,7 +60,7 @@ function user (socket){
 
 	//  REGISTRATION CONFIRMATION
 
-	socket.emit("registered");
+	
     
     // SENDING ANSWERS
     
