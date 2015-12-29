@@ -13,6 +13,22 @@ import LoginView from '../newClient/login';
 const ADMIN_TYPE = 'ADMIN_TYPE';
 const ATTENDEE_TYPE = 'ATTENDEE_TYPE';
 
+var Header = React.createClass({
+    render: function(){
+      return(
+        <h1>{this.props.title}</h1>
+      );
+    }
+});
+
+var Footer = React.createClass({
+  render: function(){
+    return(
+      <h4>(c) Interactive Box</h4>
+    );
+  }
+});
+
 var WelcomeBox = React.createClass({
   getInitialState() {
       return {};
@@ -41,7 +57,7 @@ var WelcomeBox = React.createClass({
   _renderLoginPage() {
       return <LoginView/>;
   },
-  render: function(){
+  renderMiddle: function(){
     var userType = this.state.userType;
     if (userType === undefined) { // On ne connait pas l'utilisateur, ca veut dire qu'on doit lui demander qui il est
         return this._renderHomepage();
@@ -52,6 +68,18 @@ var WelcomeBox = React.createClass({
     } else { // Si on arrive ici c'est qu'on a mal fait le state, donc erreur
         return <p>Fatale erreure, il y a un renard dans la poulailler</p>;
     }
+  },
+  render: function(){
+    var middleNode = this.renderMiddle();
+    return(
+      <div>
+        <Header title="Interactive box header"/>
+        <div>
+          {middleNode}
+        </div>
+        <Footer/>
+      </div>
+    );
   }
 });
 
