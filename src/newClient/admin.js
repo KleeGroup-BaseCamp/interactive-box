@@ -2,6 +2,8 @@ import io from 'socket.io-client';
 import React from 'react';
 import $ from 'jquery';
 
+var socket;
+
 var AdminBox = React.createClass({
   loadQuestionnariesFromServer: function() {
     $.ajax({
@@ -39,7 +41,7 @@ var AdminBox = React.createClass({
     return {data: []};
   },
   componentDidMount: function() {
-    var socket = io.connect();
+    socket = io.connect();
     socket.emit("admin");
     this.loadQuestionnariesFromServer();
     //setInterval(this.loadCommentsFromServer, this.props.pollInterval);
