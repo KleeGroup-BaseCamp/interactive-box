@@ -24,6 +24,10 @@ var config = {
                 include: [
                     path.resolve(__dirname, './src')
                 ]
+            }, 
+            {
+              test: /\.css$/, // Only .css files
+              loader: 'style!css' // Run both loaders
             }
         ]
     }

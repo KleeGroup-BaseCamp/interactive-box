@@ -23,3 +23,15 @@
 }
 #userButton{
 }
+
+.feaderTitle{
+    text-align:center;
+}
+
+.feader{
+    background-color:#eeeeee;
+}
+
+*{
+    font-family:sans-serif;
+}

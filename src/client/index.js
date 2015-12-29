@@ -8,6 +8,9 @@ import ReactDOM from 'react-dom';
 import AdminView from '../newClient/admin'; // <-------- virez aussi ce dossier newClient qui ne sert à rien, ca fait pas propre. on ne précise pas admin.js, juste admin, Webpack prend .js par défaut
 import LoginView from '../newClient/login';
 
+import "./index.css";
+//import "./bootstrap.css";
+
 // Des petites constantes des familles pour garder les choses cohérentes
 
 const ADMIN_TYPE = 'ADMIN_TYPE';
@@ -16,7 +19,7 @@ const ATTENDEE_TYPE = 'ATTENDEE_TYPE';
 var Header = React.createClass({
     render: function(){
       return(
-        <h1>{this.props.title}</h1>
+        <h1 className="feaderTitle feader">{this.props.title}</h1>
       );
     }
 });
@@ -24,7 +27,7 @@ var Header = React.createClass({
 var Footer = React.createClass({
   render: function(){
     return(
-      <h4>(c) Interactive Box</h4>
+      <h4 className="feaderTitle feader">(c) Interactive Box</h4>
     );
   }
 });
@@ -72,7 +75,7 @@ var WelcomeBox = React.createClass({
   render: function(){
     var middleNode = this.renderMiddle();
     return(
-      <div>
+      <div className="index-body">
         <Header title="Interactive box header"/>
         <div>
           {middleNode}
