@@ -7,6 +7,7 @@ import ReactDOM from 'react-dom';
 // Ca, c'est vos composants à vous !! c'est comme ça qu'on compose l'appli, et qu'on a pas mille .html
 import AdminView from '../newClient/admin'; // <-------- virez aussi ce dossier newClient qui ne sert à rien, ca fait pas propre. on ne précise pas admin.js, juste admin, Webpack prend .js par défaut
 import LoginView from '../newClient/login';
+import LinkButton from "./LinkButton.jsx";
 
 import "./index.css";
 //import "./bootstrap.css";
@@ -19,7 +20,9 @@ const ATTENDEE_TYPE = 'ATTENDEE_TYPE';
 var Header = React.createClass({
     render: function(){
       return(
-        <h1 className="feaderTitle feader">{this.props.title}</h1>
+        <div className="feader">
+          <h1 className="feaderTitle">{this.props.title}</h1>
+        </div>
       );
     }
 });
@@ -27,7 +30,9 @@ var Header = React.createClass({
 var Footer = React.createClass({
   render: function(){
     return(
-      <h4 className="feaderTitle feader">(c) Interactive Box</h4>
+      <div className="feader">
+        <h4 className="feaderTitle">(c) Interactive Box</h4>
+      </div>
     );
   }
 });
@@ -44,12 +49,11 @@ var WelcomeBox = React.createClass({
   },
   _renderHomepage() {
       return(
-        <div>
+        <div className="middle-content">
           <h1 className="index-title">Welcome</h1>
           <div className="div-button">
-            <LinkButton className="col-xs-6 col-md-6 index-button" handleLinkClick={this._setUserToAdmin} text="Administrateur" url="admin"/>
-            <p></p>
-            <LinkButton className="col-xs-6 col-md-6 index-button" handleLinkClick={this._setUserToAttendee} text="Utilisateur" url="login"/>
+            <LinkButton handleLinkClick={this._setUserToAdmin} text="Administrateur" url="admin"/>
+            <LinkButton handleLinkClick={this._setUserToAttendee} text="Utilisateur" url="login"/>
           </div>
         </div>
       );
@@ -75,24 +79,13 @@ var WelcomeBox = React.createClass({
   render: function(){
     var middleNode = this.renderMiddle();
     return(
-      <div className="index-body">
+      <div>
         <Header title="Interactive box header"/>
         <div>
           {middleNode}
         </div>
         <Footer/>
       </div>
-    );
-  }
-});
-
-var LinkButton = React.createClass({
-  render: function(){
-    // Au click, le bouton appelle la fonction définie dans sa props "handleLinkClick"
-    return(
-        <div>
-            <button className={this.props.className} onClick={this.props.handleLinkClick}>{this.props.text}</button>
-        </div>
     );
   }
 });

@@ -48,7 +48,7 @@ var AdminBox = React.createClass({
   },
   render: function() {
     return (
-      <div>
+      <div className="middle-content">
         <h1>Administration du questionnaire</h1>
         <QuestsList data={this.state.data} />
       </div>

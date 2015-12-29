@@ -3,6 +3,8 @@ import React from 'react';
 
 // Redirect for Room View
 import RoomView from '../newClient/roomJS';
+import LinkButton from "../client/linkButton.jsx";
+import TextInput from "../client/TextInput.jsx";
 
 const ROOM_TYPE = 'ROOM_TYPE';
 
@@ -37,11 +39,13 @@ var LoginBox = React.createClass({
     
   _renderLoginPage() {
     return(
-      <div>
-        <h1 className="index-title">Et si vous entriez votre pseudo ?</h1>
-        <div className="div-button">
+      <div className="middle-content">
+        <h1 className="index-title">Entrez votre pseudo</h1>
+        <div>
           <TextInput placeholder="Pseudo" onChange={this.updatePseudo} onEnter={this.handleSubmit}/>
-          <button className={this.props.className} onClick={this.handleSubmit}>Continuer</button>
+        </div>
+        <div>
+          <LinkButton handleLinkClick={this.handleSubmit} text="Continuer"/>
         </div>
       </div>
     );
@@ -64,18 +68,7 @@ var LoginBox = React.createClass({
   });
 
 
-var TextInput = React.createClass({
-  keyDown: function(e){
-    if(e.keyCode == 13){
-      this.props.onEnter();
-    }
-  },
-  render: function(){
-    return(
-      <input placeholder={this.props.placeholder} onChange={this.props.onChange} onKeyDown={this.keyDown}></input>
-    );
-  }
-});
+
 
 // Pareil que pour admin.js
 

@@ -6,8 +6,8 @@ var RoomBox = React.createClass({
 
   render: function(){
     return(
-      <div>
-        <h1 className="index-title">Bienvenue dans la room?</h1>
+      <div className="middle-content">
+        <h1 className="index-title">On attend les autres ...</h1>
         <RoomiesList/>
       </div>
     );
