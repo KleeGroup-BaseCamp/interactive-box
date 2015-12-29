@@ -24,7 +24,7 @@ var RoomiesList = React.createClass({
 
 		var socket = io.connect();
 		socket.emit("user");
-
+		console.log("sent user");
 		socket.on("registered", function(){
             console.log("received registered");
 			socket.on("userName", function(userName){
