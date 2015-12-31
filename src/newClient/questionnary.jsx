@@ -2,6 +2,7 @@ import React from 'react';
 
 var socket;
 
+
 var QuestionnaryDeveloped = React.createClass({
 	getInitialState: function(){
 		return {okToStart:false, questionIndex:-1}
@@ -13,6 +14,9 @@ var QuestionnaryDeveloped = React.createClass({
 			t.setState({okToStart:true});
 		});
 		socket.emit("launch-quizz", this.props.questionnary.qid);
+		socket.on("answer", function(indexOfAnswer){
+			console.log("Receivend answer " + indexOfAnswer);
+		});
 	},
 	incrementCounter: function(){
 		var oldQuestionIndex = this.state.questionIndex;
@@ -39,6 +43,7 @@ var QuestionnaryDeveloped = React.createClass({
 	                }
 	            }
 	        }
+	        socket.emit("question", answersLabels);
 	        var answersNodes = answersLabels.map(function(label) {
 	        	return(
 		        	<li>
