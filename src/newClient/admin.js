@@ -2,7 +2,11 @@ import io from 'socket.io-client';
 import React from 'react';
 import $ from 'jquery';
 
+import QuestionnaryDeveloped from './questionnary.jsx';
+
 var socket;
+
+var selectedPollKey;
 
 var AdminBox = React.createClass({
   loadQuestionnariesFromServer: function() {
@@ -38,30 +42,46 @@ var AdminBox = React.createClass({
     });
   },*/
   getInitialState: function() {
-    return {data: []};
+    return {data: [], quizzLaunched:undefined};
   },
   componentDidMount: function() {
-    socket = io.connect();
-    socket.emit("admin");
+    socket = io("http://localhost:8080/admin");
     this.loadQuestionnariesFromServer();
     //setInterval(this.loadCommentsFromServer, this.props.pollInterval);
   },
+  launchQuizz: function(questionnary){
+    this.setState({quizzLaunched: questionnary});
+  },
   render: function() {
-    return (
-      <div className="middle-content">
-        <h1>Administration du questionnaire</h1>
-        <QuestsList data={this.state.data} />
-      </div>
-    );
+      if(!this.state.quizzLaunched){
+        return (
+          <div className="middle-content">
+            <h1>Quel questionnaire lancer ?</h1>
+            <br></br>
+            <QuestsList data={this.state.data} launchQuizz={this.launchQuizz}/>
+          </div>
+        );
+      } else {
+        return (
+          <div className="middle-content">
+            <QuestionnaryDeveloped questionnary={this.state.quizzLaunched} socket={socket}/>
+          </div>
+        );
+      }
   }
 });
 
 var QuestsList = React.createClass({
+
   render: function() {
+    var questList = this;
     var questionnaryNodes = this.props.data.map(function(quest) {
+      var launchQuest = function(){
+        questList.props.launchQuizz(quest);
+      }
       var count = quest.questions.length;
       return (
-        <Questionnary title={quest.title} key={quest.id} author={quest.author} questionCount={count} id={quest.id}/>
+        <Questionnary title={quest.title} key={quest.id} author={quest.author} questionCount={count} id={quest.id} launchQuizz = {launchQuest}/>
       );
     });
     return (
@@ -74,13 +94,7 @@ var QuestsList = React.createClass({
 
 var Questionnary = React.createClass({
   buttonAction: function(){
-    var key = this.props.id;
-
-      socket.emit("launchPoll", key);
-      socket.on("goToPollPage", function(){
-        window.location+="/quizz";
-      });
-
+    this.props.launchQuizz();
   },
   render: function() {
     return (

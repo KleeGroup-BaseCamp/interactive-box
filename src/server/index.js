@@ -8,17 +8,31 @@ var maxCount = 0;
 var questionCount = 0;
 var answerCount = 0;
 
+var pollAdmin = require("./poll-admin.js");
+var pollUser = require("./poll-user.js");
 
 var adminSocket, adminSession;
-
 var sessions = {};
+
+var nspAdmin = io.of('/admin');
+nspAdmin.on('connection', function(socket){
+	console.log("ADMIN CONNECTS");
+	admin(socket);
+});
+
+var nspUsers = io.of('/user');
+nspUsers.on('connection', function(socket){
+	console.log("USER CONNECTS");
+	user(socket);
+});
+
+
 
 function findSession(socket){
 	var sessionID = socket.handshake.sessionID;
 	var alreadyThere = false;
 	if(sessionID in sessions){
 		var oldSocket = sessions[sessionID].socket;
-		oldSocket.leave("clientRoom");
 		alreadyThere = socket.id == oldSocket.id;
 		sessions[sessionID].socket = socket;
 	} else {
@@ -30,12 +44,12 @@ function findSession(socket){
 
 function user (socket){
     console.log("I've received user");
-    socket.join('clientRoom');
-    socket.on('disconnect', function(){socket.leave('clientRoom')});
+    io.sockets.in("/user").emit("test");
     var already = findSession(socket);
 	socket.emit("confirmConnection");
-
+	pollUser.manageUserPoll(socket, io);
 	if(!already){
+
 
 		//  LOGIN
 		socket.on("loginRequest", function(pseudoRequested){
@@ -57,7 +71,7 @@ function user (socket){
 
 		//  SENDING USERS
 
-		   socket.on("readyToReceiveUsers", function(){
+		  	socket.on("readyToReceiveUsers", function(){
 			console.log("Receive ready from : " + socket.id);
 			for(var sessionID in sessions){
 				var userSession = sessions[sessionID];
@@ -111,10 +125,13 @@ function user (socket){
 				socket.emit("answers", answersList); 
 	            console.log("sent answers to user");
 		});
+
 	    socket.on("answers", function(answers){
 	        console.log("serveur on client session sent answers, as received from admin session of server");
-	       socket.emit("answers", answers); 
+	       	socket.emit("answers", answers); 
 	    });
+
+
 	}
 }
 
@@ -123,8 +140,7 @@ function user (socket){
 
 function admin (socket){
     
-    socket.join('adminRoom');
-
+    pollAdmin.manageAdminPoll(socket, io);
 	console.log("ADMIN connects : " + socket.handshake.sessionID + " via socket " + socket.id);
 
 	adminSocket = socket;
@@ -151,7 +167,6 @@ function admin (socket){
 		socket.emit("goToPollPage");
 
 		});
-        io.to('clientRoom').emit("goToPollPage");
         console.log("sentQuestionnary to client");
 	});
 
@@ -176,7 +191,8 @@ function admin (socket){
             }
             console.log("answers list is" + answersList);
 			socket.emit("answers", answersList); 
-            io.to('clientRoom').emit("AskAnswers");
+
+
                 console.log("sent AskAnswers to user from readytoreceive answers admin");
             //socket.on("userWaitingForAnswers", function(){
                 
@@ -193,9 +209,12 @@ function admin (socket){
     });*/
 
 	socket.emit("registered");
+	
+	//io.of('/user').emit('test');
+
 }
 
-
+/*
 io.on("connection", function(socket){
 	socket.emit("who are you ?");
 	console.log("Connection of socket " + socket.id);
@@ -219,3 +238,6 @@ io.on("connection", function(socket){
     socket.broadcast.emit("Answer1");
     });
 });
+
+
+*/

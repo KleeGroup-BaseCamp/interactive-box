@@ -3,10 +3,12 @@ import React from 'react';
 
 // Redirect for Room View
 import RoomView from '../newClient/roomJS';
-import LinkButton from "../client/linkButton.jsx";
+import LinkButton from "../client/LinkButton.jsx";
 import TextInput from "../client/TextInput.jsx";
 
 const ROOM_TYPE = 'ROOM_TYPE';
+
+var socket;
 
 var LoginBox = React.createClass({
   getInitialState: function() {
@@ -21,14 +23,13 @@ var LoginBox = React.createClass({
     this.setState({pseudo: e.target.value});
   },
   handleSubmit: function() {
-    console.log("LETS LOG IN !");
     var pseudo = this.state.pseudo;
     if(!pseudo){
       return;
     }
 
-    var socket  = io.connect();
-      var that = this;
+    socket  = io("http://localhost:8080/user");
+    var that = this;
     socket.emit("user");
     socket.emit("loginRequest", pseudo);
     socket.on("loginValid", function(){
@@ -52,7 +53,7 @@ var LoginBox = React.createClass({
   },
     
   _renderRoomPage() {
-      return <RoomView />;
+      return <RoomView socket={socket}/>;
   },
     
   render: function(){
