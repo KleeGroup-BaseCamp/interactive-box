@@ -61,6 +61,7 @@ var QuestionnaryDeveloped = React.createClass({
 				</div>
 			);
 		} else {
+			socket.emit("end-questionnary");
 			return (<p> It is over </p>);
 		}
 	},

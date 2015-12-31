@@ -35,9 +35,9 @@ function manageAdminPoll(adminSocket, io){
 		io.of("/user").emit("question", answersLabels);
 	});
 
-	adminSocket.on("end-time", function(){io.sockets.in("/user").emit("end-time")});
+	adminSocket.on("end-time", function(){io.of("/user").emit("end-time")});
 	
-	adminSocket.on("end-questionnary", function(){io.sockets.in("/user").emit("end-questionnary")});
+	adminSocket.on("end-questionnary", function(){io.of("/user").emit("end-questionnary")});
 
 }
 

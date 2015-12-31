@@ -3,15 +3,24 @@ import React from 'react';
 
 var RoomBox = React.createClass({
 	getInitialState: function(){
-		return{answersLabels:[]};
+		return{answersLabels:[], questionnaryFinished:false};
 	},
 	componentDidMount: function(){
 		var t  = this;
 		this.props.socket.on("question", function(answersLabels){
             t.setState({answersLabels:answersLabels});
+            t.setState({questionnaryFinished:false});
+            console.log("receivedn answs " + answersLabels);
+        });
+        this.props.socket.on("end-questionnary", function(){
+        	console.log("receivedn end");
+        	t.setState({questionnaryFinished:true});
         });
 	},
-	renderQuestion: function(){
+	renderQuestFinished: function(){
+		return (<p className="middle-content">"The quizz is over !"</p>)
+	},
+	renderQuestNotFinished: function(){
 		var indexOfAnswer = -1;
 		var t = this;
         var answersNodes = this.state.answersLabels.map(function(label) {
@@ -27,6 +36,13 @@ var RoomBox = React.createClass({
 				<ul>{answersNodes}</ul>
 			</div>
 		);
+	},
+	renderQuestion: function(){
+		if(this.state.questionnaryFinished){
+			return this.renderQuestFinished();
+		} else {
+			return this.renderQuestNotFinished();
+		}
 	},
 	renderRoom: function(){
 		return(
