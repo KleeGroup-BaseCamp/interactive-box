@@ -1,6 +1,8 @@
 import React from 'react';
+import Barchart from 'react-chartjs';
 
 var socket;
+var BarChart = require("react-chartjs").Bar;
 
 
 var QuestionnaryDeveloped = React.createClass({
@@ -51,6 +53,16 @@ var QuestionnaryDeveloped = React.createClass({
 		            </li>);
 	        });
 
+	        //CHART DATA
+
+		    var numberOfAnswers = answersIds.length;
+			var initResults = this.zeroArray(numberOfAnswers);
+			var chartData = 
+				{
+					labels: answersLabels,
+					datasets: [{label: 'Resultats', data: initResults}]
+				};
+
 			return (
 				<div>
 					<p>{questionTitle}</p>
@@ -58,6 +70,7 @@ var QuestionnaryDeveloped = React.createClass({
 						{answersNodes}
 					</ul>
 					<button className="index-button" onClick={this.incrementCounter}>Next</button>
+					<Chart socket={socket} data={chartData} key={this.state.questionIndex}/>
 				</div>
 			);
 		} else {
@@ -74,7 +87,29 @@ var QuestionnaryDeveloped = React.createClass({
 	   			{content}
 	        </div>
 	    );
-  	}
+  	}, 
+  	zeroArray: function(n){
+		return Array.apply(null, {length: n}).map(function() {return 0;});
+	}
+});
+
+var Chart = React.createClass({
+	getInitialState: function(){
+		var t = this;
+		return({data:t.props.data});
+	}, 
+	componentDidMount: function(){
+		var socket = this.props.socket;
+		var t = this;
+		socket.on("answer", function(indexOfAnswer){
+			var newData = t.state.data;
+	        newData.datasets[0].data[indexOfAnswer]++; 
+	        t.setState({data: newData});
+		});
+	},
+	render: function(){
+		return <BarChart data = {this.state.data}/>;
+	}
 });
 
 export default QuestionnaryDeveloped;
