@@ -1,48 +1,24 @@
 import React from 'react';
+import Answers from '../newClient/answers';
 
+const ROOM="waiting";
+const QUESTION="question";
+const FINISHED="finished";
+var firsts;
 
 var RoomBox = React.createClass({
 	getInitialState: function(){
-		return{answersLabels:[], questionnaryFinished:false};
+		return{currentState:ROOM};
 	},
 	componentDidMount: function(){
-		var t  = this;
-		this.props.socket.on("question", function(answersLabels){
-            t.setState({answersLabels:answersLabels});
-            t.setState({questionnaryFinished:false});
-            console.log("receivedn answs " + answersLabels);
-        });
+        var t = this;
         this.props.socket.on("end-questionnary", function(){
-        	console.log("receivedn end");
-        	t.setState({questionnaryFinished:true});
+        	t.setState({currentState:FINISHED});
         });
-	},
-	renderQuestFinished: function(){
-		return (<p className="middle-content">"The quizz is over !"</p>)
-	},
-	renderQuestNotFinished: function(){
-		var indexOfAnswer = -1;
-		var t = this;
-        var answersNodes = this.state.answersLabels.map(function(label) {
-        	indexOfAnswer++;
-        	var index = indexOfAnswer;
-        	var chooseAnswer = function(){
-        		t.props.socket.emit("answer", index);
-        	};
-        	return(<li><button className="answer-button" onClick={chooseAnswer}>{label}</button></li>);
-        });
-		return(
-			<div className="middle-content">
-				<ul>{answersNodes}</ul>
-			</div>
-		);
-	},
-	renderQuestion: function(){
-		if(this.state.questionnaryFinished){
-			return this.renderQuestFinished();
-		} else {
-			return this.renderQuestNotFinished();
-		}
+        this.props.socket.on("question", function(answersLabels){
+            firsts = answersLabels;
+            t.setState({currentState:QUESTION});
+        });  
 	},
 	renderRoom: function(){
 		return(
@@ -53,11 +29,15 @@ var RoomBox = React.createClass({
 	    );
 	},
 	render: function(){
-	 	if(this.state.answersLabels.length==0){
+	 	if(this.state.currentState==ROOM){
 			return this.renderRoom();
-		} else {
-			return this.renderQuestion();
-		}
+		} else if(this.state.currentState==FINISHED){
+            return (<p className="middle-content">"The quizz is over !"</p>);
+        } else if(this.state.currentState==QUESTION){
+            return <Answers socket={this.props.socket} firsts={firsts}/>;
+        } else {
+            return (<p>Erreur !</p>);
+        }
 	}
 });
 

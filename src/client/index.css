@@ -33,6 +33,32 @@ body{
     border-style:solid;
 }
 
+
+.answer-button{
+    font-size: 200%;
+    font-weight: bold;
+    background-color: #bf4263;
+    color: #d8b861;
+    display:block;
+    margin-left: auto;
+    margin-right: auto;
+    border-color:#bc2323;
+    border-style:solid;
+}
+
+.answer-button-blocked{
+    font-size: 200%;
+    font-weight: bold;
+    background-color: #7b7b7b;
+    color: #141414;
+    display:block;
+    margin-left: auto;
+    margin-right: auto;
+    border-color:#000000;
+    border-style:solid;
+}
+
+
 .text-input{
     font-size: 200%;
     font-weight: bold;
