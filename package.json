@@ -2,7 +2,7 @@
   "name": "quizzserver",
   "description": "Serveur de quizz",
   "scripts": {
-    "start": "node ./node_modules/nodemon/bin/nodemon.js src/server/index.js"
+    "start": "node src/server/index.js"
   },
   "babel": {
     "presets": [
@@ -35,8 +35,5 @@
     "webpack-dev-middleware": "^1.4.0",
     "chart.js": "*",
     "react-chartjs": "*"
-  },
-  "devDependencies": {
-    "nodemon": "^1.8.1"
   }
 }
