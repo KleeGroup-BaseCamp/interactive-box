@@ -18,7 +18,7 @@ var RoomBox = React.createClass({
         this.props.socket.on("question", function(answersLabels){
             firsts = answersLabels;
             t.setState({currentState:QUESTION});
-        });  
+        }); 
 	},
 	renderRoom: function(){
 		return(

@@ -23,14 +23,14 @@
             ],
         "answers":[ 
                         {
-                        "rid":"1.1",
-                        "label":"0%",
-                        "correct":false
+                            "rid":"1.1",
+                            "label":"0%",
+                            "correct":false
                         },
                         {
-                        "rid":"1.2",
-                        "label":"40-60%",
-                        "correct":false
+                            "rid":"1.2",
+                            "label":"40-60%",
+                            "correct":false
                         },
                         {
                             "rid":"1.3",
@@ -38,34 +38,34 @@
                             "correct":false
                         },
                         {
-                        "rid":"2.1",
-                        "label":"Opérationnels",
-                        "correct":false
+                            "rid":"2.1",
+                            "label":"Opérationnels",
+                            "correct":false
                         },
                         {
-                        "rid":"2.2",
-                        "label":"Les 2 en même temps",
-                        "correct":false
+                            "rid":"2.2",
+                            "label":"Les 2 en même temps",
+                            "correct":false
                         },
                         {
-                        "rid":"2.3",
-                        "label":"RH",
-                        "correct":false
+                            "rid":"2.3",
+                            "label":"RH",
+                            "correct":false
                         },
                         {
-                        "rid":"3.1",
-                        "label":"Je veux postuler",
-                        "correct":false
+                            "rid":"3.1",
+                            "label":"Je veux postuler",
+                            "correct":false
                         },
                         {
-                        "rid":"3.2",
-                        "label":"J'hésite à postuler",
-                        "correct":false
+                            "rid":"3.2",
+                            "label":"J'hésite à postuler",
+                            "correct":false
                         },
                         {
-                        "rid":"3.3",
-                        "label":"Je ne suis pas intéessé(e)",
-                        "correct":false
+                            "rid":"3.3",
+                            "label":"Je ne suis pas intéessé(e)",
+                            "correct":false
                         }
                   ]
     }, 
@@ -88,14 +88,14 @@
             ],
         "answers":[ 
                         {
-                        "rid":"1.1",
-                        "label":"Rouge",
-                        "correct":false
+                            "rid":"1.1",
+                            "label":"Rouge",
+                            "correct":false
                         },
                         {
-                        "rid":"1.2",
-                        "label":"Vert",
-                        "correct":false
+                            "rid":"1.2",
+                            "label":"Vert",
+                            "correct":false
                         },
                         {
                             "rid":"1.3",
@@ -103,19 +103,103 @@
                             "correct":false
                         },
                         {
-                        "rid":"2.1",
-                        "label":"Batman",
-                        "correct":false
+                            "rid":"2.1",
+                            "label":"Batman",
+                            "correct":false
                         },
                         {
-                        "rid":"2.2",
-                        "label":"Superman",
-                        "correct":false
+                            "rid":"2.2",
+                            "label":"Superman",
+                            "correct":false
                         },
                         {
-                        "rid":"2.3",
-                        "label":"Actionman",
-                        "correct":false
+                            "rid":"2.3",
+                            "label":"Actionman",
+                            "correct":false
+                        }
+                  ]
+    }, 
+    {
+        "title":"Le quizz avec des bonnes et des mauvaises réponses",
+        "id":3,
+        "author":"Antoine",
+        "questions":[
+            {
+                "qid":1,
+                "text":"Combien font 3 + 2 ?",
+                "answers": ["1.1","1.2", "1.3" ]
+            },
+            {
+                "qid":2,
+                "text":"Trouvez l'intrus : ",
+                "answers":["2.1", "2.2", "2.3", "2.4"]
+            }, 
+            {
+                "qid":3,
+                "text":"Qu'est ce qui est vert ?",
+                "answers":["3.1", "3.2", "3.3", "3.4", "3.5"]
+            }
+            ],
+        "answers":[ 
+                        {
+                            "rid":"1.1",
+                            "label":"5",
+                            "correct":true
+                        },
+                        {
+                            "rid":"1.2",
+                            "label":"6",
+                            "correct":false
+                        },
+                        {
+                            "rid":"1.3",
+                            "label":"7",
+                            "correct":false
+                        },
+                        {
+                            "rid":"2.1",
+                            "label":"Jean-Charles",
+                            "correct":false
+                        },
+                        {
+                            "rid":"2.2",
+                            "label":"Pierre-Darius",
+                            "correct":false
+                        },
+                        {
+                            "rid":"2.3",
+                            "label":"Paul-Philippe",
+                            "correct":false
+                        },
+                        {
+                            "rid":"2.4",
+                            "label":"Henri",
+                            "correct":true
+                        }, 
+                                    {
+                            "rid":"3.1",
+                            "label":"Un rouge-gorge",
+                            "correct":false
+                        },
+                        {
+                            "rid":"3.2",
+                            "label":"Un citron vert",
+                            "correct":true
+                        },
+                        {
+                            "rid":"3.3",
+                            "label":"Un lapin",
+                            "correct":false
+                        }, 
+                        {
+                            "rid":"3.4",
+                            "label":"Un renard argenté",
+                            "correct":false
+                        }, 
+                        {
+                            "rid":"3.5",
+                            "label":"Un petit pois",
+                            "correct":true
                         }
                   ]
     }
