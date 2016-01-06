@@ -1,115 +1,241 @@
-// import dependencies
-var express = require('express'),
-    BarChart = require('react-chartjs'),
-	app = express(),
-	port = process.env.PORT || 8080,
-	http = require('http'),
-    path = require("path"),
-    socketIo = require('socket.io'),
-    session = require("express-session")({secret:"shhhhh", resave:true, saveUninitialized:true}),
-    sharedSession = require('express-socket.io-session'),
-	webpackDevMiddleware = require('webpack-dev-middleware'),
-	webpack = require('webpack');
+var appInit =  require('./app-init.js');
+var io = appInit.io;
+var fs = require('fs');
+var path = require("path");
+var QUESTIONNARIES_FILE = path.join(__dirname, '/questionnaries.json');
+var questionnary;
+var maxCount = 0;
+var questionCount = 0;
+var answerCount = 0;
 
-var webpackConfig = require('../../webpack.config');
+var pollAdmin = require("./poll-admin.js");
+var pollUser = require("./poll-user.js");
 
-app.use(session);
-
-app.use(webpackDevMiddleware(webpack(webpackConfig)));
-
-app.get('/admin',function (req,res){res.sendFile(path.join(__dirname+'../client/admin/admin.html'));});
-app.get('/user',function (req,res){res.sendFile(path.join(__dirname+'../client/user/user.html'));});
-app.get('/user/room',function (req,res){res.sendFile(path.join(__dirname+'../client/user/room/index.html'));});
-app.get('/user/room/quizz',function (req,res){res.sendFile(path.join(__dirname+'../client/user/room/quizz/index.html'));});
-app.get('/session-index', function (req, res, next) {
-  req.session.index = (req.session.index || 0) + 1;
-  res.write("Index : " + req.session.index + " : " + req.sessionID);
-  res.end();
-});
-
-// start webserver on port 8080
-var server =  http.createServer(app);
-server.listen(port);
-console.log("Server running on 127.0.0.1:"+port);
-
-var io = require("socket.io")(server);
-io.use(sharedSession(session));
-
-// server behaviour
-
-
-var sessions = {};
 var adminSocket, adminSession;
+var sessions = {};
 
-	//TODO : handle disconnecting
-	//TODO : handle refreshing
-	//TODO : handle return to last page
-
-function admin(socket){
+var nspAdmin = io.of('/admin');
+nspAdmin.on('connection', function(socket){
 	console.log("ADMIN CONNECTS");
-	adminSocket = socket;
-	adminSession = socket.handshake.sessionID;
-	socket.on("submitPoll", function (data){
-		for(sessionID in sessions){
-			sessions[sessionID].socket.on("readyToReceiveQuestion", function(){
-				console.log("Ready from " + sessions[sessionID].pseudo);
-			});
-			sessions[sessionID].socket.emit("startPoll");
-		}
-		console.log("RECEIVED POLL : " + data);
-
-
-	});
-}
-
-io.on("connection", function(socket){
-	socket.emit("who are you ?");
-	socket.on("admin", function(){admin(socket);});
-	socket.on("user", function(){user(socket);});
+	admin(socket);
 });
 
+var nspUsers = io.of('/user');
+nspUsers.on('connection', function(socket){
+	console.log("USER CONNECTS");
+	user(socket);
+});
 
-
-
-function user (socket){
-//  SESSION HANDLING
-
+function findSession(socket){
 	var sessionID = socket.handshake.sessionID;
+	var alreadyThere = false;
 	if(sessionID in sessions){
+		var oldSocket = sessions[sessionID].socket;
+		alreadyThere = socket.id == oldSocket.id;
 		sessions[sessionID].socket = socket;
 	} else {
 		sessions[sessionID] = {socket:socket, pseudo:"Nick"};
 	}
-
-	socket.emit("confirmConnection");
-
 	console.log("Connected : " + sessionID + " via socket " + socket.id);
-
-	//  LOGIN
-
-
-	socket.on("loginRequest", function(data){
-		console.log("suscribing session for " + data +" ...");
-		for(var sessionID in sessions){
-			var userSession = sessions[sessionID];
-			if(userSession.socket.id == socket.id){
-				userSession.pseudo = data;
-				socket.emit("loginValid");
-			} else {
-				userSession.socket.emit("userName", data);
-				console.log("Sending " + data + " to " + userSession.pseudo);
-			}
-		}
-	});
-
-	//  SENDING USERS
-
-	socket.on("readyToReceiveUsers", function(){
-		console.log("Receive ready from : " + socket.id);
-		for(var sessionID in sessions){
-			var userSession = sessions[sessionID];
-			socket.emit("userName", userSession.pseudo);
-			console.log("Sending " + userSession.pseudo + " to " + socket.id);
-		}
-	});
+	return alreadyThere;
 }
+
+function user (socket){
+    console.log("I've received user");
+    io.sockets.in("/user").emit("test");
+    var already = findSession(socket);
+	socket.emit("confirmConnection");
+	pollUser.manageUserPoll(socket, io);
+	if(!already){
+
+
+		//  LOGIN
+		socket.on("loginRequest", function(pseudoRequested){
+			//TODO : checker si le pseudo n'est pas déjà pris
+			console.log("suscribing account for " + pseudoRequested +" ...");
+			for(var sessionID in sessions){
+				var userSession = sessions[sessionID];
+				if(userSession.socket.id == socket.id){
+					userSession.pseudo = pseudoRequested;
+					socket.emit("loginValid");
+	                socket.emit("registered");
+	                console.log("sent registered");
+				} else {
+					userSession.socket.emit("userName", pseudoRequested);
+					console.log("Sending " + pseudoRequested + " to " + userSession.pseudo);
+				}
+			}
+		});
+
+		//  SENDING USERS
+
+		  	socket.on("readyToReceiveUsers", function(){
+			console.log("Receive ready from : " + socket.id);
+			for(var sessionID in sessions){
+				var userSession = sessions[sessionID];
+				socket.emit("userName", userSession.pseudo);
+				console.log("Sending " + userSession.pseudo + " to " + socket.id);
+			}
+		});
+
+		//  REGISTRATION CONFIRMATION
+
+		
+	    
+	    // SENDING ANSWERS
+	    
+	    socket.on("MovedPage", function(){
+	        socket.emit("AskAnswers");
+	        console.log("emitted AskAnswers(2) to user on quizz");
+	    });
+	    
+	    socket.on("userWaitingForAnswers", function(){
+	            console.log("received answers demand from user, questionCount = " + questionCount);
+	        fs.readFile(QUESTIONNARIES_FILE, function(err, data) {
+			    if (err) {
+			      console.error(err);
+			      process.exit(1);
+			    }
+			var questionnaries = JSON.parse(data);
+			var length = questionnaries.length;
+	        for(var i=0;i<length;i++){
+	        	if(!questionnary){
+		        	if(questionnaries[i].id == 0){
+		        		questionnary = questionnaries[i];
+		        		maxCount = questionnary.questions.length;
+		        	}
+	        	}
+	        }
+	        //console.log("FOUND for user " + questionnary.title);
+
+			});
+	            var ans = questionnary.questions[questionCount].answers;
+	            var answersList = [];
+	            for(var i=0;i<ans.length;i++){
+		        	for (var j = 0; j<questionnary.answers.length; j++){
+	                    if (questionnary.answers[j].rid == ans[i]){
+	                        answersList.push(questionnary.answers[j].label);
+	                    }
+	                }
+	            }
+	            questionCount++;
+	            console.log("answers list for user is" + answersList);
+				socket.emit("answers", answersList); 
+	            console.log("sent answers to user");
+		});
+
+	    socket.on("answers", function(answers){
+	        console.log("serveur on client session sent answers, as received from admin session of server");
+	       	socket.emit("answers", answers); 
+	    });
+
+
+	}
+}
+
+
+//ADMIN
+
+function admin (socket){
+    
+    pollAdmin.manageAdminPoll(socket, io);
+	console.log("ADMIN connects : " + socket.handshake.sessionID + " via socket " + socket.id);
+
+	adminSocket = socket;
+	adminSession = socket.handshake.sessionID;
+
+	socket.on("launchPoll", function (pollId){
+		console.log("Launching poll n°" + pollId);
+		fs.readFile(QUESTIONNARIES_FILE, function(err, data) {
+		    if (err) {
+		      console.error(err);
+		      process.exit(1);
+		    }
+		var questionnaries = JSON.parse(data);
+		var length = questionnaries.length;
+        for(var i=0;i<length;i++){
+        	if(!questionnary){
+	        	if(questionnaries[i].id == pollId){
+	        		questionnary = questionnaries[i];
+	        		maxCount = questionnary.questions.length;
+	        	}
+        	}
+        }
+       // console.log("FOUND " + questionnary.title);
+		socket.emit("goToPollPage");
+
+		});
+        console.log("sentQuestionnary to client");
+	});
+
+	socket.on("readyToReceiveQuestion", function(){
+        console.log("received READY TO RECEIVE QUESTION");
+		if(questionCount<maxCount){
+			socket.emit("question", questionnary.questions[questionCount]);
+		} else {
+			socket.emit("no-more-questions");
+		}
+	});
+    
+    socket.on("readyToReceiveAnswers", function(list){
+            console.log("received answers demand" + list);
+            var answersList = [];
+            for(var i=0;i<list.length;i++){
+	        	for (var j = 0; j<questionnary.answers.length; j++){
+                    if (questionnary.answers[j].rid == list[i]){
+                        answersList.push(questionnary.answers[j].label);
+                    }
+                }
+            }
+            console.log("answers list is" + answersList);
+			socket.emit("answers", answersList); 
+
+
+                console.log("sent AskAnswers to user from readytoreceive answers admin");
+            //socket.on("userWaitingForAnswers", function(){
+                
+           // });
+            
+            console.log("incremented questionCount");
+            console.log("sent answers to admin");
+	});
+    /*socket.on("AskAnswers", function(){
+       console.log("received AskAnswers from admin");
+        io.to('clientRoom').emit("AskAnswers2"); 
+        
+        console.log("emitted AskAnswers to client room");
+    });*/
+
+	socket.emit("registered");
+	
+	//io.of('/user').emit('test');
+
+}
+
+/*
+io.on("connection", function(socket){
+	socket.emit("who are you ?");
+	console.log("Connection of socket " + socket.id);
+	socket.on("admin", function(){admin(socket);});
+	socket.on("user", function(){user(socket);});
+    socket.on("user-quizz", function(){userquizz(socket);});
+    
+    // Barchart Answers Handling
+    socket.on("answered3", function() {
+    socket.broadcast.emit("Answer3");
+    socket.emit("Answer3");
+
+    });
+    socket.on("answered2", function() {
+    socket.emit("Answer2");
+    socket.broadcast.emit("Answer2");
+    });
+    
+    socket.on("answered1", function(){
+    socket.emit("Answer1");
+    socket.broadcast.emit("Answer1");
+    });
+});
+
+
+*/
