@@ -24,6 +24,9 @@ var QuestionnaryDeveloped = React.createClass({
 		var oldQuestionIndex = this.state.questionIndex;
 		this.setState({questionIndex:oldQuestionIndex+1});
 	},
+    stopTime: function(){
+        socket.emit("end-time");  
+    },
   	_renderWaitPage() {
   		var startButton = <button className="index-button" onClick={this.incrementCounter}>Start !</button>;
   		var waitMessage = <p> En attente de tous les utilisateurs ...</p>
@@ -70,6 +73,7 @@ var QuestionnaryDeveloped = React.createClass({
 						{answersNodes}
 					</ul>
 					<button className="index-button" onClick={this.incrementCounter}>Next</button>
+                    <button className="index-button" onClick={this.stopTime}>Stop Time</button>
 					<Chart socket={socket} data={chartData} key={this.state.questionIndex}/>
 				</div>
 			);
