@@ -27,10 +27,42 @@ var Answers = React.createClass({
         });
 		return(
 			<div className="middle-content">
+                <CountdownTimer secondsRemaining = "10"/>
 				<ul>{answersNodes}</ul>
 			</div>
 		);
    } 
+});
+
+var CountdownTimer = React.createClass({
+  getInitialState: function() {
+    return {
+      secondsRemaining: 10
+    };
+  },
+  tick: function() {
+    this.setState({secondsRemaining: this.state.secondsRemaining - 1});
+    if (this.state.secondsRemaining <= 0) {
+      clearInterval(this.interval);
+    }
+  },
+  componentDidMount: function() {
+    this.setState({ secondsRemaining: this.props.secondsRemaining });
+    this.interval = setInterval(this.tick, 1000);
+  },
+  componentWillUnmount: function() {
+    clearInterval(this.interval);
+  },
+  render: function() {
+      if (this.state.secondsRemaining > 0){
+        return (
+        <div>Seconds Remaining: {this.state.secondsRemaining}</div>
+        );
+      }
+      else {
+          alert("Temps imparti écoulé !");
+      }
+  }
 });
 
 
