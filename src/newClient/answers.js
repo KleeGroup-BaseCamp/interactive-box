@@ -23,6 +23,9 @@ var Answers = React.createClass({
 
         t.setState({answersLabels:this.props.firsts});
     },
+    setTimeOut: function(){
+        this.setState({timeOut:true});  
+    },
     render: function(){
        	var indexOfAnswer = -1;
 		var t = this;
@@ -36,9 +39,12 @@ var Answers = React.createClass({
             var isBlocked = t.state.timeOut || !(t.state.selectedAnswer == undefined);
         	return(<li><Answer action={chooseAnswer} key={index} isClickable={!isBlocked} label={label}/></li>);
         });
+        //La propriété key permet de relancer le compteur à chaque fois
+        //C'est un peu sale, à voir si on peut pas faire une key correspondent à l'index de la question plutôt
+        //TODO
 		return(
 			<div className="middle-content">
-                <CountdownTimer secondsRemaining = "10"/>
+                <CountdownTimer secondsRemaining = "5" timeOut={this.setTimeOut} key={this.state.answersLabels[0]}/> 
 				<ul>{answersNodes}</ul>
 			</div>
 		);
@@ -55,6 +61,7 @@ var CountdownTimer = React.createClass({
     this.setState({secondsRemaining: this.state.secondsRemaining - 1});
     if (this.state.secondsRemaining <= 0) {
       clearInterval(this.interval);
+      this.props.timeOut();
     }
   },
   componentDidMount: function() {
@@ -71,7 +78,7 @@ var CountdownTimer = React.createClass({
         );
       }
       else {
-          alert("Temps imparti écoulé !");
+          return (<p>Temps écoulé</p>);
       }
   }
 });
