@@ -22,7 +22,7 @@ var RoomBox = React.createClass({
         socket.on("launch-quizz", function(){
 	        	socket.emit("ready-to-receive-question");
 	        });
-        socket.on("question", function(answersLabels){
+        socket.on("question-show", function(answersLabels){
             firsts = answersLabels;
             t.setState({currentState:QUESTION});
             console.log("i have set state to QUESTION")

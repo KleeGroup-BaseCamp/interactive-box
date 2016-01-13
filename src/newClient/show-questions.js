@@ -2,12 +2,13 @@ import React from 'react';
 
 var Answers = React.createClass({
     getInitialState: function(){
-        return {answersLabels:[], selectedAnswer:undefined, timeOut:false, time:"30"};
+        return {questionLabel: undefined, answersLabels:[], selectedAnswer:undefined, timeOut:false, time:"30"};
     },
     componentDidMount: function(){
         var t  = this;
-		this.props.socket.on("question", function(data){
+		this.props.socket.on("question-show", function(data){
             t.setState({time:data.time});
+            t.setState({questionLabel:data.question})
             t.setState({answersLabels:data.answers});
             t.setState({selectedAnswer:undefined});
             t.setState({timeOut:false});
@@ -24,6 +25,7 @@ var Answers = React.createClass({
         
         t.setState({answersLabels:this.props.firsts.answers});
         t.setState({time:this.props.firsts.time});
+        t.setState({questionLabel:this.props.firsts.question});
     },
     setTimeOut: function(){
         this.setState({timeOut:true});  
@@ -35,14 +37,7 @@ var Answers = React.createClass({
        	var indexOfAnswer = -1;
 		var t = this;
         var answersNodes = this.state.answersLabels.map(function(label) {
-        	indexOfAnswer++;
-        	var index = indexOfAnswer;
-        	var chooseAnswer = function(){
-        		t.props.socket.emit("answer", index);
-                t.setState({selectedAnswer:index});
-        	};
-            var isBlocked = t.state.timeOut || !(t.state.selectedAnswer == undefined);
-        	return(<li><Answer action={chooseAnswer} key={index} isClickable={!isBlocked} label={label}/></li>);
+        	return(<li><Answer label={label}/></li>);
         });
         console.log("time au niveau du json: " + this.state.time);
         //La propriété key permet de relancer le compteur à chaque fois
@@ -51,8 +46,9 @@ var Answers = React.createClass({
 		return(
 			<div className="middle-content">
                 <CountdownTimer secondsRemaining = {this.state.time} timeOut={this.setTimeOut} key={this.state.answersLabels[0]}/> 
-
+                <p> Question: {this.state.questionLabel} </p>
 				<ul>{answersNodes}</ul>
+                
 			</div>
 		);
    } 
@@ -94,17 +90,10 @@ var CountdownTimer = React.createClass({
 
 
 var Answer = React.createClass({
-    action: function(){
-      if(this.props.isClickable){
-          this.props.action();
-      }
-    },
 	render: function(){
-        var isClickable = this.props.isClickable;
-        var className = isClickable ? "answer-button" : "answer-button-blocked";
 	 	return(
             <div>
-                <button className={className} onClick = {this.action} key={this.props.index}>{this.props.label}</button>
+                <p>{this.props.label}</p>
             </div>
         );
 	}

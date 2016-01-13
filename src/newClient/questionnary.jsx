@@ -50,7 +50,10 @@ var QuestionnaryDeveloped = React.createClass({
 	        }
             var time = question.time; 
             var data = {answers:answersLabels, time:time};
+            var datashow = {answers:answersLabels, time:time, question: questionTitle};
 	        socket.emit("question", data);
+            socket.emit("question-show", datashow);
+            console.log ("emitted question-show to server");
 	        var answersNodes = answersLabels.map(function(label) {
 	        	return(
 		        	<li>

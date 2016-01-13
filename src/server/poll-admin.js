@@ -33,7 +33,10 @@ function manageAdminPoll(adminSocket, io){
 
 	adminSocket.on("question", function(data){
 		io.of("/user").emit("question", data);
-        io.of("/showRoom").emit("question", data);
+	});
+    adminSocket.on("question-show", function(data){
+		io.of("/showRoom").emit("question-show", data);
+        console.log("emitted question-show to showroom");
 	});
 
 	adminSocket.on("end-time", function(){io.of("/user").emit("end-time")});
