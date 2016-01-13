@@ -48,7 +48,7 @@ var QuestionnaryDeveloped = React.createClass({
 	                }
 	            }
 	        }
-            var time = question.time; 
+            var time = question.time || 10;
             var data = {answers:answersLabels, time:time};
 	        socket.emit("question", data);
 	        var answersNodes = answersLabels.map(function(label) {

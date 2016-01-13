@@ -20,6 +20,7 @@ var Answers = React.createClass({
         });
         this.props.socket.on("end-time", function(arrayOfGoodAnswers){
             t.setState({timeOut:true});
+            console.log(arrayOfGoodAnswers);
             if(arrayOfGoodAnswers){
                 if(arrayOfGoodAnswers.length>0){
                     //S'il y a des bonnes réponses
@@ -42,9 +43,6 @@ var Answers = React.createClass({
     setTimeOut: function(){
         this.setState({timeOut:true});  
     },
-    setTimeOut: function(){
-        this.setState({timeOut:true});  
-    },
     _renderQuestion: function(){
         var indexOfAnswer = -1;
 		var t = this;
@@ -58,7 +56,6 @@ var Answers = React.createClass({
             var isBlocked = t.state.timeOut || !(t.state.selectedAnswer == undefined);
         	return(<li><Answer action={chooseAnswer} key={index} isClickable={!isBlocked} label={label}/></li>);
         });
-        console.log("time au niveau du json: " + this.state.time);
         //La propriété key permet de relancer le compteur à chaque fois
         //C'est un peu sale, à voir si on peut pas faire une key correspondent à l'index de la question plutôt
         //TODO remplacer par un truc random
@@ -110,14 +107,12 @@ var CountdownTimer = React.createClass({
   },
   componentDidMount: function() {
     this.setState({ secondsRemaining: this.props.secondsRemaining });
-      console.log("did mount : state seconds remaining: " + this.state.secondsRemaining);
     this.interval = setInterval(this.tick, 1000);
   },
   componentWillUnmount: function() {
     clearInterval(this.interval);
   },
   render: function() {
-      console.log("secondes restantes niveau Timer: " + this.state.secondsRemaining);
       if (this.state.secondsRemaining > 0){
         return (
         <div>Seconds Remaining: {this.state.secondsRemaining}</div>
