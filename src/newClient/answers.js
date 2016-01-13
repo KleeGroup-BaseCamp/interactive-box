@@ -1,8 +1,13 @@
 import React from 'react';
 
+const GOOD_ANSWER = "good";
+const WRONG_ANSWER = "wrong";
+const NO_ANSWER = "no";
+const QUESTION = "question";
+
 var Answers = React.createClass({
     getInitialState: function(){
-        return {answersLabels:[], selectedAnswer:undefined, timeOut:false};
+        return {answersLabels:[], selectedAnswer:undefined, timeOut:false, answerState:QUESTION};
     },
     componentDidMount: function(){
         var t  = this;
@@ -10,14 +15,23 @@ var Answers = React.createClass({
             t.setState({answersLabels:answersLabels});
             t.setState({selectedAnswer:undefined});
             t.setState({timeOut:false});
-            console.log("ici");
+            t.setState({answerState:QUESTION});
         });
-        this.props.socket.on("end-time", function(){
+        this.props.socket.on("end-time", function(arrayOfGoodAnswers){
             t.setState({timeOut:true});
-            if(t.state.selectedAnswer){
-                console.log("COUCOU");
-            } else {
-                console.log("kiki");
+            if(arrayOfGoodAnswers){
+                if(arrayOfGoodAnswers.length>0){
+                    //S'il y a des bonnes réponses
+                    if(!selectedAnswer){
+                        t.setState({answerState:NO_ANSWER});
+                    } else {
+                        if (arrayOfGoodAnswers.indexOf(t.state.selectedAnswer) > -1) {
+                            t.setState({answerState:GOOD_ANSWER});
+                        } else {
+                            t.setState({answerState:WRONG_ANSWER});
+                        }
+                    }
+                }
             }
         });
 
@@ -26,8 +40,8 @@ var Answers = React.createClass({
     setTimeOut: function(){
         this.setState({timeOut:true});  
     },
-    render: function(){
-       	var indexOfAnswer = -1;
+    _renderQuestion: function(){
+        var indexOfAnswer = -1;
 		var t = this;
         var answersNodes = this.state.answersLabels.map(function(label) {
         	indexOfAnswer++;
@@ -48,6 +62,29 @@ var Answers = React.createClass({
 				<ul>{answersNodes}</ul>
 			</div>
 		);
+    },
+    _renderWrong: function(){
+        return (<p>WRONG !</p>);
+    },
+    _renderGood: function(){
+        return (<p>Good !</p>);
+    },
+    _renderNo: function(){
+        return (<p>It s      too late !</p>);
+    },        
+    render: function(){
+        var a = this.state.answerState;
+        if(a==QUESTION){
+            return this._renderQuestion();
+        } else if(a==WRONG_ANSWER){
+            return this._renderWrong();
+        } else if (a==GOOD_ANSWER){
+            return this._renderGood();
+        } else if(a==NO_ANSWER){
+            return this._renderNo();
+        } else {
+            return (<p>ERROR</p>);
+        }
    } 
 });
 
