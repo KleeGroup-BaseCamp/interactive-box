@@ -24,7 +24,7 @@ var Answers = React.createClass({
             if(arrayOfGoodAnswers){
                 if(arrayOfGoodAnswers.length>0){
                     //S'il y a des bonnes réponses
-                    if(!selectedAnswer){
+                    if(!t.state.selectedAnswer){
                         t.setState({answerState:NO_ANSWER});
                     } else {
                         if (arrayOfGoodAnswers.indexOf(t.state.selectedAnswer) > -1) {
@@ -42,6 +42,7 @@ var Answers = React.createClass({
     },
     setTimeOut: function(){
         this.setState({timeOut:true});  
+        this.props.socket.emit("end-time-request");
     },
     _renderQuestion: function(){
         var indexOfAnswer = -1;

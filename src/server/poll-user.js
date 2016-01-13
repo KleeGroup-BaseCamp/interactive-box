@@ -22,9 +22,11 @@ function manageUserPoll(userSocket, io){
 		} else {
 			console.log("Tout le monde n'est pas prêt");
 		}
-
-
 	});
+    
+    userSocket.on("end-time-request", function(){
+        io.of('/admin').emit("end-time-request");
+    });
 }
 
 function reset(){
