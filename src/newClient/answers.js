@@ -1,8 +1,10 @@
 import React from 'react';
+import Result from '../newClient/result';
 
 const GOOD_ANSWER = "good";
 const WRONG_ANSWER = "wrong";
 const NO_ANSWER = "no";
+const NEUTRAL = "neutral";
 const QUESTION = "question";
 
 var Answers = React.createClass({
@@ -24,7 +26,7 @@ var Answers = React.createClass({
             if(arrayOfGoodAnswers){
                 if(arrayOfGoodAnswers.length>0){
                     //S'il y a des bonnes réponses
-                    if(!t.state.selectedAnswer){
+                    if(t.state.selectedAnswer==undefined){
                         t.setState({answerState:NO_ANSWER});
                     } else {
                         if (arrayOfGoodAnswers.indexOf(t.state.selectedAnswer) > -1) {
@@ -32,6 +34,12 @@ var Answers = React.createClass({
                         } else {
                             t.setState({answerState:WRONG_ANSWER});
                         }
+                    }
+                } else {
+                    if(t.state.selectedAnswer==undefined){
+                        t.setState({answerState:NO_ANSWER});
+                    } else {
+                        t.setState({answerState:NEUTRAL});
                     }
                 }
             }
@@ -44,7 +52,7 @@ var Answers = React.createClass({
         this.setState({timeOut:true});  
         this.props.socket.emit("end-time-request");
     },
-    _renderQuestion: function(){
+    render: function(){
         var indexOfAnswer = -1;
 		var t = this;
         var answersNodes = this.state.answersLabels.map(function(label) {
@@ -57,38 +65,25 @@ var Answers = React.createClass({
             var isBlocked = t.state.timeOut || !(t.state.selectedAnswer == undefined);
         	return(<li><Answer action={chooseAnswer} key={index} isClickable={!isBlocked} label={label}/></li>);
         });
+        
+        var result = this._renderResult();
         //La propriété key permet de relancer le compteur à chaque fois
         //C'est un peu sale, à voir si on peut pas faire une key correspondent à l'index de la question plutôt
         //TODO remplacer par un truc random
 		return(
 			<div className="middle-content">
                 <CountdownTimer secondsRemaining = {this.state.time} timeOut={this.setTimeOut} key={this.state.answersLabels[0]}/> 
-
 				<ul>{answersNodes}</ul>
+                {result}
 			</div>
 		);
-    },
-    _renderWrong: function(){
-        return (<p>WRONG !</p>);
-    },
-    _renderGood: function(){
-        return (<p>Good !</p>);
-    },
-    _renderNo: function(){
-        return (<p>It s      too late !</p>);
-    },        
-    render: function(){
+    },     
+    _renderResult: function(){
         var a = this.state.answerState;
         if(a==QUESTION){
-            return this._renderQuestion();
-        } else if(a==WRONG_ANSWER){
-            return this._renderWrong();
-        } else if (a==GOOD_ANSWER){
-            return this._renderGood();
-        } else if(a==NO_ANSWER){
-            return this._renderNo();
+            return(<p>"Répond maintenant !"</p>);
         } else {
-            return (<p>ERROR</p>);
+            return (<Result answerState={a}/>);
         }
    } 
 });
