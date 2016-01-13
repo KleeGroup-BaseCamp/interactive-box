@@ -27,8 +27,8 @@ nspUsers.on('connection', function(socket){
 });
 
 function findSession(socket){
-	var sessionID = socket.handshake.sessionID;
-	var alreadyThere = false;
+	var sessionID = socket.handshake.headers.cookie;
+    var alreadyThere = false;
 	if(sessionID in sessions){
 		var oldSocket = sessions[sessionID].socket;
 		alreadyThere = socket.id == oldSocket.id;
@@ -106,7 +106,6 @@ function user (socket){
 		        	}
 	        	}
 	        }
-	        //console.log("FOUND for user " + questionnary.title);
 
 			});
 	            var ans = questionnary.questions[questionCount].answers;

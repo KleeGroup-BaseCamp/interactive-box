@@ -54,7 +54,7 @@ var QuestionnaryDeveloped = React.createClass({
 	        var answersNodes = answersLabels.map(function(label) {
 	        	return(
 		        	<li>
-		                <p>{label}</p>
+		                <p>{label} </p>
 		            </li>);
 	        });
 

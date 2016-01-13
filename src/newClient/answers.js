@@ -28,6 +28,9 @@ var Answers = React.createClass({
     setTimeOut: function(){
         this.setState({timeOut:true});  
     },
+    setTimeOut: function(){
+        this.setState({timeOut:true});  
+    },
     render: function(){
        	var indexOfAnswer = -1;
 		var t = this;
@@ -48,6 +51,7 @@ var Answers = React.createClass({
 		return(
 			<div className="middle-content">
                 <CountdownTimer secondsRemaining = {this.state.time} timeOut={this.setTimeOut} key={this.state.answersLabels[0]}/> 
+
 				<ul>{answersNodes}</ul>
 			</div>
 		);
