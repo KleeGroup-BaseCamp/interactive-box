@@ -31,8 +31,8 @@ function manageAdminPoll(adminSocket, io){
 		io.of('/user').emit('launch-quizz');
 	});
 
-	adminSocket.on("question", function(answersLabels){
-		io.of("/user").emit("question", answersLabels);
+	adminSocket.on("question", function(data){
+		io.of("/user").emit("question", data);
 	});
 
 	adminSocket.on("end-time", function(){io.of("/user").emit("end-time")});

@@ -15,8 +15,8 @@ var RoomBox = React.createClass({
         this.props.socket.on("end-questionnary", function(){
         	t.setState({currentState:FINISHED});
         });
-        this.props.socket.on("question", function(answersLabels){
-            firsts = answersLabels;
+        this.props.socket.on("question", function(data){
+            firsts = data;
             t.setState({currentState:QUESTION});
         }); 
 	},
