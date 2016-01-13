@@ -12,6 +12,7 @@ var value3 = 0;
 // Ca, c'est vos composants à vous !! c'est comme ça qu'on compose l'appli, et qu'on a pas mille .html
 import AdminView from '../newClient/admin'; // <-------- virez aussi ce dossier newClient qui ne sert à rien, ca fait pas propre. on ne précise pas admin.js, juste admin, Webpack prend .js par défaut
 import LoginView from '../newClient/login';
+import ShowView from '../newClient/showRoom';
 import LinkButton from "./LinkButton.jsx";
 
 import "./index.css";
@@ -21,6 +22,7 @@ import "./index.css";
 
 const ADMIN_TYPE = 'ADMIN_TYPE';
 const ATTENDEE_TYPE = 'ATTENDEE_TYPE';
+const SHOW_TYPE = 'SHOW_TYPE';
 
 var Header = React.createClass({
     render: function(){
@@ -52,6 +54,9 @@ var WelcomeBox = React.createClass({
   _setUserToAttendee() {
       this.setState({userType: ATTENDEE_TYPE});
   },
+  _setUserToShow(){
+    this.setState({userType: SHOW_TYPE});  
+  },
   _renderHomepage() {
       return(
         <div className="middle-content">
@@ -59,6 +64,7 @@ var WelcomeBox = React.createClass({
           <div className="div-button">
             <LinkButton handleLinkClick={this._setUserToAdmin} text="Administrateur" url="admin"/>
             <LinkButton handleLinkClick={this._setUserToAttendee} text="Utilisateur" url="login"/>
+            <LinkButton handleLinkClick={this._setUserToShow} text="Presentation" url="showRoom"/>
           </div>
         </div>
       );
@@ -69,6 +75,9 @@ var WelcomeBox = React.createClass({
   _renderLoginPage() {
       return <LoginView/>;
   },
+  _renderShowRoomPage(){
+        return <ShowView/>;  
+  },
   renderMiddle: function(){
     var userType = this.state.userType;
     if (userType === undefined) { // On ne connait pas l'utilisateur, ca veut dire qu'on doit lui demander qui il est
@@ -77,6 +86,8 @@ var WelcomeBox = React.createClass({
         return this._renderAdminPage();
     } else if (userType === ATTENDEE_TYPE) { // L'utilisateur est quelqu'un de l'assemblée, on lui file donc la page de login
         return this._renderLoginPage();
+    } else if (userType === SHOW_TYPE) { // L'utilisateur est le présentateur, on lui file donc la page de présentation
+        return this._renderShowRoomPage();
     } else { // Si on arrive ici c'est qu'on a mal fait le state, donc erreur
         return <p>Fatale erreure, il y a un renard dans la poulailler</p>;
     }
