@@ -1,6 +1,7 @@
 var fs = require('fs');
 var path = require("path");
 var pollUser = require("./poll-user.js");
+var pollAdmin = require("./poll-admin.js");
 
 var QUESTIONNARIES_FILE = path.join(__dirname, '/questionnaries.json');
 
@@ -24,24 +25,21 @@ function readQuestionnary(idOfQuestionnary){
 	});
 };
 
-function manageAdminPoll(adminSocket, io){
+function manageShowPoll(adminSocket, io){
+    console.log("opened manageSHowPoll");
 	adminSocket.on("launch-quizz", function(idOfQuestionnary){
 		readQuestionnary(idOfQuestionnary);
-		pollUser.reset();
-		io.of('/user').emit('launch-quizz');
 	});
 
 	adminSocket.on("question", function(data){
-		io.of("/user").emit("question", data);
-        io.of("/showRoom").emit("question", data);
+		io.of("/showRoom").emit("question", data);
+        console.log("emitted question to showroom");
 	});
 
-	adminSocket.on("end-time", function(){io.of("/user").emit("end-time")});
 	adminSocket.on("end-time", function(){io.of("/showRoom").emit("end-time")});
 	
-	adminSocket.on("end-questionnary", function(){io.of("/user").emit("end-questionnary")});
 	adminSocket.on("end-questionnary", function(){io.of("/showRoom").emit("end-questionnary")});
 
 }
 
-exports.manageAdminPoll = manageAdminPoll;
+exports.manageShowPoll = manageShowPoll;

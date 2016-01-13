@@ -10,6 +10,7 @@ var answerCount = 0;
 
 var pollAdmin = require("./poll-admin.js");
 var pollUser = require("./poll-user.js");
+var pollShow = require("./poll-show.js");
 
 var adminSocket, adminSession;
 var sessions = {};
@@ -24,6 +25,12 @@ var nspUsers = io.of('/user');
 nspUsers.on('connection', function(socket){
 	console.log("USER CONNECTS");
 	user(socket);
+});
+
+var nspShow = io.of('/showRoom');
+nspShow.on('connection', function(socket){
+	console.log("SHOWMAN CONNECTS");
+	show(socket);
 });
 
 function findSession(socket){
@@ -209,6 +216,47 @@ function admin (socket){
 	
 	//io.of('/user').emit('test');
 
+}
+
+function show (socket){
+    console.log("I've received showman");
+    var already = findSession(socket);
+	socket.emit("confirmConnection");
+    adminSocket = socket;
+    pollShow.manageShowPoll(socket, io);
+    console.log ("opened poll show");
+	if(!already){
+
+
+		//  LOGIN
+		/*socket.on("loginRequest", function(pseudoRequested){
+			//TODO : checker si le pseudo n'est pas déjà pris
+			console.log("suscribing account for " + pseudoRequested +" ...");
+			for(var sessionID in sessions){
+				var userSession = sessions[sessionID];
+				if(userSession.socket.id == socket.id){
+					userSession.pseudo = pseudoRequested;
+					socket.emit("loginValid");
+	                socket.emit("registered");
+	                console.log("sent registered");
+				} else {
+					userSession.socket.emit("userName", pseudoRequested);
+					console.log("Sending " + pseudoRequested + " to " + userSession.pseudo);
+				}
+			}
+		});*/
+
+		//  SENDING USERS
+
+		  	socket.on("readyToReceiveUsers", function(){
+			console.log("Receive ready from : " + socket.id);
+			for(var sessionID in sessions){
+				var userSession = sessions[sessionID];
+				socket.emit("userName", userSession.pseudo);
+				console.log("Sending " + userSession.pseudo + " to " + socket.id);
+			}
+		});
+    }
 }
 
 /*
