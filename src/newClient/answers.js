@@ -8,6 +8,13 @@ const NO_ANSWER = "no";
 const NEUTRAL = "neutral";
 const QUESTION = "question";
 
+//Modes des réponses
+const CLICKABLE = "clickable";
+const SELECTED = "selected";
+const GOOD = "good";
+const WRONG = "wrong";
+const LOCKED = "locked";
+
 var Answers = React.createClass({
     
     getInitialState: function(){
@@ -16,10 +23,32 @@ var Answers = React.createClass({
             selectedAnswer:undefined,       
             timeOut:false,                 
             answerState:QUESTION,           
-            time:"30"                       
+            time:"30",
+            arrayOfGoodAnswers:[]
         };
     },
-    
+    updateAnswerButtons: function(answerLabels){
+        var indexNew = -1;
+        t.answerButtons = data.answers.map(function(label){
+            indexNew++;
+            var index = indexNew;
+            var chooseAnswer = function(){
+                t.props.socket.emit("answer", index);
+                t.setState({selectedAnswer:index});
+            }
+            var mode;
+            if(t.state.answerState==QUESTION){
+                if(t.state.selectedAnswer==undefined){
+                    mode = CLICKABLE;
+                } else {
+                    mode = t.state.selectedAnswer==index ? SELECTED : LOCKED;
+                }
+            } else {
+                
+            }
+            return (<li><AnswerButton action={chooseAnswer} key={index} answerText={label} mode={undefined}/></li>);
+        });
+    },
     componentDidMount: function(){
         var t  = this;
 		this.props.socket.on("question", function(data){
@@ -29,6 +58,7 @@ var Answers = React.createClass({
             t.setState({timeOut:false});
             t.setState({answerState:QUESTION});
         });
+        
         this.props.socket.on("end-time", function(arrayOfGoodAnswers){
             t.setState({timeOut:true});
             console.log(arrayOfGoodAnswers);
@@ -56,31 +86,25 @@ var Answers = React.createClass({
         
         t.setState({answersLabels:this.props.firsts.answers});
         t.setState({time:this.props.firsts.time});
+        updateAnswerButtons(this.props.firsts.answers);
     },
     setTimeOut: function(){
         this.setState({timeOut:true});  
         this.props.socket.emit("end-time-request");
     },
+    answerButtons: [],
     render: function(){
-        var indexOfAnswer = -1;
-		var t = this;
-        var answersNodes = this.state.answersLabels.map(function(label) {
-        	indexOfAnswer++;
-        	var index = indexOfAnswer;
-        	var chooseAnswer = function(){
-        		t.props.socket.emit("answer", index);
-                t.setState({selectedAnswer:index});
-        	};
-            var isBlocked = t.state.timeOut || !(t.state.selectedAnswer == undefined);
-        	return(<li><Answer action={chooseAnswer} key={index} isClickable={!isBlocked} label={label}/></li>);
-        });
+        
+        updateAnswerButtons(this.props.firsts.answers);
         
         var result = this._renderResult();
         var key = new Date().valueOf();
+        
 		return(
 			<div className="middle-content">
                 <CountdownTimer secondsRemaining = {this.state.time} timeOut={this.setTimeOut} key={key}/> 
 				<ul>{answersNodes}</ul>
+                <ul>{answerNodesNew}</ul>
                 {result}
 			</div>
 		);
