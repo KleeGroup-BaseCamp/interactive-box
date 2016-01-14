@@ -1,6 +1,7 @@
 import React from 'react';
 import Result from '../newClient/result';
 
+//Modes d'affichage du tableau des réponses
 const GOOD_ANSWER = "good";
 const WRONG_ANSWER = "wrong";
 const NO_ANSWER = "no";
@@ -8,9 +9,17 @@ const NEUTRAL = "neutral";
 const QUESTION = "question";
 
 var Answers = React.createClass({
+    
     getInitialState: function(){
-        return {answersLabels:[], selectedAnswer:undefined, timeOut:false, answerState:QUESTION, time:"30"};
+        return {
+            answersLabels:[],
+            selectedAnswer:undefined,       
+            timeOut:false,                 
+            answerState:QUESTION,           
+            time:"30"                       
+        };
     },
+    
     componentDidMount: function(){
         var t  = this;
 		this.props.socket.on("question", function(data){
@@ -67,12 +76,10 @@ var Answers = React.createClass({
         });
         
         var result = this._renderResult();
-        //La propriété key permet de relancer le compteur à chaque fois
-        //C'est un peu sale, à voir si on peut pas faire une key correspondent à l'index de la question plutôt
-        //TODO remplacer par un truc random
+        var key = new Date().valueOf();
 		return(
 			<div className="middle-content">
-                <CountdownTimer secondsRemaining = {this.state.time} timeOut={this.setTimeOut} key={this.state.answersLabels[0]}/> 
+                <CountdownTimer secondsRemaining = {this.state.time} timeOut={this.setTimeOut} key={key}/> 
 				<ul>{answersNodes}</ul>
                 {result}
 			</div>
