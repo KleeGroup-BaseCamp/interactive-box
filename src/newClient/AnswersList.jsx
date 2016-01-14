@@ -13,6 +13,12 @@ const CORRECT = "correct";
 const NOT_CORRECT = "not-correct";
 const POLL = "poll";
 
+// Etat du résultat
+const RESULT_GOOD = "good";
+const RESULT_WRONG = "wrong";
+const RESULT_NO_ANSWER = "no";
+const RESULT_NEUTRAL = "neutral";
+
 var AnswersList = React.createClass({
     getInitialState: function(){
         return {
@@ -96,16 +102,32 @@ var AnswersList = React.createClass({
             return (<li><AnswerButton action={chooseAnswer} key={label} answerText={label} mode={mode}/></li>);
         });
     },
-    _renderResult: function(){
-        /*
-        var a = this.state.answerState;
-        if(a==QUESTION){
-            return(<p>"Répond maintenant !"</p>);
-        } else {
-            return (<Result answerState={a}/>);
+    getResult: function(){
+        for(var j=0; j< this.state.answers.length;j++){
+            var answer = this.state.answers[j];
+            console.log(answer);
+            console.log(this.state.answers);
+            if(answer.selected && answer.correct == CORRECT){
+                return RESULT_GOOD;
+            } else if(answer.selected && answer.correct==NOT_CORRECT){
+                return RESULT_WRONG;
+            } else if(answer.correct == POLL){
+                return RESULT_NEUTRAL;
+            }
         }
-        */
-        return (<p>he coucou</p>);
+        return RESULT_NO_ANSWER;
+    },
+    _renderResult: function(){
+        if(this.state.timeOut){
+            var resultMode = this.getResult();
+            return (<Result answerState={resultMode}/>);
+        } else {
+            if(this.hasAlreadyAnswered){
+                return (<p>On attend la fin du countdown ...</p>)
+            } else{
+                return (<p>Répondez !</p>);
+            }
+        }
     },
     render: function(){
         var answersButtonsArray = this._renderAnswersButton();
