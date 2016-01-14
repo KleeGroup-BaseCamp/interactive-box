@@ -5,6 +5,8 @@ const WRONG_ANSWER = "wrong";
 const NO_ANSWER = "no";
 const NEUTRAL = "neutral";
 
+import "./result.css";
+
 var Result = React.createClass({
     chooseFromStatus: function(list){
         var a = this.props.answerState;
@@ -34,9 +36,11 @@ var Result = React.createClass({
             "Vous savez, je ne pense pas qu'il y ait de bonne ou de mauvaise réponse de toute façon"]);
         var answers = this.props.answersList;
         return(
-            <div>
-                <img src={imageURL} height="120"/>
-                <p>{text}</p>
+            <div className="result-block">
+                <div className="result-image-holder">
+                    <img className="result-image" src={imageURL}/>
+                </div>
+                <p className ="result-text">{text}</p>
             </div>
         );
    } 
