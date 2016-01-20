@@ -39,7 +39,7 @@ var nspShowRoom = appInit.nspShowRoom;
 nspShowRoom.on('connection', function(socket){
 	console.log("SHOWROOM CONNECTS : ");
     console.log(socket.handshake.sessionID + "via socket " + socket.id);
-	showroom(socket);
+	show(socket);
 });
 
 

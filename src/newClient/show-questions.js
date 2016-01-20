@@ -159,11 +159,8 @@ var Chart = React.createClass({
         this.props.socket.on("chartData", function(newData){
             console.log("i received chartData");
             console.log(newData);
-            //t.setState({data:newData});
-            var newData = t.state.data;
-	        newData.datasets[0].data[0]++; 
-	        t.state.data=newData
-            t.forceUpdate();
+            t.setState({data:newData});
+
         });
 	},
 	render: function(){
