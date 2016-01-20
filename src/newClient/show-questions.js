@@ -5,16 +5,27 @@ var BarChart = require("react-chartjs").Bar;
 var answersLabels=[];
 
 var Answers = React.createClass({
-    
+    //To DO: define initial arrays for chart
     getInitialState: function(){
         return {questionLabel: undefined, answersLabels:[], selectedAnswer:undefined, timeOut:false, time:30, showChart:false};
     },
+   /* _zeroArray: function(n){
+		return Array.apply(null, {length: n}).map(function() {return 0;});
+	},*/
     componentDidMount: function(){
         var t  = this;
         var socket = this.props.socket;
 		socket.on("question-show", function(data){
-            t.setState({time:data.time, questionLabel:data.question, answersLabels:data.answers, selectedAnswer:undefined, timeOut:false});
-            console.log("ici");
+            console.log("I received question-show");
+            var numberOfAnswers = data.answers.length;
+            var initResults = Array.apply(null, {length:numberOfAnswers}).map(function() {return 0;});
+			var firstChartData = 
+				{
+					labels: data.answers,
+					datasets: [{label: 'Resultats', data: initResults}]
+				};
+            console.log("ici c'est le did mount de question show");
+            t.setState({time:data.time, questionLabel:data.question, answersLabels:data.answers, selectedAnswer:undefined, timeOut:false, showChart:false, chartData:firstChartData});
         });
         socket.on("end-time", function(){
             t.setState({timeOut:true});
@@ -28,10 +39,17 @@ var Answers = React.createClass({
             t.setState({showChart:true});
         });
         
+        socket.on("chartData", function(newData){
+            console.log("i received chartData");
+            console.log(newData);
+            t.setState({chartData:newData});
+
+        });
         
         t.setState({answersLabels:this.props.firsts.answers});
         t.setState({time:this.props.firsts.time});
         t.setState({questionLabel:this.props.firsts.question});
+        //TO DO: try out firsts
     },
     setTimeOut: function(){
         this.setState({timeOut:true});  
@@ -59,26 +77,16 @@ var Answers = React.createClass({
 
     
     },
-      	zeroArray: function(n){
-		return Array.apply(null, {length: n}).map(function() {return 0;});
-	},
     
-    //TO DO RESOUDRE QUESTIONINDEX ET AUTRES INPUTS CHART
     _renderBarChart(){
         var socket = this.props.socket;
-        var numberOfAnswers = this.state.answersLabels.length;
+        
         console.log("je suis dans renderBarcHart");
-        console.log(numberOfAnswers);
-			var initResults = this.zeroArray(numberOfAnswers);
-			var chartData = 
-				{
-					labels: this.state.answersLabels,
-					datasets: [{label: 'Resultats', data: initResults}]
-				};
-            //socket.emit("chartData", chartData);
+			
+            
         
         return(
-            <Chart socket={socket} data={chartData} key={this.state.questionLabel} />
+            <Chart socket={socket} data={this.state.chartData} key={this.state.questionLabel} />
         );
     },
     
@@ -150,18 +158,12 @@ var Chart = React.createClass({
         console.log(t.state.data);
 
         
-		/*this.props.socket.on("answer", function(indexOfAnswer){
-            console.log("I received an answer");
-			var newData = t.state.data;
-	        newData.datasets[0].data[indexOfAnswer]++; 
-	        t.setState({data: newData});
-		});*/
-        this.props.socket.on("chartData", function(newData){
+        /*this.props.socket.on("chartData", function(newData){
             console.log("i received chartData");
             console.log(newData);
             t.setState({data:newData});
 
-        });
+        });*/
 	},
 	render: function(){
 		return <BarChart data = {this.state.data}/>;
