@@ -15,26 +15,36 @@ var pollShow = require("./poll-show.js");
 var adminSocket, adminSession;
 var sessions = {};
 
-var nspAdmin = io.of('/admin');
+io.on("connection", function(socket){
+    console.log("CONNECTS");
+    console.log(socket.handshake.sessionID);
+});
+
+var nspAdmin = appInit.nspAdmin;
 nspAdmin.on('connection', function(socket){
-	console.log("ADMIN CONNECTS");
+	console.log("ADMIN CONNECTS : ");
+    console.log(socket.handshake.sessionID + "via socket " + socket.id);
 	admin(socket);
 });
 
-var nspUsers = io.of('/user');
+var nspUsers = appInit.nspUsers;
 nspUsers.on('connection', function(socket){
-	console.log("USER CONNECTS");
+	console.log("USER CONNECTS : ");
+    console.log(socket.handshake.sessionID + "via socket " + socket.id);
 	user(socket);
 });
 
-var nspShow = io.of('/showRoom');
-nspShow.on('connection', function(socket){
-	console.log("SHOWMAN CONNECTS");
-	show(socket);
+
+var nspShowRoom = appInit.nspShowRoom;
+nspShowRoom.on('connection', function(socket){
+	console.log("SHOWROOM CONNECTS : ");
+    console.log(socket.handshake.sessionID + "via socket " + socket.id);
+	showroom(socket);
 });
 
+
 function findSession(socket){
-	var sessionID = socket.handshake.headers.cookie;
+	var sessionID = socket.handshake.session.id;
     var alreadyThere = false;
 	if(sessionID in sessions){
 		var oldSocket = sessions[sessionID].socket;
@@ -47,12 +57,28 @@ function findSession(socket){
 	return alreadyThere;
 }
 
+function disconnect(socket){
+    console.log("disconnect");
+    var sessionID = socket.handshake.session.id;
+    if(sessionID in sessions){
+        console.log(sessions);
+        delete sessions[sessionID];
+        console.log(sessions);
+    }
+};
+
+function showRoom (socket){
+    console.log("to be done ...");
+}
+
 function user (socket){
     console.log("I've received user");
-    io.sockets.in("/user").emit("test");
     var already = findSession(socket);
 	socket.emit("confirmConnection");
 	pollUser.manageUserPoll(socket, io);
+    socket.on("disconnect", function(){
+        disconnect(socket);
+    });
 	if(!already){
 
 

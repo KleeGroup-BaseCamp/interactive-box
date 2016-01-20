@@ -47,8 +47,11 @@ function manageAdminPoll(adminSocket, io){
         console.log("emitted chartData to showroom");
     });
 
-	adminSocket.on("end-time", function(){io.of("/user").emit("end-time")});
-	adminSocket.on("end-time", function(){io.of("/showRoom").emit("end-time")});
+
+	adminSocket.on("end-time", function(arrayOfGoodAnswers){
+        io.of("/user").emit("end-time", arrayOfGoodAnswers);
+    });
+
 	
 	adminSocket.on("end-questionnary", function(){io.of("/user").emit("end-questionnary")});
 	adminSocket.on("end-questionnary", function(){io.of("/showRoom").emit("end-questionnary")});

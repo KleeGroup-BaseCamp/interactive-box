@@ -1,0 +1,18 @@
+.result-block{
+    background-color: coral;
+    margin:auto;
+    width:80%;
+}
+
+.result-image{
+    height:20%;
+}
+
+.result-text{
+    font-family:"Comic Sans MS";
+}
+
+.result-image-holder{
+    margin-left:auto;
+    margin-right:auto;
+}

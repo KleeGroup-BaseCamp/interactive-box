@@ -1,5 +1,5 @@
 import React from 'react';
-import Answers from '../newClient/answers';
+import AnswersList from './AnswersList.jsx';
 
 const ROOM="waiting";
 const QUESTION="question";
@@ -34,7 +34,7 @@ var RoomBox = React.createClass({
 		} else if(this.state.currentState==FINISHED){
             return (<p className="middle-content">"The quizz is over !"</p>);
         } else if(this.state.currentState==QUESTION){
-            return <Answers socket={this.props.socket} firsts={firsts}/>;
+            return <AnswersList socket={this.props.socket} firsts={firsts}/>;
         } else {
             return (<p>Erreur !</p>);
         }

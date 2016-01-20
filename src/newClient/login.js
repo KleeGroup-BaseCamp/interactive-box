@@ -1,11 +1,12 @@
 import io from 'socket.io-client';
 import React from 'react';
+var ReactDOM = require('react-dom');  
 
 // Redirect for Room View
 import RoomView from '../newClient/roomJS';
 import LinkButton from "../client/LinkButton.jsx";
 import TextInput from "../client/TextInput.jsx";
-
+    
 const ROOM_TYPE = 'ROOM_TYPE';
 
 var socket;
@@ -37,13 +38,15 @@ var LoginBox = React.createClass({
     });
     
   },
-    
+    componentDidMount: function(){
+        ReactDOM.findDOMNode(this.refs.inputPseudo).focus(); 
+    },
   _renderLoginPage() {
     return(
       <div className="middle-content">
         <h1 className="index-title">Entrez votre pseudo</h1>
         <div>
-          <TextInput placeholder="Pseudo" onChange={this.updatePseudo} onEnter={this.handleSubmit}/>
+          <TextInput placeholder="Pseudo" onChange={this.updatePseudo} onEnter={this.handleSubmit} ref="inputPseudo"/>
         </div>
         <div>
           <LinkButton handleLinkClick={this.handleSubmit} text="Continuer"/>

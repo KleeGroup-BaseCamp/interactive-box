@@ -19,13 +19,35 @@ var QuestionnaryDeveloped = React.createClass({
 		socket.on("answer", function(indexOfAnswer){
 			console.log("Receivend answer " + indexOfAnswer);
 		});
+        socket.on("end-time-request", function(){
+            t.stopTime();
+        });
 	},
 	incrementCounter: function(){
 		var oldQuestionIndex = this.state.questionIndex;
 		this.setState({questionIndex:oldQuestionIndex+1});
 	},
     stopTime: function(){
-        socket.emit("end-time");  
+        var arrayOfGoodAnswers = [];
+        var questionnary = this.props.questionnary;
+		var maxIndex = questionnary.questions.length;
+        if(this.state.questionIndex<maxIndex){
+            var question = questionnary.questions[this.state.questionIndex];
+            var answersIds = question.answers;
+            var answersObjects = questionnary.answers;
+            for(var i=0;i<answersIds.length;i++){
+	        	for (var k = 0; k<answersObjects.length; k++){
+	                if (answersObjects[k].rid == answersIds[i]){
+                        if(answersObjects[k].correct){
+                            console.log("Correct :" + i);
+                            arrayOfGoodAnswers.push(i);
+                        }
+	                }
+	            }
+	        }
+        }
+        console.log(arrayOfGoodAnswers);
+        socket.emit("end-time", arrayOfGoodAnswers);  
     },
     showBarChart: function(){
         socket.emit("showBarChart");
@@ -52,7 +74,7 @@ var QuestionnaryDeveloped = React.createClass({
 	                }
 	            }
 	        }
-            var time = question.time; 
+            var time = question.time || 10;
             var data = {answers:answersLabels, time:time};
             var datashow = {answers:answersLabels, time:time, question: questionTitle};
 	        socket.emit("question", data);
