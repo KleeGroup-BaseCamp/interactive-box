@@ -116,12 +116,15 @@ var Chart = React.createClass({
 	componentDidMount: function(){
 		var socket = this.props.socket;
 		var t = this;
+        console.log("chart mounted");
+        console.log(t.state.data);
 		socket.on("answer", function(indexOfAnswer){
 			var newData = t.state.data;
 	        newData.datasets[0].data[indexOfAnswer]++; 
 	        t.setState({data: newData});
             socket.emit("chartData", t.state.data);
-            console.log("i emitted chartdata" + t.state.data);
+            console.log("i emitted chartdata");
+            console.log(t.state.data);
 		});
 	},
 	render: function(){

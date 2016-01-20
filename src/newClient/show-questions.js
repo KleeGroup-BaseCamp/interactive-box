@@ -13,11 +13,7 @@ var Answers = React.createClass({
         var t  = this;
         var socket = this.props.socket;
 		socket.on("question-show", function(data){
-            t.setState({time:data.time});
-            t.setState({questionLabel:data.question})
-            t.setState({answersLabels:data.answers});
-            t.setState({selectedAnswer:undefined});
-            t.setState({timeOut:false});
+            t.setState({time:data.time, questionLabel:data.question, answersLabels:data.answers, selectedAnswer:undefined, timeOut:false});
             console.log("ici");
         });
         socket.on("end-time", function(){
@@ -63,22 +59,26 @@ var Answers = React.createClass({
 
     
     },
+      	zeroArray: function(n){
+		return Array.apply(null, {length: n}).map(function() {return 0;});
+	},
     
     //TO DO RESOUDRE QUESTIONINDEX ET AUTRES INPUTS CHART
     _renderBarChart(){
         var socket = this.props.socket;
-        var answersIds = answersLabels.length;
-        var numberOfAnswers = answersIds.length;
+        var numberOfAnswers = this.state.answersLabels.length;
+        console.log("je suis dans renderBarcHart");
+        console.log(numberOfAnswers);
 			var initResults = this.zeroArray(numberOfAnswers);
 			var chartData = 
 				{
-					labels: answersLabels,
+					labels: this.state.answersLabels,
 					datasets: [{label: 'Resultats', data: initResults}]
 				};
             //socket.emit("chartData", chartData);
         
         return(
-            <Chart socket={socket} data={chartData} />
+            <Chart socket={socket} data={chartData} key={this.state.questionLabel} />
         );
     },
     
@@ -90,10 +90,8 @@ var Answers = React.createClass({
 	   			{content}
 	        </div>
 	    );
-  	}, 
-  	zeroArray: function(n){
-		return Array.apply(null, {length: n}).map(function() {return 0;});
-	}
+  	}
+
 });
 
 var CountdownTimer = React.createClass({
@@ -149,6 +147,8 @@ var Chart = React.createClass({
 	componentDidMount: function(){
 		var t = this;
         console.log("Chart did mount");
+        console.log(t.state.data);
+
         
 		/*this.props.socket.on("answer", function(indexOfAnswer){
             console.log("I received an answer");
@@ -157,9 +157,13 @@ var Chart = React.createClass({
 	        t.setState({data: newData});
 		});*/
         this.props.socket.on("chartData", function(newData){
-           t.state.data = newData; 
             console.log("i received chartData");
-            console.log(t.state.data);
+            console.log(newData);
+            //t.setState({data:newData});
+            var newData = t.state.data;
+	        newData.datasets[0].data[0]++; 
+	        t.state.data=newData
+            t.forceUpdate();
         });
 	},
 	render: function(){
