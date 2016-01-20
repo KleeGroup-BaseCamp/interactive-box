@@ -68,7 +68,15 @@ ul{
     padding:0px;
 }
 
+.answers-buttons-array{
+    min-height: 50%;
+    max-height: 80%;
+}
+
 ul li{
     margin:10px;
 }
 
+.timer{
+    background-color: orangered;
+}

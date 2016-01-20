@@ -103,8 +103,7 @@ var Answers = React.createClass({
 		return(
 			<div className="middle-content">
                 <CountdownTimer secondsRemaining = {this.state.time} timeOut={this.setTimeOut} key={key}/> 
-				<ul>{answersNodes}</ul>
-                <ul>{answerNodesNew}</ul>
+
                 {result}
 			</div>
 		);

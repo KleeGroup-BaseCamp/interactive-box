@@ -1,11 +1,17 @@
 .result-block{
     background-color: coral;
-    margin:auto;
-    width:80%;
+    margin-left: auto;
+    width: 80%;
+    margin-right: auto;
+    min-height: 20%;
+    max-height: 40%;
 }
 
 .result-image{
-    height:20%;
+    margin-left: auto;
+    margin-right: auto;
+    height: 100%;
+    display: block;
 }
 
 .result-text{
@@ -15,4 +21,6 @@
 .result-image-holder{
     margin-left:auto;
     margin-right:auto;
+    height: 80%;
+    width:80%;
 }

@@ -137,7 +137,7 @@ var AnswersList = React.createClass({
 		return(
 			<div className="middle-content">
                 <CountdownTimer secondsRemaining = {time} timeOut={this.setTimeOut} key={key}/> 
-				<ul>{answersButtonsArray}</ul>
+				<ul className="answers-buttons-array">{answersButtonsArray}</ul>
                 {result}
 			</div>
 		);
@@ -170,11 +170,11 @@ var CountdownTimer = React.createClass({
   render: function() {
       if (this.state.secondsRemaining > 0){
         return (
-        <div>Seconds Remaining: {this.state.secondsRemaining}</div>
+        <div className="timer">Seconds Remaining: {this.state.secondsRemaining}</div>
         );
       }
       else {
-          return (<p>Temps écoulé</p>);
+          return (<p className="timer">Temps écoulé</p>);
       }
   }
 });
