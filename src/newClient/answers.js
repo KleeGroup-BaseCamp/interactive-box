@@ -40,6 +40,7 @@ var Answers = React.createClass({
         	var chooseAnswer = function(){
         		t.props.socket.emit("answer", index);
                 t.setState({selectedAnswer:index});
+                console.log("I emitted answer");
         	};
             var isBlocked = t.state.timeOut || !(t.state.selectedAnswer == undefined);
         	return(<li><Answer action={chooseAnswer} key={index} isClickable={!isBlocked} label={label}/></li>);
@@ -80,7 +81,7 @@ var CountdownTimer = React.createClass({
     clearInterval(this.interval);
   },
   render: function() {
-      console.log("secondes restantes niveau Timer: " + this.state.secondsRemaining);
+      //console.log("secondes restantes niveau Timer: " + this.state.secondsRemaining);
       if (this.state.secondsRemaining > 0){
         return (
         <div>Seconds Remaining: {this.state.secondsRemaining}</div>

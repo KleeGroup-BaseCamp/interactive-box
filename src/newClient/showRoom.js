@@ -26,7 +26,7 @@ var RoomBox = React.createClass({
             firsts = answersLabels;
             t.setState({currentState:QUESTION});
             console.log("i have set state to QUESTION")
-        });  
+        });
 	},
 	renderRoom: function(){
 		return(

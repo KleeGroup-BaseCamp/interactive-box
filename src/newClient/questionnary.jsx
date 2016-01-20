@@ -27,6 +27,10 @@ var QuestionnaryDeveloped = React.createClass({
     stopTime: function(){
         socket.emit("end-time");  
     },
+    showBarChart: function(){
+        socket.emit("showBarChart");
+        console.log("I emitted showBarChart");
+    },
   	_renderWaitPage() {
   		var startButton = <button className="index-button" onClick={this.incrementCounter}>Start !</button>;
   		var waitMessage = <p> En attente de tous les utilisateurs ...</p>
@@ -70,6 +74,7 @@ var QuestionnaryDeveloped = React.createClass({
 					labels: answersLabels,
 					datasets: [{label: 'Resultats', data: initResults}]
 				};
+            socket.emit("chartData", chartData);
 
 			return (
 				<div>
@@ -79,6 +84,7 @@ var QuestionnaryDeveloped = React.createClass({
 					</ul>
 					<button className="index-button" onClick={this.incrementCounter}>Next</button>
                     <button className="index-button" onClick={this.stopTime}>Stop Time</button>
+                    <button className="index-button" onClick={this.showBarChart}> Show Answers </button>
 					<Chart socket={socket} data={chartData} key={this.state.questionIndex}/>
 				</div>
 			);
@@ -114,6 +120,8 @@ var Chart = React.createClass({
 			var newData = t.state.data;
 	        newData.datasets[0].data[indexOfAnswer]++; 
 	        t.setState({data: newData});
+            socket.emit("chartData", t.state.data);
+            console.log("i emitted chartdata" + t.state.data);
 		});
 	},
 	render: function(){

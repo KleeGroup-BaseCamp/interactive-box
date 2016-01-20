@@ -3,7 +3,9 @@ var numberOfReadyUsers = 0;
 function manageUserPoll(userSocket, io){
 
 	userSocket.on("answer", function(indexOfAnswer){
+		io.of('/showRoom').emit("answer", indexOfAnswer);
 		io.of('/admin').emit("answer", indexOfAnswer);
+        console.log("I emitted an answer to admin");
 	});
 
 	userSocket.on("ready-to-receive-question", function(){

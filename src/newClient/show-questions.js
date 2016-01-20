@@ -1,12 +1,18 @@
 import React from 'react';
+import Barchart from 'react-chartjs';
+
+var BarChart = require("react-chartjs").Bar;
+var answersLabels=[];
 
 var Answers = React.createClass({
+    
     getInitialState: function(){
-        return {questionLabel: undefined, answersLabels:[], selectedAnswer:undefined, timeOut:false, time:"30"};
+        return {questionLabel: undefined, answersLabels:[], selectedAnswer:undefined, timeOut:false, time:30, showChart:false};
     },
     componentDidMount: function(){
         var t  = this;
-		this.props.socket.on("question-show", function(data){
+        var socket = this.props.socket;
+		socket.on("question-show", function(data){
             t.setState({time:data.time});
             t.setState({questionLabel:data.question})
             t.setState({answersLabels:data.answers});
@@ -14,7 +20,7 @@ var Answers = React.createClass({
             t.setState({timeOut:false});
             console.log("ici");
         });
-        this.props.socket.on("end-time", function(){
+        socket.on("end-time", function(){
             t.setState({timeOut:true});
             if(t.state.selectedAnswer){
                 console.log("COUCOU");
@@ -22,6 +28,10 @@ var Answers = React.createClass({
                 console.log("kiki");
             }
         });
+        socket.on("showBarChart", function(){
+            t.setState({showChart:true});
+        });
+        
         
         t.setState({answersLabels:this.props.firsts.answers});
         t.setState({time:this.props.firsts.time});
@@ -30,16 +40,15 @@ var Answers = React.createClass({
     setTimeOut: function(){
         this.setState({timeOut:true});  
     },
-    setTimeOut: function(){
-        this.setState({timeOut:true});  
-    },
-    render: function(){
-       	var indexOfAnswer = -1;
+    
+    _renderQuizzPage(){
+        var indexOfAnswer = -1;
 		var t = this;
         var answersNodes = this.state.answersLabels.map(function(label) {
         	return(<li><Answer label={label}/></li>);
         });
-        console.log("time au niveau du json: " + this.state.time);
+        var answersIds = answersLabels.length;
+        //console.log("time au niveau du json: " + this.state.time);
         //La propriété key permet de relancer le compteur à chaque fois
         //C'est un peu sale, à voir si on peut pas faire une key correspondent à l'index de la question plutôt
         //TODO remplacer par un truc random
@@ -51,7 +60,40 @@ var Answers = React.createClass({
                 
 			</div>
 		);
-   } 
+
+    
+    },
+    
+    //TO DO RESOUDRE QUESTIONINDEX ET AUTRES INPUTS CHART
+    _renderBarChart(){
+        var socket = this.props.socket;
+        var answersIds = answersLabels.length;
+        var numberOfAnswers = answersIds.length;
+			var initResults = this.zeroArray(numberOfAnswers);
+			var chartData = 
+				{
+					labels: answersLabels,
+					datasets: [{label: 'Resultats', data: initResults}]
+				};
+            //socket.emit("chartData", chartData);
+        
+        return(
+            <Chart socket={socket} data={chartData} />
+        );
+    },
+    
+    render: function(){
+        var content = this.state.showChart ?  this._renderBarChart() : this._renderQuizzPage();
+        console.log("showChart est:" + this.state.showChart);
+	    return(
+	        <div>
+	   			{content}
+	        </div>
+	    );
+  	}, 
+  	zeroArray: function(n){
+		return Array.apply(null, {length: n}).map(function() {return 0;});
+	}
 });
 
 var CountdownTimer = React.createClass({
@@ -76,7 +118,7 @@ var CountdownTimer = React.createClass({
     clearInterval(this.interval);
   },
   render: function() {
-      console.log("secondes restantes niveau Timer: " + this.state.secondsRemaining);
+      //console.log("secondes restantes niveau Timer: " + this.state.secondsRemaining);
       if (this.state.secondsRemaining > 0){
         return (
         <div>Seconds Remaining: {this.state.secondsRemaining}</div>
@@ -98,5 +140,33 @@ var Answer = React.createClass({
         );
 	}
 });
+          
+var Chart = React.createClass({
+	getInitialState: function(){
+		var t = this;
+		return({data:t.props.data});
+	}, 
+	componentDidMount: function(){
+		var t = this;
+        console.log("Chart did mount");
+        
+		/*this.props.socket.on("answer", function(indexOfAnswer){
+            console.log("I received an answer");
+			var newData = t.state.data;
+	        newData.datasets[0].data[indexOfAnswer]++; 
+	        t.setState({data: newData});
+		});*/
+        this.props.socket.on("chartData", function(newData){
+           t.state.data = newData; 
+            console.log("i received chartData");
+            console.log(t.state.data);
+        });
+	},
+	render: function(){
+		return <BarChart data = {this.state.data}/>;
+	}
+});
+
+
 
 export default Answers;
