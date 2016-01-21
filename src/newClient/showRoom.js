@@ -8,30 +8,26 @@ const FINISHED="finished";
 var firsts;
 var socket;
 
-var RoomBox = React.createClass({
+import "./style/Room.css"
+
+var ShowRoomBox = React.createClass({
 	getInitialState: function(){
 		return{currentState:ROOM};
 	},
 	componentDidMount: function(){
-        var t = this;
-        console.log("i mounted");
-        
+        var t = this;    
         socket.on("end-questionnary", function(){
         	t.setState({currentState:FINISHED});
         });
-        socket.on("launch-quizz", function(){
-	        	socket.emit("ready-to-receive-question");
-	        });
         socket.on("question-show", function(answersLabels){
             firsts = answersLabels;
             t.setState({currentState:QUESTION});
-            console.log("i have set state to QUESTION")
         });
 	},
 	renderRoom: function(){
 		return(
 		    <div className="middle-content">
-		        <h1 className="index-title">On attend les autres ...</h1>
+		        <h1 className="index-title-little">On attend juste les autres</h1>
 		        <RoomiesList socket={socket}/>
 		    </div>
 	    );
@@ -40,9 +36,8 @@ var RoomBox = React.createClass({
 	 	if(this.state.currentState==ROOM){
 			return this.renderRoom();
 		} else if(this.state.currentState==FINISHED){
-            return (<p className="middle-content">"The quizz is over !"</p>);
+            return (<p className="middle-content index-title-little">Le quizz est fini</p>);
         } else if(this.state.currentState==QUESTION){
-                console.log("tried to open Answers");
             return <ShowQuestion socket={socket} firsts={firsts}/>;
         } else {
             return (<p>Erreur !</p>);
@@ -55,17 +50,13 @@ var RoomiesList = React.createClass({
 	    return {users: []};
 	},
 	componentDidMount: function() {
-		var component = this;
 		var t = this;
         socket = io("http://localhost:8080/showRoom");
 		socket.on("userName", function(userName){
-	    		component.addElement(userName);
-	    	});
+            console.log("Received : " + userName);
+	   t.addElement(userName);
+	   });
 	   socket.emit("readyToReceiveUsers");
-        console.log("j'ai émis readyToReceiveUsers");
-	   socket.on("launch-quizz", function(){
-	       socket.emit("ready-to-receive-question");
-	       });
 	},
 	addElement: function(userName){
 		this.setState(function(previousState, currentProps){
@@ -76,14 +67,14 @@ var RoomiesList = React.createClass({
 	},
 	render: function(){
 	var roomiesList = this.state.users.map(function(userName) {
-	      return (<li>{userName}</li>);
+	      return (<li className="user-name" key={userName}>{userName}</li>);
 	    });
 	    return (
 	      <div>
-		      <ul> Personnes presentes dans la salle : {roomiesList}</ul>
+		      <ul>{roomiesList}</ul>
 	      </div>
 	    );
 	}
 });
 
-export default RoomBox;
+export default ShowRoomBox;

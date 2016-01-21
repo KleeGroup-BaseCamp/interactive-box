@@ -99,8 +99,7 @@ var Answers = React.createClass({
         updateAnswerButtons(this.props.firsts.answers);
         
         var result = this._renderResult();
-        var key = new Date().valueOf();
-        
+        var key = this.state.answersLabels[0];
 
 		return(
 			<div className="middle-content">
@@ -114,7 +113,7 @@ var Answers = React.createClass({
     _renderResult: function(){
         var a = this.state.answerState;
         if(a==QUESTION){
-            return(<p>"Répond maintenant !"</p>);
+            return(<p>""</p>);
         } else {
             return (<Result answerState={a}/>);
         }
@@ -135,10 +134,12 @@ var CountdownTimer = React.createClass({
     }
   },
   componentDidMount: function() {
+    console.log("did mount");
     this.setState({ secondsRemaining: this.props.secondsRemaining });
     this.interval = setInterval(this.tick, 1000);
   },
   componentWillUnmount: function() {
+          console.log("unmount");
     clearInterval(this.interval);
   },
   render: function() {

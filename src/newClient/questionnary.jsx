@@ -112,7 +112,7 @@ var QuestionnaryDeveloped = React.createClass({
 			);
 		} else {
 			socket.emit("end-questionnary");
-			return (<p> It is over </p>);
+			return (<p className="index-title-little"> Le quizz est fini </p>);
 		}
 	},
 	//TODO ajouter le compte des utilisateurs

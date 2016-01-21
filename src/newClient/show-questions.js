@@ -24,8 +24,13 @@ var Answers = React.createClass({
 					labels: data.answers,
 					datasets: [{label: 'Resultats', data: initResults}]
 				};
-            console.log("ici c'est le did mount de question show");
-            t.setState({time:data.time, questionLabel:data.question, answersLabels:data.answers, selectedAnswer:undefined, timeOut:false, showChart:false, chartData:firstChartData});
+            t.setState({time:data.time, 
+                        questionLabel:data.question, 
+                        answersLabels:data.answers, 
+                        selectedAnswer:undefined, 
+                        timeOut:false, 
+                        showChart:false, 
+                        chartData:firstChartData});
         });
         socket.on("end-time", function(){
             t.setState({timeOut:true});
@@ -36,7 +41,7 @@ var Answers = React.createClass({
             }
         });
         socket.on("showBarChart", function(){
-            t.setState({showChart:true});
+            t.setState({showChart:!t.state.showChart});
         });
         
         socket.on("chartData", function(newData){
@@ -69,9 +74,8 @@ var Answers = React.createClass({
 		return(
 			<div className="middle-content">
                 <CountdownTimer secondsRemaining = {this.state.time} timeOut={this.setTimeOut} key={this.state.answersLabels[0]}/> 
-                <p> Question: {this.state.questionLabel} </p>
+                <h1 className="index-title">{this.state.questionLabel} </h1>
 				<ul>{answersNodes}</ul>
-                
 			</div>
 		);
 
@@ -80,11 +84,6 @@ var Answers = React.createClass({
     
     _renderBarChart(){
         var socket = this.props.socket;
-        
-        console.log("je suis dans renderBarcHart");
-			
-            
-        
         return(
             <Chart socket={socket} data={this.state.chartData} key={this.state.questionLabel} />
         );
@@ -92,7 +91,6 @@ var Answers = React.createClass({
     
     render: function(){
         var content = this.state.showChart ?  this._renderBarChart() : this._renderQuizzPage();
-        console.log("showChart est:" + this.state.showChart);
 	    return(
 	        <div>
 	   			{content}
@@ -117,7 +115,6 @@ var CountdownTimer = React.createClass({
   },
   componentDidMount: function() {
     this.setState({ secondsRemaining: this.props.secondsRemaining });
-      console.log("did mount : state seconds remaining: " + this.state.secondsRemaining);
     this.interval = setInterval(this.tick, 1000);
   },
   componentWillUnmount: function() {
@@ -141,7 +138,7 @@ var Answer = React.createClass({
 	render: function(){
 	 	return(
             <div>
-                <p>{this.props.label}</p>
+                <p className="answer">{this.props.label}</p>
             </div>
         );
 	}
@@ -158,12 +155,12 @@ var Chart = React.createClass({
         console.log(t.state.data);
 
         
-        /*this.props.socket.on("chartData", function(newData){
+        this.props.socket.on("chartData", function(newData){
             console.log("i received chartData");
             console.log(newData);
             t.setState({data:newData});
 
-        });*/
+        });
 	},
 	render: function(){
 		return <BarChart data = {this.state.data}/>;

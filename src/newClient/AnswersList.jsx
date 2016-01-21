@@ -62,6 +62,7 @@ var AnswersList = React.createClass({
 		socket.on("question", function(data){
             t.hasAlreadyAnswered = false;
             t.qCount++;
+            console.log("UPPPP");
             t.setState({time:data.time, answers:t.createAnswersTable(data.answers), timeOut:false});
         });
         
@@ -77,6 +78,7 @@ var AnswersList = React.createClass({
         });
         
         t.setState({answers:t.createAnswersTable(this.props.firsts.answers), time:this.props.firsts.time});
+        this.qCount++;
     },
     qCount: -1,
     hasAlreadyAnswered: false,
@@ -105,8 +107,6 @@ var AnswersList = React.createClass({
     getResult: function(){
         for(var j=0; j< this.state.answers.length;j++){
             var answer = this.state.answers[j];
-            console.log(answer);
-            console.log(this.state.answers);
             if(answer.selected && answer.correct == CORRECT){
                 return RESULT_GOOD;
             } else if(answer.selected && answer.correct==NOT_CORRECT){
@@ -133,10 +133,11 @@ var AnswersList = React.createClass({
         var answersButtonsArray = this._renderAnswersButton();
         var result = this._renderResult();
         var key = this.qCount;
+        console.log("key : " + key);
         var time = this.state.timeOut ? "0" : this.state.time;
 		return(
 			<div className="middle-content">
-                <CountdownTimer secondsRemaining = {time} timeOut={this.setTimeOut} key={key}/> 
+                <CountdownTimer secondsRemaining = {time} timeOut={this.setTimeOut} key={key} /> 
 				<ul>{answersButtonsArray}</ul>
                 {result}
 			</div>
@@ -158,11 +159,14 @@ var CountdownTimer = React.createClass({
     }
   },
   componentDidMount: function() {
+      console.log("did mount");
     this.setState({ secondsRemaining: this.props.secondsRemaining });
     this.interval = setInterval(this.tick, 1000);
   },
     componentWillReceiveProps: function(nextProps){
-        this.setState({secondsRemaining:nextProps.secondsRemaining});
+        if(nextProps.secondsRemaining == 0){
+            this.setState({secondsRemaining:nextProps.secondsRemaining});
+        }
     },
   componentWillUnmount: function() {
     clearInterval(this.interval);

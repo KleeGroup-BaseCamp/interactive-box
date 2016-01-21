@@ -44,12 +44,12 @@ var LoginBox = React.createClass({
   _renderLoginPage() {
     return(
       <div className="middle-content">
-        <h1 className="index-title">Entrez votre pseudo</h1>
+        <h1 className="index-title">Choisis ton pseudo</h1>
         <div>
           <TextInput placeholder="Pseudo" onChange={this.updatePseudo} onEnter={this.handleSubmit} ref="inputPseudo"/>
         </div>
         <div>
-          <LinkButton handleLinkClick={this.handleSubmit} text="Continuer"/>
+          <LinkButton className = "index-button" handleLinkClick={this.handleSubmit} text="Continuer"/>
         </div>
       </div>
     );
@@ -70,15 +70,4 @@ var LoginBox = React.createClass({
     }
   }
   });
-
-
-
-
-// Pareil que pour admin.js
-
-// ReactDOM.render(
-//   <LoginBox/>,
-//   document.getElementById('content')
-// );
-
 export default LoginBox;

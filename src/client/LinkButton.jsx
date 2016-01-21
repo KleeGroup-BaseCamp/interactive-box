@@ -5,7 +5,7 @@ var LinkButton = React.createClass({
     // Au click, le bouton appelle la fonction définie dans sa props "handleLinkClick"
     return(
         <div>
-            <button className="index-button" onClick={this.props.handleLinkClick}>{this.props.text}</button>
+            <button className={this.props.className} onClick={this.props.handleLinkClick}>{this.props.text}</button>
         </div>
     );
   }

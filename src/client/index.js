@@ -60,11 +60,11 @@ var WelcomeBox = React.createClass({
   _renderHomepage() {
       return(
         <div className="middle-content">
-          <h1 className="index-title">Welcome</h1>
+          <h1 className="index-title">Bienvenue</h1>
           <div className="div-button">
-            <LinkButton handleLinkClick={this._setUserToAdmin} text="Administrateur" url="admin"/>
-            <LinkButton handleLinkClick={this._setUserToAttendee} text="Utilisateur" url="login"/>
-           <LinkButton handleLinkClick={this._setUserToShow} text="Presentation" url="showRoom"/>
+            <LinkButton className="index-button-big" handleLinkClick={this._setUserToAttendee} text="Commencer !" url="login"/>
+            <LinkButton className="index-button" handleLinkClick={this._setUserToAdmin} text="Administrateur" url="admin"/>
+           <LinkButton className="index-button" handleLinkClick={this._setUserToShow} text="Presentation" url="showRoom"/>
           </div>
         </div>
       );
@@ -96,7 +96,7 @@ var WelcomeBox = React.createClass({
     var middleNode = this.renderMiddle();
     return(
       <div>
-        <Header title="Interactive box header"/>
+        <Header title="Interactive box"/>
         <div>
           {middleNode}
         </div>

@@ -1,5 +1,4 @@
 .result-block{
-    background-color: coral;
     margin:auto;
     width:80%;
 }
@@ -9,10 +8,11 @@
 }
 
 .result-text{
-    font-family:"Comic Sans MS";
+    text-align: center;
 }
 
 .result-image-holder{
     margin-left:auto;
     margin-right:auto;
+    text-align: center;
 }

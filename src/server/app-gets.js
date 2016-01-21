@@ -41,7 +41,10 @@ app.get('/questionnaries/', function(req, res) {
 exports.questFile = QUESTIONNARIES_FILE;
 
 
-
+app.get('/correct', function(req,res){res.sendFile(path.join(__dirname+'/correct.png'));});
+app.get('/incorrect', function(req,res){res.sendFile(path.join(__dirname+'/incorrect.png'));});
+app.get('/like', function(req,res){res.sendFile(path.join(__dirname+'/like.png'));});
+app.get('/time', function(req,res){res.sendFile(path.join(__dirname+'/time.png'));});
 app.get('/user/room',function (req,res){res.sendFile(path.join(__dirname+'../client/user/room/index.html'));});
 app.get('/user/room/quizz',function (req,res){res.sendFile(path.join(__dirname+'../client/user/room/quizz/index.html'));});
 app.get('/session-index', function (req, res, next) {

@@ -25,15 +25,15 @@ var Result = React.createClass({
     render: function(){
         var answer = this.props.answerStatus;
         var imageURL = this.chooseFromStatus([
-            "http://i2.kym-cdn.com/photos/images/original/000/514/589/66b.jpg", 
-            "http://i3.kym-cdn.com/photos/images/original/000/000/122/bush_doing_it_wrong_1.jpg", 
-            "http://cdn.meme.am/instances/500x/58542873.jpg", 
-            "http://www.quickmeme.com/img/29/295079a2bdd9913e2d8a7f801cf947b77b63f998d2942ffb2b5435d30b89d3b3.jpg"]);
+            "./correct", 
+            "./incorrect", 
+            "./time", 
+            "./like"]);
         var text = this.chooseFromStatus([
-            "Bravo, vous avez trouvé !", 
-            "Oh, non, trop nul", 
-            "Bah alors, pas assez rapide ?", 
-            "Vous savez, je ne pense pas qu'il y ait de bonne ou de mauvaise réponse de toute façon"]);
+            "Bien joué ! !", 
+            "Raté !", 
+            "Trop tard !", 
+            "Merci !"]);
         var answers = this.props.answersList;
         return(
             <div className="result-block">

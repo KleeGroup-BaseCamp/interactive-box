@@ -6,6 +6,8 @@ const QUESTION="question";
 const FINISHED="finished";
 var firsts;
 
+import "./style/Room.css"
+
 var RoomBox = React.createClass({
 	getInitialState: function(){
 		return{currentState:ROOM};
@@ -23,7 +25,7 @@ var RoomBox = React.createClass({
 	renderRoom: function(){
 		return(
 		    <div className="middle-content">
-		        <h1 className="index-title">On attend les autres ...</h1>
+		        <h1 className="index-title-little">On attend juste les autres</h1>
 		        <RoomiesList socket={this.props.socket}/>
 		    </div>
 	    );
@@ -32,7 +34,7 @@ var RoomBox = React.createClass({
 	 	if(this.state.currentState==ROOM){
 			return this.renderRoom();
 		} else if(this.state.currentState==FINISHED){
-            return (<p className="middle-content">"The quizz is over !"</p>);
+            return (<p className="middle-content index-title-little">Le quizz est terminé</p>);
         } else if(this.state.currentState==QUESTION){
             return <AnswersList socket={this.props.socket} firsts={firsts}/>;
         } else {
@@ -46,13 +48,12 @@ var RoomiesList = React.createClass({
 	    return {users: []};
 	},
 	componentDidMount: function() {
-		var component = this;
 		var t = this;
 		var socket = this.props.socket;
 
 		socket.on("registered", function(){
 			socket.on("userName", function(userName){
-	    		component.addElement(userName);
+	    		t.addElement(userName);
 	    	});
 	    	socket.emit("readyToReceiveUsers");
 	    	socket.on("launch-quizz", function(){
@@ -69,11 +70,11 @@ var RoomiesList = React.createClass({
 	},
 	render: function(){
 	var roomiesList = this.state.users.map(function(userName) {
-	      return (<li>{userName}</li>);
+	      return (<li className="user-name" key={userName}>{userName}</li>);
 	    });
 	    return (
 	      <div>
-		      <ul> Personnes présentes dans la salle : {roomiesList}</ul>
+		      <ul>{roomiesList}</ul>
 	      </div>
 	    );
 	}

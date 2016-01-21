@@ -1,0 +1,12 @@
+.questionnary{
+    border-style: solid;
+    border-width: 1px;
+    border-color: #0F98E9;
+    padding:2vmin;
+    margin-left:2vmin;
+    margin-right:2vmin;
+}
+
+.questionnary:hover{
+    background-color:#d5e1f4;
+}
