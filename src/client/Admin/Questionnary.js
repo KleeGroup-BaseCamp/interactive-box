@@ -5,7 +5,7 @@ var socket;
 var BarChart = require("react-chartjs").Bar;
 
 
-var QuestionnaryDeveloped = React.createClass({
+var AdminQuestionnary = React.createClass({
 	getInitialState: function(){
 		return {okToStart:false, questionIndex:-1}
 	},
@@ -154,4 +154,4 @@ var Chart = React.createClass({
 	}
 });
 
-export default QuestionnaryDeveloped;
+export default AdminQuestionnary;

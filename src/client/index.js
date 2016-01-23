@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import AdminView from './AdminView'; 
-import LoginView from './LoginView';
-import ShowView from './ShowRoom';
-import LinkButton from "./LinkButton";
+import AdminView from './Admin/AdminView'; 
+import ShowView from './Show/ShowRoom';
+import LoginView from './User/LoginView';
+import LinkButton from "./Utils/LinkButton";
 
-import "./style/index.css";
+import "./index.css";
 
 const ADMIN_TYPE = 'ADMIN_TYPE';
 const ATTENDEE_TYPE = 'ATTENDEE_TYPE';

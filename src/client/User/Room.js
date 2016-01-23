@@ -6,7 +6,7 @@ const QUESTION="question";
 const FINISHED="finished";
 var firsts;
 
-import "./style/Room.css"
+import "./Room.css"
 
 var RoomBox = React.createClass({
 	getInitialState: function(){

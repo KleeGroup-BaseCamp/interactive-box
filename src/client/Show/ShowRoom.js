@@ -8,7 +8,7 @@ const FINISHED="finished";
 var firsts;
 var socket;
 
-import "./style/Room.css"
+import "./Room.css"
 
 var ShowRoomBox = React.createClass({
 	getInitialState: function(){

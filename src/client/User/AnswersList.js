@@ -1,7 +1,7 @@
 import React from 'react';
 import Result from './Result';
 import AnswerButton from "./AnswerButton"
-import CountdownTimer from "./CountdownTimer"
+import CountdownTimer from "../Utils/CountdownTimer"
 
 //Modes des réponses
 const CLICKABLE = "clickable";

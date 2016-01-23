@@ -5,7 +5,7 @@ const WRONG_ANSWER = "wrong";
 const NO_ANSWER = "no";
 const NEUTRAL = "neutral";
 
-import "./style/result.css";
+import "./result.css";
 
 var Result = React.createClass({
     chooseFromStatus: function(list){
