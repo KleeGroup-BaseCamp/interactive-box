@@ -3,9 +3,9 @@ import React from 'react';
 var ReactDOM = require('react-dom');  
 
 // Redirect for Room View
-import RoomView from '../newClient/roomJS';
-import LinkButton from "../client/LinkButton.jsx";
-import TextInput from "../client/TextInput.jsx";
+import RoomView from './Room';
+import LinkButton from "./LinkButton";
+import TextInput from "./TextInput";
     
 const ROOM_TYPE = 'ROOM_TYPE';
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import Result from '../newClient/result';
+import Result from './Result';
 
 //Modes d'affichage du tableau des réponses
 const GOOD_ANSWER = "good";

@@ -1,24 +1,12 @@
-// Ca c'est les librairies, jusqu'ici tout va bien, Webpack fait les import et tout roule
-
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Barchart from 'react-chartjs';
 
-var BarChart = require("react-chartjs").Bar;
-var value1 = 0;
-var value2 = 0;
-var value3 = 0;
+import AdminView from './AdminView'; 
+import LoginView from './LoginView';
+import ShowView from './ShowRoom';
+import LinkButton from "./LinkButton";
 
-// Ca, c'est vos composants à vous !! c'est comme ça qu'on compose l'appli, et qu'on a pas mille .html
-import AdminView from '../newClient/admin'; // <-------- virez aussi ce dossier newClient qui ne sert à rien, ca fait pas propre. on ne précise pas admin.js, juste admin, Webpack prend .js par défaut
-import LoginView from '../newClient/login';
-import ShowView from '../newClient/showRoom';
-import LinkButton from "./LinkButton.jsx";
-
-import "./index.css";
-//import "./bootstrap.css";
-
-// Des petites constantes des familles pour garder les choses cohérentes
+import "./style/index.css";
 
 const ADMIN_TYPE = 'ADMIN_TYPE';
 const ATTENDEE_TYPE = 'ATTENDEE_TYPE';
@@ -111,4 +99,3 @@ ReactDOM.render(
   <WelcomeBox/>,
   document.getElementById('interactive-box')
 );
-

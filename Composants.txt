@@ -1,0 +1,12 @@
+Index
+	AdminView
+		Questionnary
+			BarChart
+	LoginView
+		RoomView
+			AnswersList
+				AnswerButton
+				Result
+	ShowRoom
+		ShowQuestion
+			BarChart

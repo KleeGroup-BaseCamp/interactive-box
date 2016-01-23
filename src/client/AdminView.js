@@ -2,7 +2,7 @@ import io from 'socket.io-client';
 import React from 'react';
 import $ from 'jquery';
 
-import QuestionnaryDeveloped from './questionnary.jsx';
+import QuestionnaryDeveloped from './Questionnary';
 import "./style/Admin.css"
 
 var socket;

@@ -8,7 +8,7 @@ const WRONG = "wrong";
 const LOCKED = "locked";
 const POLL = "poll";
 
-import "./AnswerButton.css";
+import "./style/AnswerButton.css";
 
 var AnswerButton = React.createClass({
     getInitialState: function(){
