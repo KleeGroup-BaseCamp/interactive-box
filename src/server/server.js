@@ -10,7 +10,6 @@ var answerCount = 0;
 
 var pollAdmin = require("./poll-admin.js");
 var pollUser = require("./poll-user.js");
-var pollShow = require("./poll-show.js");
 
 var adminSocket, adminSession, showSocket;
 var sessions = {};
@@ -121,7 +120,6 @@ function admin (socket){
 
 function show (socket){
     showSocket = socket;
-    pollShow.manageShowPoll(socket, io);
     socket.emit("confirmConnection");
     socket.on("readyToReceiveUsers", function(){
         for(var sessionID in sessions){

@@ -36,26 +36,21 @@ function manageAdminPoll(adminSocket, io){
 	});
     adminSocket.on("question-show", function(data){
 		io.of("/showRoom").emit("question-show", data);
-        console.log("emitted question-show to showroom");
 	});
     adminSocket.on("showBarChart", function(){
         io.of("/showRoom").emit("showBarChart");
-        console.log("emitted showBarChart to showroom");
     });
     adminSocket.on("chartData", function(newData){
         io.of("/showRoom").emit("chartData", newData);
-        console.log("emitted chartData to showroom");
     });
-
-
 	adminSocket.on("end-time", function(arrayOfGoodAnswers){
         io.of("/user").emit("end-time", arrayOfGoodAnswers);
     });
 
-	
-	adminSocket.on("end-questionnary", function(){io.of("/user").emit("end-questionnary")});
-	adminSocket.on("end-questionnary", function(){io.of("/showRoom").emit("end-questionnary")});
-
+	adminSocket.on("end-questionnary", function(){
+        io.of("/user").emit("end-questionnary");
+        io.of("/showRoom").emit("end-questionnary");
+    });
 }
 
 exports.manageAdminPoll = manageAdminPoll;
