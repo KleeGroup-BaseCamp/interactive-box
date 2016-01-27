@@ -54,9 +54,9 @@ var RoomiesList = React.createClass({
         socket = io("http://localhost:8080/showRoom");
 		socket.on("userName", function(userName){
             console.log("Received : " + userName);
-	   t.addElement(userName);
-	   });
-	   socket.emit("readyToReceiveUsers");
+            t.addElement(userName);
+        });
+        socket.emit("readyToReceiveUsers");
 	},
 	addElement: function(userName){
 		this.setState(function(previousState, currentProps){
