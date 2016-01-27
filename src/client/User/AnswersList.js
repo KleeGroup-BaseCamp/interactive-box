@@ -75,6 +75,7 @@ var AnswersList = React.createClass({
                     t.state.answers[i].correct = POLL;
                 }
             }
+            console.log("j'ai reçu end-time et passé TimeOut à True");
             t.setState({timeOut:true});
         });
         
@@ -84,7 +85,8 @@ var AnswersList = React.createClass({
     qCount: -1,
     hasAlreadyAnswered: false,
     setTimeOut: function(){
-        this.setState({timeOut:true});  
+        this.setState({timeOut:true}); 
+        console.log("on a appelé la fonction setTimeOut");
         this.props.socket.emit("end-time-request");
     },
     _renderAnswersButton: function(){
@@ -136,6 +138,8 @@ var AnswersList = React.createClass({
         var key = this.qCount;
         console.log("key : " + key);
         var time = this.state.timeOut ? "0" : this.state.time;
+        console.log("le time est: ");
+        console.log(time);
 		return(
 			<div className="middle-content">
                 <CountdownTimer secondsRemaining = {time} timeOut={this.setTimeOut} key={key} /> 
