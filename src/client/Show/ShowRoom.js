@@ -36,7 +36,7 @@ var ShowRoomBox = React.createClass({
 	 	if(this.state.currentState==ROOM){
 			return this.renderRoom();
 		} else if(this.state.currentState==FINISHED){
-            return (<p className="middle-content index-title-little">Le quizz est fini</p>);
+            return (<p className="middle-content index-title-little">Merci de votre participation !</p>);
         } else if(this.state.currentState==QUESTION){
             return <ShowQuestion socket={socket} firsts={firsts}/>;
         } else {

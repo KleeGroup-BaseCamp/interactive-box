@@ -1,8 +1,11 @@
 import React from 'react';
 import Barchart from 'react-chartjs';
+import AdminView from './AdminView';
 
 var socket;
 var BarChart = require("react-chartjs").Bar;
+
+const ADMIN2_TYPE = 'ADMIN2_TYPE';
 
 
 var AdminQuestionnary = React.createClass({
@@ -112,18 +115,29 @@ var AdminQuestionnary = React.createClass({
 			);
 		} else {
 			socket.emit("end-questionnary");
-			return (<p className="index-title-little"> Le quizz est fini </p>);
+			return (<button className="index-button" onClick={this.returnToAdmin}> Lancer un nouveau quizz </button>);
 		}
 	},
+                    
+    returnToAdmin : function(){
+                this.setState({userType: ADMIN2_TYPE});
+            },
 	//TODO ajouter le compte des utilisateurs
   	render: function(){
 	    var content = this.state.questionIndex>-1 ? this._renderQuizzPage() : this._renderWaitPage();
-	    return(
+	    if(this.state.userType == undefined) {
+            return(
 	        <div>
 	        	<h1>{this.props.questionnary.title}</h1>
 	   			{content}
 	        </div>
 	    );
+        }
+        else if (this.state.userType == ADMIN2_TYPE){
+            return(
+                <AdminView url='/questionnaries'/>
+            );
+        }
   	}, 
   	zeroArray: function(n){
 		return Array.apply(null, {length: n}).map(function() {return 0;});
