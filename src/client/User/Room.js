@@ -1,6 +1,8 @@
 import React from 'react';
 import AnswersList from './AnswersList';
 import RoomList from "../Utils/RoomList";
+import RoomCounter from "../Utils/RoomCounter";
+
 
 const ROOM="waiting";
 const QUESTION="question";
@@ -31,10 +33,13 @@ var RoomBox = React.createClass({
 		});
 	},
 	renderRoom: function(){
+        var p1 = "Déja ";
+        var p2 = " personnes connectées";
 		return(
 		    <div className="middle-content">
 		        <h1 className="index-title-little">On attend juste les autres</h1>
-                <RoomList socket={this.props.socket} maxNumber={10} intervalMS={300}/>
+                <p>{"Déjà"}<RoomCounter socket={this.props.socket}/>{p2}</p>
+                <RoomList socket={this.props.socket} maxNumber={10} intervalMS={3000}/>
 		    </div>
 	    );
 	},

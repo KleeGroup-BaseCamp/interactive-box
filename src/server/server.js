@@ -15,29 +15,25 @@ var adminSocket, adminSession, showSocket;
 var sessions = {};
 
 io.on("connection", function(socket){
-    console.log("CONNECTS");
-    console.log(socket.handshake.sessionID);
+    console.log("Connexion du socket " + socket.handshake.sessionID);
 });
 
 var nspAdmin = appInit.nspAdmin;
 nspAdmin.on('connection', function(socket){
-	console.log("ADMIN CONNECTS : ");
-    console.log(socket.handshake.sessionID + "via socket " + socket.id);
+	console.log("Admin session " + socket.handshake.sessionID + "via socket " + socket.id);
 	admin(socket);
 });
 
 var nspUsers = appInit.nspUsers;
 nspUsers.on('connection', function(socket){
-	console.log("USER CONNECTS : ");
-    console.log(socket.handshake.sessionID + "via socket " + socket.id);
+	console.log("User session " + socket.handshake.sessionID + "via socket " + socket.id);
 	user(socket);
 });
 
 
 var nspShowRoom = appInit.nspShowRoom;
 nspShowRoom.on('connection', function(socket){
-	console.log("SHOWROOM CONNECTS : ");
-    console.log(socket.handshake.sessionID + "via socket " + socket.id);
+	console.log("Showman session " + socket.handshake.sessionID + "via socket " + socket.id);
 	show(socket);
 });
 
@@ -52,22 +48,18 @@ function findSession(socket){
 	} else {
 		sessions[sessionID] = {socket:socket, pseudo:"Nick"};
 	}
-	console.log("Connected : " + sessionID + " via socket " + socket.id);
 	return alreadyThere;
 }
 
 function disconnect(socket){
-    console.log("disconnect");
+    console.log("Déconnexion du socket " + socket.id);
     var sessionID = socket.handshake.session.id;
     if(sessionID in sessions){
-        console.log(sessions);
         delete sessions[sessionID];
-        console.log(sessions);
     }
 };
 
 function user (socket){
-    console.log("I've received user");
     var already = findSession(socket);
 	socket.emit("confirmConnection");
 	pollUser.manageUserPoll(socket, io);
@@ -79,17 +71,16 @@ function user (socket){
 
 		//  LOGIN
 		socket.on("loginRequest", function(pseudoRequested){
-            console.log("suscribing account for " + pseudoRequested +" ...");
+            console.log("Login request " + pseudoRequested +" ...");
 			for(var sessionID in sessions){
 				var userSession = sessions[sessionID];
 				if(userSession.socket.id == socket.id){
 					userSession.pseudo = pseudoRequested;
 					socket.emit("loginValid");
 	                socket.emit("registered");
-	                console.log("sent registered");
+	                console.log("Login accepted");
 				} else {
 					userSession.socket.emit("userName", pseudoRequested);
-					console.log("Sending " + pseudoRequested + " to " + userSession.pseudo);
 				}
 			}
             if(showSocket){
@@ -100,11 +91,9 @@ function user (socket){
 		//  SENDING USERS
 
 		  socket.on("readyToReceiveUsers", function(){
-			console.log("Receive ready from : " + socket.id);
 			for(var sessionID in sessions){
 				var userSession = sessions[sessionID];
 				socket.emit("userName", userSession.pseudo);
-				console.log("Sending " + userSession.pseudo + " to " + socket.id);
 			}
 		});
 	}
@@ -114,7 +103,6 @@ function admin (socket){
 	adminSocket = socket;
 	adminSession = socket.handshake.sessionID;
     pollAdmin.manageAdminPoll(socket, io);
-	console.log("ADMIN connects : " + socket.handshake.sessionID + " via socket " + socket.id);
 	socket.emit("registered");
 }
 
