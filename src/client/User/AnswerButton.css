@@ -26,15 +26,18 @@
 }
 
 .selected{
+    color:white;
     background-color:#93b1e0;
 }
 
 .good{
+    color:white;
     border-color:seagreen;
     background-color: #b6edc1;
 }
 
 .wrong{
+    color:white;
     border-color:#b53636;
     background-color: #dba8a8;
 }
