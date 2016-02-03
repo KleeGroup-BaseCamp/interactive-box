@@ -1,7 +1,10 @@
 import React from 'react';
 import ReactCountdownClock from 'react-countdown-clock';
 
-/*var CountdownTimer = React.createClass({
+
+
+
+var CountdownTimer = React.createClass({
     getInitialState: function() {
         return {secondsRemaining: 20};
     },
@@ -25,24 +28,27 @@ import ReactCountdownClock from 'react-countdown-clock';
         clearInterval(this.interval);
     },
     render: function() {
-        if (this.state.secondsRemaining > 0){
-            return (<div>Seconds Remaining: {this.state.secondsRemaining}</div>);
-        } else {
-            return (<p>Temps écoulé</p>);
-        }
+        return(
+        <div>
+        <p> ceci est le vrai compteur </p>
+        <CountdownTimer3 secondsRemaining = {this.props.secondsRemaining}/>
+        </div>
+    );
     }
-});*/
+});
             
-var CountdownTimer = React.createClass({
+var CountdownTimer3 = React.createClass({
     
     componentDidMount: function() {
         console.log("I did mount (countdown timer)");
         this.setState({ secondsRemaining: this.props.secondsRemaining });
+       // this.timeEnding = debounce(this.timeEnding,1000);
     },
     timeEnding: function(){
        // this.setState({secondsRemaining:nextProps.secondsRemaining});
         console.log("on est dans le TimeOut");
-        this.props.timeOut();
+        //this.props.timeOut();
+        //this.interval = setInterval(this.props.timeOut(), 10000);
         
     },
     /*componentWillReceiveProps: function(nextProps){
