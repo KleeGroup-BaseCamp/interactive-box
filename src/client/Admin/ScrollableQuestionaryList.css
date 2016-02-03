@@ -1,0 +1,30 @@
+.scroll-list {
+    display : block;
+    width: 80%;
+    border: 0px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0 25px;
+    background-color: #fff;
+    border-bottom: 1px solid #e0e0e0;
+    height:99%;
+}
+
+.row:hover {
+  background-color: #eee;
+}
+
+.quest-title{
+    font-weight: bold;
+    margin-bottom:5px;
+}
+
+.quest-count{
+    
+}

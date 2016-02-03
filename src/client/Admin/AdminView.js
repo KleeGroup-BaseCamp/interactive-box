@@ -4,9 +4,8 @@ import $ from 'jquery';
 
 import AdminQuestionnary from './Questionnary';
 import QuestionnaryButtonsList from './QuestionnaryButtonsList'
+import ScrollableQuestionaryList from './ScrollableQuestionaryList'
 import "./Admin.css"
-
-
 var socket;
 
 var selectedPollKey;
@@ -26,11 +25,17 @@ var AdminView = React.createClass({
     });
   },
   getInitialState: function() {
-    return {data: [], quizzLaunched:undefined};
+    return {data: [], quizzLaunched:undefined, h:100};
   },
   componentDidMount: function() {
     socket = io("http://localhost:8080/admin");
     this.loadQuestionnariesFromServer();
+    var t = this;
+    var node = this.refs.heightListener.getDOMNode(); // TODO pas bien d'utiliser cette fonction
+    window.addEventListener("resize", function(e){
+        t.setState({h:node.offsetHeight});  
+    });
+    t.setState({h:node.offsetHeight});  
   },
   launchQuizz: function(questionnary){
     this.setState({quizzLaunched: questionnary});
@@ -38,10 +43,10 @@ var AdminView = React.createClass({
   render: function() {
       if(!this.state.quizzLaunched){
         return (
-          <div className="middle-content">
+          <div className="middle-content" ref="heightListener">
             <h1 className="index-title-little">Quel questionnaire lancer ?</h1>
             <br></br>
-            <QuestionnaryButtonsList data={this.state.data} launchQuizz={this.launchQuizz}/>
+            <ScrollableQuestionaryList data={this.state.data} launchQuizz={this.launchQuizz} height={this.state.h*6/10}/>
           </div>
         );
       } else {
