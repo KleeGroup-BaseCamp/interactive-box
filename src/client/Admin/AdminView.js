@@ -6,6 +6,7 @@ import AdminQuestionnary from './Questionnary';
 import QuestionnaryButtonsList from './QuestionnaryButtonsList'
 import "./Admin.css"
 
+
 var socket;
 
 var selectedPollKey;
@@ -50,6 +51,27 @@ var AdminView = React.createClass({
           </div>
         );
       }
+  }, 
+    
+    
+    _rowRenderer (index) {
+   // const { list } = this.props
+    const { useDynamicRowHeight } = this.state
+
+    const datum = list[index];
+
+    return (
+      <div style={{ height: '100%' }}>
+        <span>
+          <span >
+            {datum}
+          </span>
+          <span>
+            This is row {index}
+          </span>
+        </span>
+      </div>
+    )
   }
 });
 
