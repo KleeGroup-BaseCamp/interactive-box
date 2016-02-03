@@ -36,7 +36,9 @@ var LoginBox = React.createClass({
     socket.on("loginValid", function(){
         that._setUserToRoom();
     });
-    
+    socket.on("PseudoDejaUtilise", function(){
+        alert("Pseudo déjà utilisé ! Choisissez un autre pseudo.");
+    })
   },
     componentDidMount: function(){
         ReactDOM.findDOMNode(this.refs.inputPseudo).focus(); 

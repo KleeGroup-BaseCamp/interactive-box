@@ -80,18 +80,30 @@ function user (socket){
 		//  LOGIN
 		socket.on("loginRequest", function(pseudoRequested){
             console.log("suscribing account for " + pseudoRequested +" ...");
-			for(var sessionID in sessions){
-				var userSession = sessions[sessionID];
-				if(userSession.socket.id == socket.id){
-					userSession.pseudo = pseudoRequested;
-					socket.emit("loginValid");
-	                socket.emit("registered");
-	                console.log("sent registered");
-				} else {
-					userSession.socket.emit("userName", pseudoRequested);
-					console.log("Sending " + pseudoRequested + " to " + userSession.pseudo);
-				}
-			}
+            var dejaUtilise = false;
+            for (var sessionID in sessions){
+                if (pseudoRequested == sessions[sessionID].pseudo){
+                    dejaUtilise = true;
+                }
+            }
+            if (dejaUtilise == false){
+                for(var sessionID in sessions){
+                    var userSession = sessions[sessionID];
+                    if(userSession.socket.id == socket.id){
+                        userSession.pseudo = pseudoRequested;
+                        socket.emit("loginValid");
+                        socket.emit("registered");
+                        console.log("sent registered");
+                    } else {
+                        userSession.socket.emit("userName", pseudoRequested);
+                        console.log("Sending " + pseudoRequested + " to " + userSession.pseudo);
+                    }
+                }
+            }
+            else {
+                console.log("Pseudo déjà utilisé");
+                socket.emit("PseudoDejaUtilise");
+            }
             if(showSocket){
                 showSocket.emit("userName", pseudoRequested);
             }
