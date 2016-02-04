@@ -24,6 +24,9 @@ var RoomCounter = React.createClass({
         socket.on("userName", function(userName){
             t.setState({usersCount:t.state.usersCount+1});
         });
+        socket.on("removeUserName", function(userName){
+            t.setState({usersCount:t.state.usersCount-1});
+        });
 	},
 	render: function(){
         return(

@@ -54,6 +54,7 @@ function findSession(socket){
 function disconnect(socket){
     console.log("Déconnexion du socket " + socket.id);
     var sessionID = socket.handshake.session.id;
+    io.of("/user").emit("removeUserName", sessions[sessionID].pseudo);
     if(sessionID in sessions){
         delete sessions[sessionID];
     }

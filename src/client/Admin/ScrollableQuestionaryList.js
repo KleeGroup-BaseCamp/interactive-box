@@ -43,12 +43,12 @@ var ScrollableQuestionaryList = React.createClass({
         return(
             <div>
                 <VirtualScroll 
-                       className="scroll-list"
-                       noRowsRenderer={this._noRowsRenderer}
-                       height={this.props.height}
-                       rowsCount={this.props.data.length}
-                       rowHeight={100}
-                       rowRenderer={this._rowRenderer}/>
+                   className="scroll-list"
+                   noRowsRenderer={this._noRowsRenderer}
+                   height={this.props.height}
+                   rowsCount={this.props.data.length}
+                   rowHeight={Math.min(100, this.props.height/4)}
+                   rowRenderer={this._rowRenderer}/>
             </div>
         );
     }, 
