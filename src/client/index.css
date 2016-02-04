@@ -17,10 +17,11 @@ body{
 .index-title, .index-title-little{
     font-weight: bold;
     text-align: center;
-    color:#046097;
+    color:#f83030;
     font-size:10vmin;
     margin-bottom:6vh;
     padding-top:6vh;
+    background-color: rgba(255, 255, 255, 0);
 }
 
 .index-title-little{
@@ -36,7 +37,7 @@ body{
     margin-right: auto;
     border-color:#0F98E9;
     border-style:solid;
-    border-radius:9px;
+    border-radius:0px;
     padding-left:5%;
     padding-right:5%;
     margin-bottom:0;
@@ -46,14 +47,14 @@ body{
 .index-button-big{
     font-size:10vmin;
     font-weight: bold;
-    border-radius:20px;
+    border-radius:0px;
 }
 
 .text-input{
     font-size: 5vmin;
     font-weight: bold;
     background-color: white;
-    color: #0F98E9;
+    color: #3d71ff;
     display:block;
     padding-left:2%;
     padding-right:2%;
@@ -76,12 +77,15 @@ body{
 
 .feaderTitle{
     text-align:center;
-    font-size:4vh;
+    font-size:3vh;
+        font-weight: normal;
 }
 
 .feader{
-    background-color:#eeeeee;
+    background-color:#3d71ff;
+    color:white;
     height:5%;
+
 }
 
 ul{

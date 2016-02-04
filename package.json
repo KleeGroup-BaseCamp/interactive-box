@@ -28,6 +28,7 @@
     "jquery": "^2.1.4",
     "react": "^0.14.3",
     "react-dom": "^0.14.3",
+    "react-virtualized": "*",
     "socket.io": "^1.3.7",
     "socket.io-client": "^1.3.7",
     "style-loader": "^0.13.0",
@@ -35,5 +36,6 @@
     "webpack-dev-middleware": "^1.4.0",
     "chart.js": "*",
     "react-chartjs": "*"
-  }
+  },
+  "repository": "https://github.com/KleeGroup/interactive-box"
 }
