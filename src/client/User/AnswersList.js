@@ -1,7 +1,7 @@
 import React from 'react';
 import Result from './Result';
 import AnswerButton from "./AnswerButton"
-import CountdownTimer2 from "../Utils/CountdownTimer2"
+import CountdownTimer from "../Utils/CountdownTimer"
 
 //Modes des réponses
 const CLICKABLE = "clickable";
@@ -141,7 +141,7 @@ var AnswersList = React.createClass({
 		return(
 			<div className="middle-content">
                 
-                <CountdownTimer2 duration = {time} timeOut={this.setTimeOut} key = {key}/>
+                <CountdownTimer duration = {time} timeOut={this.setTimeOut} key = {key}/>
 				<ul>{answersButtonsArray}</ul>
                 {result}
 			</div>
