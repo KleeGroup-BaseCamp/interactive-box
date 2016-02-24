@@ -59,7 +59,7 @@ var AnswersList = React.createClass({
     componentDidMount: function(){
         var t  = this;
         var socket = t.props.socket;
-        
+        console.log("i did componentDidMount");
 		socket.on("question", function(data){
             t.hasAlreadyAnswered = false;
             t.qCount++;
@@ -84,7 +84,7 @@ var AnswersList = React.createClass({
     qCount: -1,
     hasAlreadyAnswered: false,
     setTimeOut: function(){
-        this.setState({timeOut:true});  
+        this.setState({timeOut:true}); 
         this.props.socket.emit("end-time-request");
     },
     _renderAnswersButton: function(){
@@ -136,9 +136,12 @@ var AnswersList = React.createClass({
         var key = this.qCount;
         console.log("key : " + key);
         var time = this.state.timeOut ? "0" : this.state.time;
+        console.log("le time est: ");
+        console.log(time);
 		return(
 			<div className="middle-content">
-                <CountdownTimer secondsRemaining = {time} timeOut={this.setTimeOut} key={key} /> 
+                
+                <CountdownTimer duration = {time} timeOut={this.setTimeOut} key = {key}/>
 				<ul>{answersButtonsArray}</ul>
                 {result}
 			</div>
@@ -147,3 +150,5 @@ var AnswersList = React.createClass({
 });
 
 export default AnswersList;
+            
+            //<CountdownTimer secondsRemaining = {time} timeOut={this.setTimeOut} key={key}/> 
