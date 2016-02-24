@@ -5,7 +5,10 @@ import ReactCountdownClock from 'react-countdown-clock';
 
 
 var CountdownTimer = React.createClass({
+   timeclock : 10, 
     getInitialState: function() {
+        this.timeClock= Number(this.props.secondsRemaining);
+        console.log("i entered get initial state");
         return {secondsRemaining: 20};
     },
     tick: function() {
@@ -15,7 +18,12 @@ var CountdownTimer = React.createClass({
             this.props.timeOut();
         }
     },
+    componentWillMount: function() {
+        //var timeClock= Number(this.props.secondsRemaining);
+        console.log("i entered component will mount");
+    },
     componentDidMount: function() {
+        
         this.setState({ secondsRemaining: this.props.secondsRemaining });
         this.interval = setInterval(this.tick, 1000);
     },
@@ -28,16 +36,23 @@ var CountdownTimer = React.createClass({
         clearInterval(this.interval);
     },
     render: function() {
+        var number = this.timeClock;
         return(
         <div>
-        <p> ceci est le vrai compteur </p>
-        <CountdownTimer3 secondsRemaining = {this.props.secondsRemaining}/>
+        <p> ceci est le vrai compteur {this.state.secondsRemaining}</p>
+
+        <ReactCountdownClock seconds= {number}
+                     color="#0F98E9"
+                     alpha={0.9}
+                     size={100}
+                     //onComplete={this.timeEnding()}
+                      />
         </div>
     );
     }
 });
             
-var CountdownTimer3 = React.createClass({
+/*var CountdownTimer3 = React.createClass({
     
     componentDidMount: function() {
         console.log("I did mount (countdown timer)");
@@ -60,7 +75,7 @@ var CountdownTimer3 = React.createClass({
         }
     },*/
     
-    render: function() {
+    /*render: function() {
         if (this.props.secondsRemaining > 0){
             console.log("secondsRemaining>0");
             var numberRemaining = Number(this.props.secondsRemaining);
@@ -75,7 +90,7 @@ var CountdownTimer3 = React.createClass({
             return (<p>Temps écoulé</p>);
         }
     }
-});
+});*/
             
 /*<ReactCountdownClock seconds={60}
                      color="#000"

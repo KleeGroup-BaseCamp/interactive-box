@@ -1,7 +1,7 @@
 import React from 'react';
 import Result from './Result';
 import AnswerButton from "./AnswerButton"
-import CountdownTimer from "../Utils/CountdownTimer"
+import CountdownTimer2 from "../Utils/CountdownTimer2"
 
 //Modes des réponses
 const CLICKABLE = "clickable";
@@ -59,7 +59,7 @@ var AnswersList = React.createClass({
     componentDidMount: function(){
         var t  = this;
         var socket = t.props.socket;
-        
+        console.log("i did componentDidMount");
 		socket.on("question", function(data){
             t.hasAlreadyAnswered = false;
             t.qCount++;
@@ -75,7 +75,6 @@ var AnswersList = React.createClass({
                     t.state.answers[i].correct = POLL;
                 }
             }
-            console.log("j'ai reçu end-time et passé TimeOut à True");
             t.setState({timeOut:true});
         });
         
@@ -86,7 +85,6 @@ var AnswersList = React.createClass({
     hasAlreadyAnswered: false,
     setTimeOut: function(){
         this.setState({timeOut:true}); 
-        console.log("on a appelé la fonction setTimeOut");
         this.props.socket.emit("end-time-request");
     },
     _renderAnswersButton: function(){
@@ -142,7 +140,8 @@ var AnswersList = React.createClass({
         console.log(time);
 		return(
 			<div className="middle-content">
-                <CountdownTimer secondsRemaining = {time} timeOut={this.setTimeOut} key={key} /> 
+                
+                <CountdownTimer2 duration = {time} timeOut={this.setTimeOut} key = {key}/>
 				<ul>{answersButtonsArray}</ul>
                 {result}
 			</div>
@@ -151,3 +150,5 @@ var AnswersList = React.createClass({
 });
 
 export default AnswersList;
+            
+            //<CountdownTimer secondsRemaining = {time} timeOut={this.setTimeOut} key={key}/> 
