@@ -1,5 +1,6 @@
 import React from 'react';
 import Barchart from 'react-chartjs';
+import CountdownTimer from "../Utils/CountdownTimer"
 
 var BarChart = require("react-chartjs").Bar;
 var answersLabels=[];
@@ -73,8 +74,8 @@ var Answers = React.createClass({
         //TODO remplacer par un truc random
 		return(
 			<div className="middle-content">
-                <CountdownTimer secondsRemaining = {this.state.time} timeOut={this.setTimeOut} key={this.state.answersLabels[0]}/> 
                 <h1 className="index-title">{this.state.questionLabel} </h1>
+                <CountdownTimer className="index-title" duration = {this.state.time} timeOut={this.setTimeOut} key = {this.state.answersLabels[0]}/>
 				<ul>{answersNodes}</ul>
 			</div>
 		);
@@ -100,38 +101,6 @@ var Answers = React.createClass({
 
 });
 
-var CountdownTimer = React.createClass({
-  getInitialState: function() {
-    return {
-      secondsRemaining: 20
-    };
-  },
-  tick: function() {
-    this.setState({secondsRemaining: this.state.secondsRemaining - 1});
-    if (this.state.secondsRemaining <= 0) {
-      clearInterval(this.interval);
-      this.props.timeOut();
-    }
-  },
-  componentDidMount: function() {
-    this.setState({ secondsRemaining: this.props.secondsRemaining });
-    this.interval = setInterval(this.tick, 1000);
-  },
-  componentWillUnmount: function() {
-    clearInterval(this.interval);
-  },
-  render: function() {
-      //console.log("secondes restantes niveau Timer: " + this.state.secondsRemaining);
-      if (this.state.secondsRemaining > 0){
-        return (
-        <div>Seconds Remaining: {this.state.secondsRemaining}</div>
-        );
-      }
-      else {
-          return (<p>Temps écoulé</p>);
-      }
-  }
-});
 
 
 var Answer = React.createClass({
