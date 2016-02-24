@@ -7,12 +7,12 @@ var answersLabels=[];
 
 var Answers = React.createClass({
     //To DO: define initial arrays for chart
+    aCount:-1,
+    qaCount:1,
     getInitialState: function(){
-        return {questionLabel: undefined, answersLabels:[], selectedAnswer:undefined, timeOut:false, time:30, showChart:false};
+        
+        return {questionLabel: undefined, answersLabels:[], selectedAnswer:undefined, timeOut:false, time:30, showChart:false, aCount:-1};
     },
-   /* _zeroArray: function(n){
-		return Array.apply(null, {length: n}).map(function() {return 0;});
-	},*/
     componentDidMount: function(){
         var t  = this;
         var socket = this.props.socket;
@@ -32,13 +32,13 @@ var Answers = React.createClass({
                         timeOut:false, 
                         showChart:false, 
                         chartData:firstChartData});
+            t.qaCount++;
+            t.aCount= -1;
         });
         socket.on("end-time", function(){
             t.setState({timeOut:true});
             if(t.state.selectedAnswer){
-                console.log("COUCOU");
             } else {
-                console.log("kiki");
             }
         });
         socket.on("showBarChart", function(){
@@ -47,7 +47,8 @@ var Answers = React.createClass({
         
         socket.on("chartData", function(newData){
             console.log("i received chartData");
-            console.log(newData);
+            t.aCount++;
+            console.log(this.aCount);
             t.setState({chartData:newData});
 
         });
@@ -68,6 +69,7 @@ var Answers = React.createClass({
         	return(<li><Answer label={label}/></li>);
         });
         var answersIds = answersLabels.length;
+        var nombre = this.aCount/this.qaCount;
         //console.log("time au niveau du json: " + this.state.time);
         //La propriété key permet de relancer le compteur à chaque fois
         //C'est un peu sale, à voir si on peut pas faire une key correspondent à l'index de la question plutôt
@@ -76,6 +78,7 @@ var Answers = React.createClass({
 			<div className="middle-content">
                 <h1 className="index-title">{this.state.questionLabel} </h1>
                 <CountdownTimer className="index-title" duration = {this.state.time} timeOut={this.setTimeOut} key = {this.state.answersLabels[0]}/>
+                <h2> {nombre} ont répondu !</h2>
 				<ul>{answersNodes}</ul>
 			</div>
 		);
