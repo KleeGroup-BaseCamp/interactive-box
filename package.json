@@ -31,6 +31,7 @@
     "material-ui": "*",
     "react": "^0.14.3",
     "react-chartjs": "*",
+    "react-countdown-clock": "^1.0.5",
     "react-dom": "^0.14.3",
     "react-tap-event-plugin": "*",
     "react-virtualized": "*",
