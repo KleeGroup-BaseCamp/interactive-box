@@ -23,16 +23,6 @@ var Header = React.createClass({
     }
 });
 
-var Footer = React.createClass({
-  render: function(){
-    return(
-      <div className="feader">
-        <h4 className="feaderTitle">(c) Interactive Box</h4>
-      </div>
-    );
-  }
-});
-
 var WelcomeBox = React.createClass({
   getInitialState() {
       return {};
@@ -47,14 +37,24 @@ var WelcomeBox = React.createClass({
     this.setState({userType: SHOW_TYPE});  
   },
   _renderHomepage() {
+    var buttonStyle = {
+        display: 'block',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        width: '70%',
+        marginTop: '5%', 
+        height: '10vmin'
+    };
+    var labelStyle = {
+        fontSize: '5vmin'  
+    };
       return(
         <div className="middle-content">
-          <h1 className="index-title">Bienvenue</h1>
+          <h1 className="index-title">Interactive box</h1>
           <div className="div-button">
-            <RaisedButton label="Commencer" className="index-button-md" onMouseDown={this._setUserToAttendee}/>
-            <LinkButton className="index-button-big" handleLinkClick={this._setUserToAttendee} text="Commencer !" url="login"/>
-            <LinkButton className="index-button" handleLinkClick={this._setUserToAdmin} text="Administrateur" url="admin"/>
-           <LinkButton className="index-button" handleLinkClick={this._setUserToShow} text="Presentation" url="showRoom"/>
+            <RaisedButton label="Commencer" className="index-button-md" onMouseDown={this._setUserToAttendee} style={buttonStyle} labelStyle={labelStyle}/>
+            <RaisedButton label="Administrateur" className="index-button-md" onMouseDown={this._setUserToAdmin} style={buttonStyle} labelStyle={labelStyle}/>
+            <RaisedButton label="Présentation" className="index-button-md" onMouseDown={this._setUserToShow} style={buttonStyle} labelStyle={labelStyle}/>
           </div>
         </div>
       );
@@ -90,7 +90,6 @@ var WelcomeBox = React.createClass({
         <div>
           {middleNode}
         </div>
-        <Footer/>
       </div>
     );
   }
