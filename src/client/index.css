@@ -1,5 +1,5 @@
 *{
-    font-family:"Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif;
+    font-family:"Roboto", Helvetica, "Segoe UI", Arial, freesans, sans-serif;
     margin-top:0px;
     margin-bottom:0px;
 }
@@ -26,6 +26,14 @@ body{
 
 .index-title-little{
     font-size:5vmin;
+}
+
+.index-button-md{
+    display:block;
+    margin-left: auto;
+    margin-right: auto;
+    color:red;
+    background-color: darkgreen;
 }
 
 .index-button, .index-button-big{

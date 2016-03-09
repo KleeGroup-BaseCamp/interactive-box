@@ -5,6 +5,8 @@ import AdminView from './Admin/AdminView';
 import ShowView from './Show/ShowRoom';
 import LoginView from './User/LoginView';
 import LinkButton from "./Utils/LinkButton";
+import AppBar from 'material-ui/lib/app-bar';
+import RaisedButton from 'material-ui/lib/raised-button';
 
 import "./index.css";
 
@@ -14,11 +16,10 @@ const SHOW_TYPE = 'SHOW_TYPE';
 
 var Header = React.createClass({
     render: function(){
-      return(
-        <div className="feader">
-          <h1 className="feaderTitle">{this.props.title}</h1>
-        </div>
-      );
+        var element = <br></br>;
+        return(
+            <AppBar title="Interactive box" iconElementLeft={element}/>
+        );
     }
 });
 
@@ -50,6 +51,7 @@ var WelcomeBox = React.createClass({
         <div className="middle-content">
           <h1 className="index-title">Bienvenue</h1>
           <div className="div-button">
+            <RaisedButton label="Commencer" className="index-button-md" onMouseDown={this._setUserToAttendee}/>
             <LinkButton className="index-button-big" handleLinkClick={this._setUserToAttendee} text="Commencer !" url="login"/>
             <LinkButton className="index-button" handleLinkClick={this._setUserToAdmin} text="Administrateur" url="admin"/>
            <LinkButton className="index-button" handleLinkClick={this._setUserToShow} text="Presentation" url="showRoom"/>
