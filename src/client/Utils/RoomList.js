@@ -26,6 +26,9 @@ var RoomList = React.createClass({
         socket.on("userName", function(userName){
             t.addElement(userName); 
         });
+        socket.on("removeUserName", function(userName){
+            t.removeElement(userName);
+        });
         this.interval = setInterval(this.roll, this.props.intervalMS);
 	},
 	addElement: function(userName){
@@ -35,6 +38,17 @@ var RoomList = React.createClass({
 	    	return {users: prevUsers};
 	    });
 	},
+    removeElement : function(userName){
+		this.setState(function(previousState, currentProps){
+			var prevUsers = previousState.users;
+            var index = prevUsers.indexOf(userName);
+            console.log("he");
+            if (index > -1) {
+                prevUsers.splice(index, 1);
+            }
+	    	return {users: prevUsers};
+	    });
+    },
 	render: function(){
     var usersSliced = this.rollTheList(this.state.users, this.state.startIndex, this.props.maxNumber);
 	var roomiesList = usersSliced.map(function(userName) {

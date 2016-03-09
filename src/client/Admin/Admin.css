@@ -10,3 +10,19 @@
 .questionnary:hover{
     background-color:#d5e1f4;
 }
+
+.questionary-title{
+    text-align: center;
+}
+
+.answer-node{
+    font-weight: bold;
+}
+
+.true{
+    color: forestgreen;
+}
+
+.false{
+    color:indianred;
+}

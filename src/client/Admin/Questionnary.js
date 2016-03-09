@@ -1,6 +1,8 @@
-import React from 'react';
+﻿import React from 'react';
 import Barchart from 'react-chartjs';
 import AdminView from './AdminView';
+import RaisedButton from 'material-ui/lib/raised-button';
+
 
 var socket;
 var BarChart = require("react-chartjs").Bar;
@@ -59,6 +61,7 @@ var AdminQuestionnary = React.createClass({
   	_renderWaitPage() {
   		var startButton = <button className="index-button" onClick={this.incrementCounter}>Start !</button>;
   		var waitMessage = <p> En attente de tous les utilisateurs ...</p>
+        // TODO ajouter la proportion d'utilisateurs enregistrés
   		return this.state.okToStart ? startButton : waitMessage;
 	},
 	_renderQuizzPage(){
@@ -70,10 +73,12 @@ var AdminQuestionnary = React.createClass({
 	        var answersLabels = [];
 			var answersIds = question.answers;
 			var answersObjects = questionnary.answers;
+            var answersLabelsCorrect = [];
 	        for(var i=0;i<answersIds.length;i++){
 	        	for (var j = 0; j<answersObjects.length; j++){
 	                if (answersObjects[j].rid == answersIds[i]){
-	                    answersLabels.push(answersObjects[j].label);
+                        answersLabels.push(answersObjects[j].label);
+	                    answersLabelsCorrect.push({label: answersObjects[j].label, correct: answersObjects[j].correct});
 	                }
 	            }
 	        }
@@ -82,11 +87,11 @@ var AdminQuestionnary = React.createClass({
             var datashow = {answers:answersLabels, time:time, question: questionTitle};
 	        socket.emit("question", data);
             socket.emit("question-show", datashow);
-            console.log ("emitted question-show to server");
-	        var answersNodes = answersLabels.map(function(label) {
+	        var answersNodes = answersLabelsCorrect.map(function(labelCorrect) {
+                var className = "answer-node " + (labelCorrect.correct ? "true" : "false");
 	        	return(
-		        	<li>
-		                <p>{label} </p>
+		        	<li className={className}>
+		                <p>{labelCorrect.label} </p>
 		            </li>);
 	        });
 
@@ -103,7 +108,7 @@ var AdminQuestionnary = React.createClass({
 
 			return (
 				<div>
-					<p>{questionTitle}</p>
+					<p className="question-title">{questionTitle}</p>
 					<ul>
 						{answersNodes}
 					</ul>
