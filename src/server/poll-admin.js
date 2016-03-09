@@ -30,6 +30,8 @@ function manageAdminPoll(adminSocket, io){
 		Object.keys(io.nsps['/user'].connected).forEach(function(socketID) {
     		nRoom++;
 		}); 
+        console.log("Received ready, i send ");
+        console.log(nRoom);
         adminSocket.emit("fix-count", nRoom);
     });
 	adminSocket.on("launch-quizz", function(idOfQuestionnary){

@@ -91,11 +91,12 @@ function user (socket){
                         console.log("sent registered");
                     } else {
                         userSession.socket.emit("userName", pseudoRequested);
+                        userSession.socket.emit("add-user-name", pseudoRequested);
                         console.log("Sending " + pseudoRequested + " to " + userSession.pseudo);
                     }
                 }
                 if(adminSocket){
-                adminSocket.emit("add-user-name", pseudoRequested);
+                    adminSocket.emit("add-user-name", pseudoRequested);
                 }
                 if(showSocket){
                     showSocket.emit("userName", pseudoRequested);

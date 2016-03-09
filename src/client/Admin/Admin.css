@@ -26,3 +26,12 @@
 .false{
     color:indianred;
 }
+
+.compteur{
+    margin-left:auto;
+    margin-right:auto;
+    display: block;
+    text-align: center;
+    margin-top:5%;
+    margin-bottom:5%;
+}

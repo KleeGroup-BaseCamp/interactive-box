@@ -27,12 +27,22 @@ var AnswerButton = React.createClass({
           this.props.action();
       }
     },
+    _findBackgroundColor: function(){
+        if(this.state.mode==CLICKABLE){return 'white';}                     
+        if(this.state.mode==SELECTED){return '#93b1e0';}                     
+        if(this.state.mode==LOCKED){return '#e3e3e3';}                     
+        if(this.state.mode==POLL){return 'white';}                     
+        if(this.state.mode==GOOD){return '#b6edc1';}                     
+        if(this.state.mode==WRONG){return '#dba8a8';}                     
+    },        
 	render: function(){
         var className = "answer-buttton " + this.state.mode;
         var heightPercent = 50/(this.props.nQuestions+1);
         var heightPercentText = heightPercent+'vmin';
         var marginPercent = heightPercent/this.props.nQuestions;
         var marginPercentText = marginPercent+'vmin';
+        var backgroundColor = this._findBackgroundColor();
+        console.log(backgroundColor);
         var buttonStyle = 
             {
                 display: 'block',
@@ -40,7 +50,7 @@ var AnswerButton = React.createClass({
                 marginRight: 'auto',
                 width: '70%',
                 marginBottom: marginPercentText, 
-                height: heightPercentText
+                height: heightPercentText, 
             };
         var labelStyle = {
             fontSize: '5vmin', 
@@ -48,7 +58,13 @@ var AnswerButton = React.createClass({
         };
 	 	return(
             <div>
-                <RaisedButton label={this.props.answerText} onMouseDown={this.action} style={buttonStyle} className={className} labelStyle={labelStyle}/>
+                <RaisedButton 
+                    label={this.props.answerText} 
+                    onMouseDown={this.action} 
+                    style={buttonStyle} 
+                    className={className} 
+                    labelStyle={labelStyle}
+                    backgroundColor={backgroundColor}/>
             </div>
         );
 	}

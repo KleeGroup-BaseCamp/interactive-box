@@ -36,7 +36,7 @@ var AdminView = React.createClass({
         t.setState({h:node.offsetHeight});  
     });
     t.setState({h:node.offsetHeight});  
-    this.socket.emit("ready-to-receive-users");
+    this.socket.emit("ready-to-receive-user-count");
   },
   launchQuizz: function(questionnary){
     this.setState({quizzLaunched: questionnary});
@@ -48,7 +48,11 @@ var AdminView = React.createClass({
       if(!this.state.quizzLaunched){
         return (
           <div className="middle-content" ref="heightListener">
-            <p><SimpleCounter socket={this.socket} addMessage="add-user-name" removeMessage="remove-user-name" fixCountMessage="fix-count"/> personnes connectées</p>
+            <SimpleCounter 
+                socket={this.socket} 
+                addMessage="add-user-name"
+                removeMessage="remove-user-name"
+                fixCountMessage="fix-count"/>
             <h1 className="index-title-little">Quel questionnaire lancer ?</h1>
             <br></br>
             <ScrollableQuestionaryList data={this.state.data} launchQuizz={this.launchQuizz} height={this.state.h*6/10}/>

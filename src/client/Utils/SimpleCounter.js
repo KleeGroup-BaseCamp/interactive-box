@@ -16,8 +16,17 @@ var SimpleCounter = React.createClass({
             t.setState({counter: t.state.counter-1});
         });
     },
+    _generateLabel: function(){
+        if(this.state.counter == 1) {return " utilisateur connecté";}
+        return " utilisateurs connectés";
+    },
     render: function(){
-        return(<span>{this.state.counter}</span>);
+        if(this.state.counter == 0) {return(<div className="compteur">Aucun utilisateur connecté</div>);}
+        var label = this._generateLabel();
+        return(<div className="compteur">
+                    <span>{this.state.counter}</span>
+                    {label}
+               </div>);
     }
 });
 

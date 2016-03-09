@@ -1,7 +1,7 @@
 import React from 'react';
 import AnswersList from './AnswersList';
 import RoomList from "../Utils/RoomList";
-import RoomCounter from "../Utils/RoomCounter";
+import SimpleCounter from '../Utils/SimpleCounter'
 
 
 const ROOM="waiting";
@@ -33,12 +33,14 @@ var RoomBox = React.createClass({
 		});
 	},
 	renderRoom: function(){
-        var p1 = "Déja ";
-        var p2 = " personnes connectées";
 		return(
 		    <div className="middle-content">
 		        <h1 className="index-title-little">On attend juste les autres</h1>
-                <p>{"Déjà"}<RoomCounter socket={this.props.socket}/>{p2}</p>
+                <SimpleCounter 
+                    socket={this.props.socket} 
+                    addMessage="userName"
+                    removeMessage="removeUserName"
+                    fixCountMessage="fix-count"/>
                 <RoomList socket={this.props.socket} maxNumber={10} intervalMS={3000}/>
 		    </div>
 	    );
