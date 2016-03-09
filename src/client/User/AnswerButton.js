@@ -1,4 +1,5 @@
 import React from 'react';
+import RaisedButton from 'material-ui/lib/raised-button';
 
 //Modes d'affichage du bouton
 const CLICKABLE = "clickable";
@@ -28,11 +29,19 @@ var AnswerButton = React.createClass({
     },
 	render: function(){
         var className = "answer-buttton " + this.state.mode;
+        var buttonStyle = 
+            {
+                display: 'block',
+                marginLeft: 'auto',
+                marginRight: 'auto',
+                width: '70%',
+                marginTop: '3%', 
+                height: '10vmin'  
+            };
+        var labelStyle = {fontSize: '5vmin'};
 	 	return(
             <div>
-                <button className={className} onClick = {this.action}>
-                    {this.props.answerText}
-                </button>
+                <RaisedButton label={this.props.answerText} onMouseDown={this.action} buttonStyle={buttonStyle} className={className} labelStyle={labelStyle}/>
             </div>
         );
 	}

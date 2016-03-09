@@ -4,7 +4,6 @@ var ReactDOM = require('react-dom');
 
 // Redirect for Room View
 import RoomView from './Room';
-import TextInput from "../Utils/TextInput";
 import RaisedButton from 'material-ui/lib/raised-button';
 import TextField from 'material-ui/lib/text-field';
 
