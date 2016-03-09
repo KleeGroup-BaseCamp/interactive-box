@@ -24,16 +24,16 @@ var CountdownTimer = React.createClass({
             }
         ]});*/
         return {data: [{
-            value: 10,
-            color:"#F7464A",
-            highlight:"#FF5A5E",
-            label:"RED"
+                value: 10,
+                color:"#F7464A",
+                highlight:"#FF5A5E",
+                label:"RED"
             },
-              {
-            value: 0,
-            color:"#FFEEEE",
-            highlight:"#ABABAB",
-            label:"BLUE"
+            {
+                value: 0,
+                color:"#FFEEEE",
+                highlight:"#ABABAB",
+                label:"BLUE"
             }
         ]};
     },
@@ -64,7 +64,7 @@ var CountdownTimer = React.createClass({
         
         return(
         <div>
-       <PieChart data={this.state.data} options={this.chartOptions}/>
+       <PieChart data={this.state.data} options={this.chartOptions} className="pie-chart-counter"/>
         </div>
     );
     }

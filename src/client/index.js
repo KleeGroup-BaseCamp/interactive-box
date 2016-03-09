@@ -18,15 +18,6 @@ const INITIAL_STATE = 'home';
 const PSEUDO = 'pseudo';
 const WAITING = 'waiting';
 
-var Header = React.createClass({
-    render: function(){
-        var element = <br></br>;
-        return(
-            <AppBar title="Interactive box" iconElementLeft={element}/>
-        );
-    }
-});
-
 var WelcomeBox = React.createClass({
   getInitialState() {
       return {};
@@ -37,9 +28,13 @@ var WelcomeBox = React.createClass({
   _setUserToAttendee() {
       this.setState({userType: ATTENDEE_TYPE});
   },
-      _setUserToShow(){
-    this.setState({userType: SHOW_TYPE});  
-  },
+    _setUserToShow(){
+        this.setState({userType: SHOW_TYPE});  
+    },
+    _setUserToHome(){
+        console.log("coucouc");
+        this.setState({userType: undefined});  
+    },
   _renderHomepage() {
     var buttonStyle = {
         display: 'block',
@@ -72,6 +67,7 @@ var WelcomeBox = React.createClass({
   _renderShowRoomPage(){
         return <ShowView/>;  
   },
+
   renderMiddle: function(){
     var userType = this.state.userType;
     if (userType === undefined) { // On ne connait pas l'utilisateur, ca veut dire qu'on doit lui demander qui il est
@@ -88,9 +84,13 @@ var WelcomeBox = React.createClass({
   },
   render: function(){
     var middleNode = this.renderMiddle();
+    var element = <br></br>;
     return(
       <div>
-        <Header title="Interactive box"/>
+         <AppBar 
+            title="Interactive box" 
+            iconElementLeft={element}
+            onLeftIconButtonTouchTap={this._setUserToHome}/>
         <div>
           {middleNode}
         </div>

@@ -46,7 +46,7 @@ var Answers = React.createClass({
             } else {
                 
             }
-            return (<li><AnswerButton action={chooseAnswer} key={index} answerText={label} mode={undefined}/></li>);
+            return (<li><AnswerButton action={chooseAnswer} key={index} answerText={label} mode={undefined} nQuestions={answersLabels.length}/></li>);
         });
     },
     componentDidMount: function(){

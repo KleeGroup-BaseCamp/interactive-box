@@ -25,6 +25,13 @@ function readQuestionnary(idOfQuestionnary){
 };
 
 function manageAdminPoll(adminSocket, io){
+    adminSocket.on("ready-to-receive-user-count", function(){
+       	var nRoom = 0;
+		Object.keys(io.nsps['/user'].connected).forEach(function(socketID) {
+    		nRoom++;
+		}); 
+        adminSocket.emit("fix-count", nRoom);
+    });
 	adminSocket.on("launch-quizz", function(idOfQuestionnary){
 		readQuestionnary(idOfQuestionnary);
 		pollUser.reset();
@@ -46,7 +53,6 @@ function manageAdminPoll(adminSocket, io){
 	adminSocket.on("end-time", function(arrayOfGoodAnswers){
         io.of("/user").emit("end-time", arrayOfGoodAnswers);
     });
-
 	adminSocket.on("end-questionnary", function(){
         io.of("/user").emit("end-questionnary");
         io.of("/showRoom").emit("end-questionnary");

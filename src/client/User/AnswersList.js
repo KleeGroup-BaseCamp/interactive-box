@@ -102,7 +102,7 @@ var AnswersList = React.createClass({
                 t.setState({answers:answers});
             };
             var mode = t.determineMode(answer);
-            return (<li><AnswerButton action={chooseAnswer} key={label} answerText={label} mode={mode}/></li>);
+            return (<li><AnswerButton action={chooseAnswer} key={label} answerText={label} mode={mode} nQuestions={t.state.answers.length}/></li>);
         });
     },
     getResult: function(){

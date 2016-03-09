@@ -29,19 +29,26 @@ var AnswerButton = React.createClass({
     },
 	render: function(){
         var className = "answer-buttton " + this.state.mode;
+        var heightPercent = 50/(this.props.nQuestions+1);
+        var heightPercentText = heightPercent+'vmin';
+        var marginPercent = heightPercent/this.props.nQuestions;
+        var marginPercentText = marginPercent+'vmin';
         var buttonStyle = 
             {
                 display: 'block',
                 marginLeft: 'auto',
                 marginRight: 'auto',
                 width: '70%',
-                marginTop: '3%', 
-                height: '10vmin'  
+                marginBottom: marginPercentText, 
+                height: heightPercentText
             };
-        var labelStyle = {fontSize: '5vmin'};
+        var labelStyle = {
+            fontSize: '5vmin', 
+            textTransform: 'none'
+        };
 	 	return(
             <div>
-                <RaisedButton label={this.props.answerText} onMouseDown={this.action} buttonStyle={buttonStyle} className={className} labelStyle={labelStyle}/>
+                <RaisedButton label={this.props.answerText} onMouseDown={this.action} style={buttonStyle} className={className} labelStyle={labelStyle}/>
             </div>
         );
 	}

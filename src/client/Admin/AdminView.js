@@ -6,7 +6,7 @@ import AdminQuestionnary from './Questionnary';
 import QuestionnaryButtonsList from './QuestionnaryButtonsList'
 import ScrollableQuestionaryList from './ScrollableQuestionaryList'
 import "./Admin.css"
-var socket;
+import SimpleCounter from '../Utils/SimpleCounter'
 
 var selectedPollKey;
 
@@ -28,7 +28,7 @@ var AdminView = React.createClass({
     return {data: [], quizzLaunched:undefined, h:100};
   },
   componentDidMount: function() {
-    socket = io("http://localhost:8080/admin");
+    this.socket = io("http://localhost:8080/admin");
     this.loadQuestionnariesFromServer();
     var t = this;
     var node = this.refs.heightListener.getDOMNode(); // TODO pas bien d'utiliser cette fonction
@@ -36,14 +36,19 @@ var AdminView = React.createClass({
         t.setState({h:node.offsetHeight});  
     });
     t.setState({h:node.offsetHeight});  
+    this.socket.emit("ready-to-receive-users");
   },
   launchQuizz: function(questionnary){
     this.setState({quizzLaunched: questionnary});
   },
   render: function() {
+      if(!this.socket){
+          this.socket = io("http://localhost:8080/admin");
+      }
       if(!this.state.quizzLaunched){
         return (
           <div className="middle-content" ref="heightListener">
+            <p><SimpleCounter socket={this.socket} addMessage="add-user-name" removeMessage="remove-user-name" fixCountMessage="fix-count"/> personnes connectées</p>
             <h1 className="index-title-little">Quel questionnaire lancer ?</h1>
             <br></br>
             <ScrollableQuestionaryList data={this.state.data} launchQuizz={this.launchQuizz} height={this.state.h*6/10}/>
@@ -52,32 +57,12 @@ var AdminView = React.createClass({
       } else {
         return (
           <div className="middle-content">
-            <AdminQuestionnary questionnary={this.state.quizzLaunched} socket={socket}/>
+            <AdminQuestionnary questionnary={this.state.quizzLaunched} socket={this.socket}/>
           </div>
         );
       }
   }, 
-    
-    
-    _rowRenderer (index) {
-   // const { list } = this.props
-    const { useDynamicRowHeight } = this.state
-
-    const datum = list[index];
-
-    return (
-      <div style={{ height: '100%' }}>
-        <span>
-          <span >
-            {datum}
-          </span>
-          <span>
-            This is row {index}
-          </span>
-        </span>
-      </div>
-    )
-  }
+    socket: undefined
 });
 
 export default AdminView;

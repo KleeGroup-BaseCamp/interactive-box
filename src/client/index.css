@@ -11,7 +11,7 @@ body{
 }
 
 .middle-content{
-    height:90%;
+    height:80%;
 }
 
 .index-title, .index-title-little{
@@ -109,4 +109,13 @@ ul li{
     font-weight: bold;
     color:#1988cb;
     font-size:5vmin;
+}
+
+.pie-chart-counter{
+    display:block;
+    margin-left:auto;
+    margin-right:auto;
+    height:20%;
+    margin-top:10%;
+    margin-bottom:10%;
 }

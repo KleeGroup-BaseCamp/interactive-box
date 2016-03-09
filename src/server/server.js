@@ -55,6 +55,8 @@ function disconnect(socket){
     console.log("Déconnexion du socket " + socket.id);
     var sessionID = socket.handshake.session.id;
     io.of("/user").emit("removeUserName", sessions[sessionID].pseudo);
+    io.of("/admin").emit("remove-user-name", sessions[sessionID].pseudo);
+    io.of("/showRoom").emit("remove-user-name", sessions[sessionID].pseudo);
     if(sessionID in sessions){
         delete sessions[sessionID];
     }
@@ -92,14 +94,18 @@ function user (socket){
                         console.log("Sending " + pseudoRequested + " to " + userSession.pseudo);
                     }
                 }
+                if(adminSocket){
+                adminSocket.emit("add-user-name", pseudoRequested);
+                }
+                if(showSocket){
+                    showSocket.emit("userName", pseudoRequested);
+                }
             }
             else {
                 console.log("Pseudo déjà utilisé");
                 socket.emit("PseudoDejaUtilise");
             }
-            if(showSocket){
-                showSocket.emit("userName", pseudoRequested);
-            }
+
 		});
 
 		//  SENDING USERS

@@ -1,10 +1,12 @@
 .result-block{
     margin:auto;
     width:80%;
+    margin-top:10%;
+    margin-bottom:10%;
 }
 
 .result-image{
-    height:20%;
+    height:10%;
 }
 
 .result-text{
