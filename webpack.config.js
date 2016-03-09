@@ -3,7 +3,7 @@ var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 var config = {
-    entry: './src/client/Index.js',
+    entry: './src/client/index.js',
     output: {
         path: __dirname + '/dist',
         filename: 'client.js',
@@ -24,13 +24,13 @@ var config = {
                 include: [
                     path.resolve(__dirname, './src')
                 ]
-            }, 
+            },
             {
               test: /\.css$/, // Only .css files
               loader: 'style!css' // Run both loaders
             }
         ]
-    }, 
+    },
     resolve: {
         alias: {
             "react": __dirname + '/node_modules/react',
