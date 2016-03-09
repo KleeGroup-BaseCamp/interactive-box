@@ -14,6 +14,10 @@ const ADMIN_TYPE = 'ADMIN_TYPE';
 const ATTENDEE_TYPE = 'ATTENDEE_TYPE';
 const SHOW_TYPE = 'SHOW_TYPE';
 
+const INITIAL_STATE = 'home';
+const PSEUDO = 'pseudo';
+const WAITING = 'waiting';
+
 var Header = React.createClass({
     render: function(){
         var element = <br></br>;

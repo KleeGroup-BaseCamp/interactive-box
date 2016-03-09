@@ -4,16 +4,17 @@ var ReactDOM = require('react-dom');
 
 // Redirect for Room View
 import RoomView from './Room';
-import LinkButton from "../Utils/LinkButton";
 import TextInput from "../Utils/TextInput";
-    
+import RaisedButton from 'material-ui/lib/raised-button';
+import TextField from 'material-ui/lib/text-field';
+
 const ROOM_TYPE = 'ROOM_TYPE';
 
 var socket;
 
 var LoginBox = React.createClass({
   getInitialState: function() {
-    return {pseudo: ''};
+    return {pseudo: '', alreadyUsedPseudo:false};
   },
     
   _setUserToRoom: function () {
@@ -21,37 +22,54 @@ var LoginBox = React.createClass({
   },
     
   updatePseudo: function(e){
-    this.setState({pseudo: e.target.value});
+    this.setState({pseudo: e.target.value, alreadyUsedPseudo:false});
   },
   handleSubmit: function() {
     var pseudo = this.state.pseudo;
     if(!pseudo){
       return;
     }
-
-    socket  = io("http://localhost:8080/user");
-    var that = this;
     socket.emit("user");
     socket.emit("loginRequest", pseudo);
-    socket.on("loginValid", function(){
-        that._setUserToRoom();
-    });
-    socket.on("PseudoDejaUtilise", function(){
-        alert("Pseudo déjà utilisé ! Choisissez un autre pseudo.");
-    })
   },
     componentDidMount: function(){
+        var t = this;
         ReactDOM.findDOMNode(this.refs.inputPseudo).focus(); 
+        socket  = io("http://localhost:8080/user");
+        socket.on("loginValid", function(){
+            t._setUserToRoom();
+        });
+        socket.on("PseudoDejaUtilise", function(){
+            t.setState({alreadyUsedPseudo:true});
+        });
     },
   _renderLoginPage() {
+      var buttonStyle = {
+        display: 'block',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        width: '70%',
+        marginTop: '5%', 
+        height: '10vmin'
+    };
+    var labelStyle = {
+        fontSize: '5vmin'  
+    };
+    var errorTextToUse = this.state.alreadyUsedPseudo ? "Pseudo déjà utilisé" : "";
     return(
       <div className="middle-content">
         <h1 className="index-title">Choisis ton pseudo</h1>
         <div>
-          <TextInput placeholder="Pseudo" onChange={this.updatePseudo} onEnter={this.handleSubmit} ref="inputPseudo"/>
+            <TextField hintText="Pseudo"
+                onEnterKeyDown={this.handleSubmit}
+                onChange={this.updatePseudo}
+                ref="inputPseudo"
+                inputStyle={labelStyle}
+                style={buttonStyle}
+                errorText={errorTextToUse}/>
         </div>
         <div>
-          <LinkButton className = "index-button" handleLinkClick={this.handleSubmit} text="Continuer"/>
+            <RaisedButton label="Continuer" onMouseDown={this.handleSubmit} style={buttonStyle} labelStyle={labelStyle}/>
         </div>
       </div>
     );
