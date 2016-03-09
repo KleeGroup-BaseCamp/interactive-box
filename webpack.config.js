@@ -13,7 +13,7 @@ var config = {
         new HtmlWebpackPlugin({
             title: 'Interactive Box Client',
             inject: 'body',
-            templateContent: '<body><div id="interactive-box"/></body>'
+            templateContent: '<html> <head> <meta charset="utf-8" /> <body><div id="interactive-box"/></body> </head> </html>'
         })
     ],
     module: {
