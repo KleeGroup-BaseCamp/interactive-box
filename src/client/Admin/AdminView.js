@@ -44,6 +44,7 @@ var AdminView = React.createClass({
       if(!this.state.quizzLaunched){
         return (
           <div className="middle-content" ref="heightListener">
+            <p> Nombre de personnes connectées : </p>
             <h1 className="index-title-little">Quel questionnaire lancer ?</h1>
             <br></br>
             <ScrollableQuestionaryList data={this.state.data} launchQuizz={this.launchQuizz} height={this.state.h*6/10}/>

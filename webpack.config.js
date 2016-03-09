@@ -27,9 +27,15 @@ var config = {
             }, 
             {
               test: /\.css$/, // Only .css files
-              loader: 'style!css' // Run both loaders
+loader: 'style!css' // Run both loaders
             }
         ]
+    }, 
+    resolve: {
+        alias: {
+            "react": __dirname + '/node_modules/react',
+            "react/addons": __dirname + '/node_modules/react/addons',
+        }
     }
 };
 

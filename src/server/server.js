@@ -118,6 +118,7 @@ function admin (socket){
 	adminSession = socket.handshake.sessionID;
     pollAdmin.manageAdminPoll(socket, io);
 	socket.emit("registered");
+    socket.emit("nombre de personnes", 34);
 }
 
 function show (socket){
