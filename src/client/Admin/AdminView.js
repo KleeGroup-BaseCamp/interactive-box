@@ -127,7 +127,7 @@ var AdminView = React.createClass({
                 fixCountMessage="fix-count"/>
             <h1 className="index-title-little">Quel questionnaire lancer ?</h1>
             <br></br>
-            <ScrollableQuestionaryList2 data={this.state.data} launchQuizz={this.launchQuizz} height={this.state.h*6/10}/>
+            <ScrollableQuestionaryList2 data={this.state.data} launchQuizz={this.launchQuizz} height={this.state.h*5/10}/>
           </div>
         );
       } else {
