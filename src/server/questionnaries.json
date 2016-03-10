@@ -126,13 +126,13 @@
                   ]
     }, 
     {
-        "title":"Le quizz avec des bonnes et des mauvaises réponses",
+        "title":"Insights Klee Group",
         "id":3,
         "author":"Antoine",
         "questions":[
             {
                 "qid":1,
-                "text":"Combien font 3 + 2 ?",
+                "text":"Combien y a-t-il de développeurs chez Klee Group ?",
                 "answers": ["1.1","1.2", "1.3" ]
             },
             {

@@ -30,9 +30,7 @@ var ScrollableQuestionaryList2 = React.createClass({
     
     
     render: function() {
-        var launchQuest = function(){
-            t.props.launchQuizz(quest);
-        }
+        
          var quest = this.props.data[0];
         console.log(this.props.data);
         var t = this;
@@ -45,6 +43,9 @@ var ScrollableQuestionaryList2 = React.createClass({
         var data = this.props.data;
         var questTitles = this.props.data.map(function(title) {
             i++;
+            var launchQuest = function(){
+            t.props.launchQuizz(questi);
+        };
             var questi=data[i]
             var count = questi.questions.length;
             var countLabel = count == 1 ? "question" : "questions";
