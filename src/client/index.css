@@ -24,6 +24,14 @@ body{
     background-color: rgba(255, 255, 255, 0);
 }
 
+.medium-title{
+    font-size:6vmin;
+}
+
+.medium-subtitle{
+    font-size:5vmin;
+}
+
 .index-title-little{
     font-size:5vmin;
 }
@@ -32,8 +40,6 @@ body{
     display:block;
     margin-left: auto;
     margin-right: auto;
-    color:red;
-    background-color: darkgreen;
 }
 
 .index-button, .index-button-big{
