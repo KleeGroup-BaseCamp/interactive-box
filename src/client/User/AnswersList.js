@@ -63,7 +63,6 @@ var AnswersList = React.createClass({
 		socket.on("question", function(data){
             t.hasAlreadyAnswered = false;
             t.qCount++;
-            console.log("UPPPP");
             t.setState({time:data.time, answers:t.createAnswersTable(data.answers), timeOut:false});
         });
         

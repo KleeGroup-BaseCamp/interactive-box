@@ -1,6 +1,7 @@
 import React from 'react';
-import Barchart from 'react-chartjs';
-import CountdownTimer from "../Utils/CountdownTimer"
+
+import CountdownTimer from "../Utils/CountdownTimer";
+import './ShowQuestionsStyle.css';
 
 var BarChart = require("react-chartjs").Bar;
 var answersLabels=[];
@@ -48,7 +49,6 @@ var Answers = React.createClass({
         socket.on("chartData", function(newData){
             console.log("i received chartData");
             t.aCount++;
-            console.log(this.aCount);
             t.setState({chartData:newData});
 
         });
@@ -70,10 +70,6 @@ var Answers = React.createClass({
         });
         var answersIds = answersLabels.length;
         var nombre = this.aCount/this.qaCount;
-        //console.log("time au niveau du json: " + this.state.time);
-        //La propriété key permet de relancer le compteur à chaque fois
-        //C'est un peu sale, à voir si on peut pas faire une key correspondent à l'index de la question plutôt
-        //TODO remplacer par un truc random
 		return(
 			<div className="middle-content">
                 <h1 className="index-title">{this.state.questionLabel} </h1>
@@ -89,7 +85,10 @@ var Answers = React.createClass({
     _renderBarChart(){
         var socket = this.props.socket;
         return(
-            <Chart socket={socket} data={this.state.chartData} key={this.state.questionLabel} />
+            <div className="barchart">
+            <Chart className="barchart" socket={socket} data={this.state.chartData} key={this.state.questionLabel}/>
+            
+            </div>
         );
     },
     
@@ -115,13 +114,15 @@ var Answer = React.createClass({
         );
 	}
 });
-          
+
+
 var Chart = React.createClass({
 	getInitialState: function(){
 		var t = this;
 		return({data:t.props.data});
 	}, 
 	componentDidMount: function(){
+        
 		var t = this;
         console.log("Chart did mount");
         console.log(t.state.data);
@@ -135,7 +136,10 @@ var Chart = React.createClass({
         });
 	},
 	render: function(){
-		return <BarChart data = {this.state.data}/>;
+		return (<div>
+                <BarChart data = {this.state.data}/>
+               </div>
+               );
 	}
 });
 

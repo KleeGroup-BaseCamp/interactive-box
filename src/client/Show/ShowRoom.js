@@ -18,10 +18,12 @@ var ShowRoomBox = React.createClass({
         var t = this;    
         socket.on("end-questionnary", function(){
         	t.setState({currentState:FINISHED});
+            firsts=undefined;
         });
         socket.on("question-show", function(answersLabels){
             firsts = answersLabels;
             t.setState({currentState:QUESTION});
+            firsts=undefined;
         });
 	},
 	renderRoom: function(){
@@ -51,7 +53,7 @@ var RoomiesList = React.createClass({
 	},
 	componentDidMount: function() {
 		var t = this;
-        socket = io("http://localhost:8080/showRoom");
+        socket = io("http://127.0.0.1:8080/showRoom");
 		socket.on("userName", function(userName){
             console.log("Received : " + userName);
             t.addElement(userName);

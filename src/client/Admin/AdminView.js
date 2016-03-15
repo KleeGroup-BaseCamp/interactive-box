@@ -99,7 +99,7 @@ var AdminView = React.createClass({
     }], quizzLaunched:undefined, h:100};
   },
   componentDidMount: function() {
-    this.socket = io("http://localhost:8080/admin");
+    this.socket = io("http://127.0.0.1:8080/admin");
     this.loadQuestionnariesFromServer();
     var t = this;
     var node = this.refs.heightListener.getDOMNode(); // TODO pas bien d'utiliser cette fonction
@@ -114,7 +114,7 @@ var AdminView = React.createClass({
   },
   render: function() {
       if(!this.socket){
-          this.socket = io("http://localhost:8080/admin");
+          this.socket = io("http://127.0.0.1:8080/admin");
       }
       if(!this.state.quizzLaunched){
           console.log(this.state.data);
