@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import Barchart from 'react-chartjs';
 import AdminView from './AdminView';
 import RaisedButton from 'material-ui/lib/raised-button';
@@ -59,10 +59,36 @@ var AdminQuestionnary = React.createClass({
         console.log("I emitted showBarChart");
     },
   	_renderWaitPage() {
-  		var startButton = <button className="index-button" onClick={this.incrementCounter}>Start !</button>;
-  		var waitMessage = <p> En attente de tous les utilisateurs ...</p>
+        
+        var buttonStyle = 
+            {
+                display: 'block',
+                marginLeft: 'auto',
+                marginRight: 'auto',
+                width: '50%',
+                marginTop:'10%'
+            };
+        var labelStyle = {
+            textTransform: 'none'
+        };
+        var startButton = <RaisedButton 
+                                label="Commencer le quizz" 
+                                onMouseDown={this.incrementCounter} 
+                                style={buttonStyle}
+                                disabled={!this.state.okToStart}
+                                labelStyle={labelStyle}/>
+  		var waitMessage = this.state.okToStart ? 
+            "Tous les utilisateurs sont prêts" :
+            "En attente de tous les utilisateurs";
+        var waitLabel = <p className="center-text"> {waitMessage} </p>
+        
         // TODO ajouter la proportion d'utilisateurs enregistrés
-  		return this.state.okToStart ? startButton : waitMessage;
+        
+  		return (<div>
+                    {waitLabel}
+                    {startButton}
+                </div>
+                );
 	},
 	_renderQuizzPage(){
 		var questionnary = this.props.questionnary;
@@ -133,7 +159,7 @@ var AdminQuestionnary = React.createClass({
 	    if(this.state.userType == undefined) {
             return(
 	        <div>
-	        	<h1>{this.props.questionnary.title}</h1>
+	        	<h1 className="index-title">{this.props.questionnary.title}</h1>
 	   			{content}
 	        </div>
 	    );
