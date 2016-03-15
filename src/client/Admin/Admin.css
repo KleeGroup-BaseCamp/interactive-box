@@ -35,3 +35,15 @@
     margin-top:5%;
     margin-bottom:5%;
 }
+
+.center-text{
+    text-align: center;
+}
+
+.center-button-container{
+    margin-left:auto;
+    margin-right:auto;
+    display: block;
+    text-align: center;
+    margin-top:5%;
+}

@@ -2,7 +2,7 @@ import React from 'react';
 import Barchart from 'react-chartjs';
 import AdminView from './AdminView';
 import RaisedButton from 'material-ui/lib/raised-button';
-
+import WaitPage from './WaitPage';
 
 var socket;
 var BarChart = require("react-chartjs").Bar;
@@ -12,6 +12,7 @@ const ADMIN2_TYPE = 'ADMIN2_TYPE';
 var colors = ['#607D8B', '#FF5722', '#795548', '#FF9800', '#FFC107', '#FFEB3B', '#CDDC39', '#8BC34A', '#4CAF50', '#009688', '#00BCD4', '#00BCD4', '#3F51B5', '#673AB7', '#9C27B0', '#E91E63', '#F44336']; 
 
 var AdminQuestionnary = React.createClass({
+    labelStyle: {textTransform: 'none'},
 	getInitialState: function(){
 		return {okToStart:false, questionIndex:-1}
 	},
@@ -60,10 +61,7 @@ var AdminQuestionnary = React.createClass({
         console.log("I emitted showBarChart");
     },
   	_renderWaitPage() {
-  		var startButton = <button className="index-button" onClick={this.incrementCounter}>Start !</button>;
-  		var waitMessage = <p> En attente de tous les utilisateurs ...</p>
-        // TODO ajouter la proportion d'utilisateurs enregistrés
-  		return this.state.okToStart ? startButton : waitMessage;
+        return (<WaitPage launchQuizz={this.incrementCounter} okToStart={this.state.okToStart}/>);
 	},
 	_renderQuizzPage(){
 		var questionnary = this.props.questionnary;
@@ -107,22 +105,54 @@ var AdminQuestionnary = React.createClass({
 					datasets: [{label: 'Resultats', data: initResults, fillColor: rand}]
 				};
             socket.emit("chartData", chartData);
-
+            var buttonStyle2 = {width:"60%"};
 			return (
 				<div>
-					<p className="question-title">{questionTitle}</p>
+					<p className="center-text medium-title">{questionTitle}</p>
 					<ul>
 						{answersNodes}
 					</ul>
-					<button className="index-button" onClick={this.incrementCounter}>Next</button>
-                    <button className="index-button" onClick={this.stopTime}>Stop Time</button>
-                    <button className="index-button" onClick={this.showBarChart}> Show Answers </button>
-					<Chart socket={socket} data={chartData} key={this.state.questionIndex}/>
+                    <div className="center-button-container">
+                        <RaisedButton
+                            label="Question suivante"
+                            buttonStyle={buttonStyle2}
+                            onMouseDown={this.incrementCounter}
+                            labelStyle={this.labelStyle}
+                        />
+                    </div>
+                    <div className="center-button-container">
+                        <RaisedButton
+                            label="Arrêter le chronomètre"
+                            buttonStyle={buttonStyle2}
+                            onMouseDown={this.stopTime}
+                            labelStyle={this.labelStyle}
+                        />
+                    </div>
+                    <div className="center-button-container">
+                        <RaisedButton
+                            label="Afficher les réponses"
+                            buttonStyle={buttonStyle2}
+                            onMouseDown={this.showBarChart}
+                            labelStyle={this.labelStyle}
+                        />
+                    </div>
+					<Chart
+                        socket={socket}
+                        data={chartData}
+                        key={this.state.questionIndex}
+                    />
 				</div>
 			);
 		} else {
 			socket.emit("end-questionnary");
-			return (<button className="index-button" onClick={this.returnToAdmin}> Lancer un nouveau quizz </button>);
+			return (
+                <RaisedButton
+                    buttonStyle={this.buttonStyle}
+                    label="Lancer un nouveau quizz"
+                    onMouseDown={this.returnToAdmin}
+                    labelStyle={this.labelStyle}
+                />
+            );
 		}
 	},
                     
@@ -135,7 +165,7 @@ var AdminQuestionnary = React.createClass({
 	    if(this.state.userType == undefined) {
             return(
 	        <div>
-	        	<h1>{this.props.questionnary.title}</h1>
+	        	<h1 className="index-title medium-title">{this.props.questionnary.title}</h1>
 	   			{content}
 	        </div>
 	    );
