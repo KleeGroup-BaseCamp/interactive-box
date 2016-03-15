@@ -26,83 +26,13 @@ var AdminView = React.createClass({
     });
   },
   getInitialState: function() {
-    return {data: [{
-        "title":"Présentation Klee Group",
-        "id":1,
-        "author":"Interactive Box Team",
-        "questions":[
-            {
-                "qid":1,
-                "text":"Quelle est la part de développement que vous envisagez pour votre stage?",
-                "answers": ["1.1","1.2", "1.3" ],
-                "time":12
-                        },
-            
-             {
-                "qid":2,
-                "text":"Préférez-vous rencontrer des opérationnels ou des RH?",
-                "answers":["2.1", "2.2", "2.3"],
-                "time":15
-                },   
-            {
-                "qid":3,
-                "text": "Combien souhaiteraient postuler pour un stage de fin d'études?",
-                "answers":["3.1", "3.2", "3.3"],
-                "time":25
-            }
-            ],
-        "answers":[ {
-                            "rid":"1.1",
-                            "label":"0%",
-                            "correct":false
-                        },
-                        {
-                            "rid":"1.2",
-                            "label":"40-60%",
-                            "correct":false
-                        },
-                        {
-                            "rid":"1.3",
-                            "label":"90-100%",
-                            "correct":false
-                        },
-                        {
-                            "rid":"2.1",
-                            "label":"Opérationnels",
-                            "correct":false
-                        },
-                        {
-                            "rid":"2.2",
-                            "label":"Les 2 en même temps",
-                            "correct":false
-                        },
-                        {
-                            "rid":"2.3",
-                            "label":"RH",
-                            "correct":false
-                        },
-                        {
-                            "rid":"3.1",
-                            "label":"Je veux postuler",
-                            "correct":false
-                        },
-                        {
-                            "rid":"3.2",
-                            "label":"J'hésite à postuler",
-                            "correct":false
-                        },
-                        {
-                            "rid":"3.3",
-                            "label":"Je ne suis pas intéressé(e)",
-                            "correct":false
-                        }]
-    }], quizzLaunched:undefined, h:100};
+    return {data: [], quizzLaunched:undefined, h:100};
   },
   componentDidMount: function() {
     this.socket = io("http://localhost:8080/admin");
     this.loadQuestionnariesFromServer();
     var t = this;
-    var node = this.refs.heightListener.getDOMNode(); // TODO pas bien d'utiliser cette fonction
+    var node = this.refs.heightListener.getDOMNode(); // TODO pas bien d'utiliser cette fonction, enfin il parrait
     window.addEventListener("resize", function(e){
         t.setState({h:node.offsetHeight});  
     });
@@ -125,7 +55,7 @@ var AdminView = React.createClass({
                 addMessage="add-user-name"
                 removeMessage="remove-user-name"
                 fixCountMessage="fix-count"/>
-            <h1 className="index-title-little">Quel questionnaire lancer ?</h1>
+            <h1 className="index-title-little">Choisissez un questionnaire à lancer ?</h1>
             <br></br>
             <ScrollableQuestionaryList2 data={this.state.data} launchQuizz={this.launchQuizz} height={this.state.h*5/10}/>
           </div>
