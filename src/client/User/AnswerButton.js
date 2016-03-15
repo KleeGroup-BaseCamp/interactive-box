@@ -64,6 +64,8 @@ var AnswerButton = React.createClass({
                     style={buttonStyle} 
                     className={className} 
                     labelStyle={labelStyle}
+                    disabled={this.state.mode != CLICKABLE}
+                    disabledBackgroundColor={this.state.mode == LOCKED ? 'lightgrey' : backgroundColor}
                     backgroundColor={backgroundColor}/>
             </div>
         );
