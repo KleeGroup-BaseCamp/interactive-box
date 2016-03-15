@@ -2,7 +2,7 @@ import React from 'react';
 import Barchart from 'react-chartjs';
 import AdminView from './AdminView';
 import RaisedButton from 'material-ui/lib/raised-button';
-
+import WaitPage from './WaitPage';
 
 var socket;
 var BarChart = require("react-chartjs").Bar;
@@ -59,36 +59,7 @@ var AdminQuestionnary = React.createClass({
         console.log("I emitted showBarChart");
     },
   	_renderWaitPage() {
-        
-        var buttonStyle = 
-            {
-                display: 'block',
-                marginLeft: 'auto',
-                marginRight: 'auto',
-                width: '50%',
-                marginTop:'10%'
-            };
-        var labelStyle = {
-            textTransform: 'none'
-        };
-        var startButton = <RaisedButton 
-                                label="Commencer le quizz" 
-                                onMouseDown={this.incrementCounter} 
-                                style={buttonStyle}
-                                disabled={!this.state.okToStart}
-                                labelStyle={labelStyle}/>
-  		var waitMessage = this.state.okToStart ? 
-            "Tous les utilisateurs sont prêts" :
-            "En attente de tous les utilisateurs";
-        var waitLabel = <p className="center-text"> {waitMessage} </p>
-        
-        // TODO ajouter la proportion d'utilisateurs enregistrés
-        
-  		return (<div>
-                    {waitLabel}
-                    {startButton}
-                </div>
-                );
+        return (<WaitPage launchQuizz={this.incrementCounter} okToStart={this.state.okToStart}/>);
 	},
 	_renderQuizzPage(){
 		var questionnary = this.props.questionnary;
