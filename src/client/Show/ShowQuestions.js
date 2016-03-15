@@ -11,7 +11,11 @@ var Answers = React.createClass({
 
     getInitialState: function(){
         
-        return {questionLabel: undefined, answersLabels:[], selectedAnswer:undefined, timeOut:false, time:30, showChart:false, qaCount:1, aCount:-1};
+        return {questionLabel: undefined, answersLabels:[], selectedAnswer:undefined, timeOut:false, time:30, showChart:false, qaCount:1, aCount:-1, chartData:
+{
+                    labels: ["Bla", "Bla", "Bla"],
+                    datasets: [{label: 'Resultats', data: []}]
+                }};
     },
     componentDidMount: function(){
         var t  = this;
@@ -32,8 +36,13 @@ var Answers = React.createClass({
                         timeOut:false, 
                         showChart:false, 
                         chartData:firstChartData});
-            this.setState({qaCount: this.state.qaCount +  1});
-            this.setState({aCount: -1});
+            t.setState({qaCount: t.state.qaCount +  1});
+            t.setState({aCount: -1});
+            console.log("this is after i received a question");
+            console.log("aCount: ");
+            console.log(t.state.aCount)
+            console.log("qaCount: ");
+            console.log(t.state.qaCount);
         });
         socket.on("end-time", function(){
             t.setState({timeOut:true});
@@ -47,8 +56,14 @@ var Answers = React.createClass({
         
         socket.on("chartData", function(newData){
             console.log("i received chartData");
-            this.setState({qaCount: this.state.qaCount + 1});
+            //t.setState({qaCount: t.state.qaCount + 1});
+            t.setState({aCount:t.state.aCount + 1})
             t.setState({chartData:newData});
+            console.log('this is after I received charData');
+            console.log("aCount: ");
+            console.log(t.state.aCount);
+            console.log("qaCount: ");
+            console.log(t.state.qaCount);
 
         });
         
