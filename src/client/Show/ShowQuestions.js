@@ -8,11 +8,10 @@ var answersLabels=[];
 
 var Answers = React.createClass({
     //To DO: define initial arrays for chart
-    aCount:-1,
-    qaCount:1,
+
     getInitialState: function(){
         
-        return {questionLabel: undefined, answersLabels:[], selectedAnswer:undefined, timeOut:false, time:30, showChart:false, aCount:-1};
+        return {questionLabel: undefined, answersLabels:[], selectedAnswer:undefined, timeOut:false, time:30, showChart:false, qaCount:1, aCount:-1};
     },
     componentDidMount: function(){
         var t  = this;
@@ -33,8 +32,8 @@ var Answers = React.createClass({
                         timeOut:false, 
                         showChart:false, 
                         chartData:firstChartData});
-            t.qaCount++;
-            t.aCount= -1;
+            this.setState({qaCount: this.state.qaCount +  1});
+            this.setState({aCount: -1});
         });
         socket.on("end-time", function(){
             t.setState({timeOut:true});
@@ -48,7 +47,7 @@ var Answers = React.createClass({
         
         socket.on("chartData", function(newData){
             console.log("i received chartData");
-            t.aCount++;
+            this.setState({qaCount: this.state.qaCount + 1});
             t.setState({chartData:newData});
 
         });
@@ -69,7 +68,7 @@ var Answers = React.createClass({
         	return(<li><Answer label={label}/></li>);
         });
         var answersIds = answersLabels.length;
-        var nombre = this.aCount/this.qaCount;
+        var nombre = this.state.aCount/this.state.qaCount;
 		return(
 			<div className="middle-content">
                 <h1 className="index-title">{this.state.questionLabel} </h1>
