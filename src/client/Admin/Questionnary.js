@@ -9,6 +9,7 @@ var BarChart = require("react-chartjs").Bar;
 
 const ADMIN2_TYPE = 'ADMIN2_TYPE';
 
+var colors = ['#607D8B', '#FF5722', '#795548', '#FF9800', '#FFC107', '#FFEB3B', '#CDDC39', '#8BC34A', '#4CAF50', '#009688', '#00BCD4', '#00BCD4', '#3F51B5', '#673AB7', '#9C27B0', '#E91E63', '#F44336']; 
 
 var AdminQuestionnary = React.createClass({
     labelStyle: {textTransform: 'none'},
@@ -97,10 +98,11 @@ var AdminQuestionnary = React.createClass({
 
 		    var numberOfAnswers = answersIds.length;
 			var initResults = this.zeroArray(numberOfAnswers);
+            var rand = colors[Math.floor(Math.random() * colors.length)];
 			var chartData = 
 				{
 					labels: answersLabels,
-					datasets: [{label: 'Resultats', data: initResults}]
+					datasets: [{label: 'Resultats', data: initResults, fillColor: rand}]
 				};
             socket.emit("chartData", chartData);
             var buttonStyle2 = {width:"60%"};
@@ -189,6 +191,16 @@ var Chart = React.createClass({
 		var t = this;
         console.log("chart mounted");
         console.log(t.state.data);
+        for (var i = 0; i<this.props.data.labels.length;i++) {
+            var newData = this.props.data;
+            var label = this.props.data.labels[i];
+            console.log(label);
+            var TruncatedLabel = label.substring(0,10);
+            newData.labels[i]=TruncatedLabel;
+            this.setState({data: newData});
+    // d'autres instructions
+}
+            
 		socket.on("answer", function(indexOfAnswer){
 			var newData = t.state.data;
 	        newData.datasets[0].data[indexOfAnswer]++; 

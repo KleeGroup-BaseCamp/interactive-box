@@ -34,7 +34,7 @@ var LoginBox = React.createClass({
     componentDidMount: function(){
         var t = this;
         ReactDOM.findDOMNode(this.refs.inputPseudo).focus(); 
-        socket  = io("http://localhost:8080/user");
+        socket  = io("http://127.0.0.1:8080/user");
         socket.on("loginValid", function(){
             t._setUserToRoom();
         });

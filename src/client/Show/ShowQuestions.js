@@ -1,17 +1,21 @@
 import React from 'react';
-import Barchart from 'react-chartjs';
-import CountdownTimer from "../Utils/CountdownTimer"
+
+import CountdownTimer from "../Utils/CountdownTimer";
+import './ShowQuestionsStyle.css';
 
 var BarChart = require("react-chartjs").Bar;
 var answersLabels=[];
 
 var Answers = React.createClass({
     //To DO: define initial arrays for chart
-    aCount:-1,
-    qaCount:1,
+
     getInitialState: function(){
         
-        return {questionLabel: undefined, answersLabels:[], selectedAnswer:undefined, timeOut:false, time:30, showChart:false, aCount:-1};
+        return {questionLabel: undefined, answersLabels:[], selectedAnswer:undefined, timeOut:false, time:30, showChart:false, qaCount:1, aCount:-1, chartData:
+{
+                    labels: ["Bla", "Bla", "Bla"],
+                    datasets: [{label: 'Resultats', data: []}]
+                }};
     },
     componentDidMount: function(){
         var t  = this;
@@ -32,8 +36,13 @@ var Answers = React.createClass({
                         timeOut:false, 
                         showChart:false, 
                         chartData:firstChartData});
-            t.qaCount++;
-            t.aCount= -1;
+            t.setState({qaCount: t.state.qaCount +  1});
+            t.setState({aCount: -1});
+            console.log("this is after i received a question");
+            console.log("aCount: ");
+            console.log(t.state.aCount)
+            console.log("qaCount: ");
+            console.log(t.state.qaCount);
         });
         socket.on("end-time", function(){
             t.setState({timeOut:true});
@@ -47,9 +56,14 @@ var Answers = React.createClass({
         
         socket.on("chartData", function(newData){
             console.log("i received chartData");
-            t.aCount++;
-            console.log(this.aCount);
+            //t.setState({qaCount: t.state.qaCount + 1});
+            t.setState({aCount:t.state.aCount + 1})
             t.setState({chartData:newData});
+            console.log('this is after I received charData');
+            console.log("aCount: ");
+            console.log(t.state.aCount);
+            console.log("qaCount: ");
+            console.log(t.state.qaCount);
 
         });
         
@@ -69,11 +83,7 @@ var Answers = React.createClass({
         	return(<li><Answer label={label}/></li>);
         });
         var answersIds = answersLabels.length;
-        var nombre = this.aCount/this.qaCount;
-        //console.log("time au niveau du json: " + this.state.time);
-        //La propriété key permet de relancer le compteur à chaque fois
-        //C'est un peu sale, à voir si on peut pas faire une key correspondent à l'index de la question plutôt
-        //TODO remplacer par un truc random
+        var nombre = this.state.aCount/this.state.qaCount;
 		return(
 			<div className="middle-content">
                 <h1 className="index-title">{this.state.questionLabel} </h1>
@@ -89,7 +99,10 @@ var Answers = React.createClass({
     _renderBarChart(){
         var socket = this.props.socket;
         return(
-            <Chart socket={socket} data={this.state.chartData} key={this.state.questionLabel} />
+            <div className="barchart">
+            <Chart className="barchart" socket={socket} data={this.state.chartData} key={this.state.questionLabel}/>
+            
+            </div>
         );
     },
     
@@ -115,13 +128,15 @@ var Answer = React.createClass({
         );
 	}
 });
-          
+
+
 var Chart = React.createClass({
 	getInitialState: function(){
 		var t = this;
 		return({data:t.props.data});
 	}, 
 	componentDidMount: function(){
+        
 		var t = this;
         console.log("Chart did mount");
         console.log(t.state.data);
@@ -135,7 +150,10 @@ var Chart = React.createClass({
         });
 	},
 	render: function(){
-		return <BarChart data = {this.state.data}/>;
+		return (<div>
+                <BarChart data = {this.state.data}/>
+               </div>
+               );
 	}
 });
 
