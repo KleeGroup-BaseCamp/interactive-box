@@ -140,8 +140,6 @@ var Chart = React.createClass({
 		var t = this;
         console.log("Chart did mount");
         console.log(t.state.data);
-
-        
         this.props.socket.on("chartData", function(newData){
             console.log("i received chartData");
             console.log(newData);
