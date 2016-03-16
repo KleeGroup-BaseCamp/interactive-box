@@ -24,6 +24,31 @@ body{
     background-color: rgba(255, 255, 255, 0);
 }
 
+.red{
+    color:#f83030;
+}
+
+.centered{
+    text-align: center;
+}
+
+.little{
+    font-size:4vmin;
+}
+
+.medium{
+    font-size:6vmin;
+}
+
+.big{
+    font-size:8vmin;
+}
+
+.padding6{
+    padding-top:3vh;
+    padding-bottom:3vh;
+}
+
 .medium-title{
     font-size:6vmin;
 }

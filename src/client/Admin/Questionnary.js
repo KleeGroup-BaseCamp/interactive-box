@@ -106,7 +106,7 @@ var AdminQuestionnary = React.createClass({
             var buttonStyle2 = {width:"60%"};
 			return (
 				<div>
-					<p className="center-text medium-title">{questionTitle}</p>
+					<p className="centered big padding6">{questionTitle}</p>
 					<ul>
 						{answersNodes}
 					</ul>
@@ -163,7 +163,7 @@ var AdminQuestionnary = React.createClass({
 	    if(this.state.userType == undefined) {
             return(
 	        <div>
-	        	<h1 className="index-title medium-title">{this.props.questionnary.title}</h1>
+	        	<h1 className="red little centered padding6">{this.props.questionnary.title}</h1>
 	   			{content}
 	        </div>
 	    );
