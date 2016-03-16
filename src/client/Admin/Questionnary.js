@@ -108,8 +108,8 @@ var AdminQuestionnary = React.createClass({
             var buttonStyle2 = {width:"60%"};
 			return (
 				<div>
-					<p className="centered big padding6">{questionTitle}</p>
-					<ul>
+					<p className="centered medium padding6">{questionTitle}</p>
+					<ul className="centered padding6">
 						{answersNodes}
 					</ul>
                     <div className="center-button-container">

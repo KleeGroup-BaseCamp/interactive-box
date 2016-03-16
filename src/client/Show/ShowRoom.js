@@ -53,7 +53,7 @@ var RoomiesList = React.createClass({
 	},
 	componentDidMount: function() {
 		var t = this;
-        socket = io("http://127.0.0.1:8080/showRoom");
+        socket = io("/showRoom");
 		socket.on("userName", function(userName){
             console.log("Received : " + userName);
             t.addElement(userName);
