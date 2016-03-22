@@ -4,6 +4,11 @@ import { VirtualScroll } from 'react-virtualized';
 import QuestionnaryButton from './QuestionnaryButton';
 import 'react-virtualized/styles.css';
 import "./ScrollableQuestionaryList.css"
+import List from 'material-ui/lib/lists/list';
+import ListItem from 'material-ui/lib/lists/list-item';
+import {SelectableContainerEnhance} from 'material-ui/lib/hoc/selectable-enhance';
+let SelectableList = SelectableContainerEnhance(List);
+
 var ScrollableQuestionaryList = React.createClass({
 
     _noRowsRenderer : function() {
@@ -12,48 +17,55 @@ var ScrollableQuestionaryList = React.createClass({
                 <p>Aucun questionnaire chargé</p>
             </div>
         )
-    },                                 
+    }, 
+    
+    
+    
+    
                                                   
-    _rowRenderer : function(index) {
-        var quest = this.props.data[index];
+        /*
+                <QuestionnaryButton title={quest.title} key={quest.id} author={quest.author} questionCount={count} id={quest.id} launchQuizz = {launchQuest}/>
+            </div>
+               );*/
+    
+    
+    render: function() {
+        
+         var quest = this.props.data[0];
         console.log(this.props.data);
         var t = this;
         var launchQuest = function(){
             t.props.launchQuizz(quest);
         }
         //return quest.title;
-        var label = quest.title;
-        var count = quest.questions.length;
-        var countLabel = count == 1 ? "question" : "questions";
-        return (<div className="row" onClick={launchQuest}>
-                <div>
-                    <p className="quest-title">{label}</p>
+        
+        var i = -1;
+        var data = this.props.data;
+        var questTitles = this.props.data.map(function(title) {
+            i++;
+            var launchQuest = function(){
+            t.props.launchQuizz(questi);
+        };
+            var questi=data[i]
+            var count = questi.questions.length;
+            var countLabel = count == 1 ? "question" : "questions";
+            var label = count + " " + countLabel;
+	       return(
+		        	<ListItem value = {1} primaryText={<div>
+                    <p className="quest-title">{questi.title}</p>
                 
                     <p className="quest-count">{count} {countLabel}</p>
-                </div>
-                </div>
+                </div>} onClick={launchQuest} >
+		            </ListItem>);
+	        });
+        return (
+            <SelectableList value={3}>
+            {questTitles}
+        </SelectableList>
                );
-        /*
-                <QuestionnaryButton title={quest.title} key={quest.id} author={quest.author} questionCount={count} id={quest.id} launchQuizz = {launchQuest}/>
-            </div>
-               );*/
-    },
-    
-    render: function() {
-        return(
-            <div>
-                <VirtualScroll 
-                   className="scroll-list"
-                   noRowsRenderer={this._noRowsRenderer}
-                   height={this.props.height}
-                   rowsCount={this.props.data.length}
-                   rowHeight={Math.min(100, this.props.height/4)}
-                   rowRenderer={this._rowRenderer}/>
-            </div>
-        );
+        
     }, 
     
-   
 });
 
 export default ScrollableQuestionaryList;

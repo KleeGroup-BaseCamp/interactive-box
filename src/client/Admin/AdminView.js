@@ -4,7 +4,7 @@ import $ from 'jquery';
 
 import AdminQuestionnary from './Questionnary';
 import QuestionnaryButtonsList from './QuestionnaryButtonsList'
-import ScrollableQuestionaryList2 from './ScrollableQuestionaryList2'
+import ScrollableQuestionaryList from './ScrollableQuestionaryList'
 import "./Admin.css"
 import SimpleCounter from '../Utils/SimpleCounter'
 
@@ -54,7 +54,7 @@ var AdminView = React.createClass({
                         removeMessage="remove-user-name"/>
                     <h1 className="index-title-little">Choisissez un questionnaire à lancer ?</h1>
                     <br></br>
-                    <ScrollableQuestionaryList2 data={this.state.data} launchQuizz={this.launchQuizz} height={this.state.h*5/10}/>
+                    <ScrollableQuestionaryList data={this.state.data} launchQuizz={this.launchQuizz} height={this.state.h*5/10}/>
                 </div>
             );
         } else {
