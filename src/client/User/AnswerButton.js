@@ -1,5 +1,6 @@
 import React from 'react';
 import RaisedButton from 'material-ui/lib/raised-button';
+var ReactFitText = require('react-fittext');
 
 //Modes d'affichage du bouton
 const CLICKABLE = "clickable";
@@ -52,7 +53,7 @@ var AnswerButton = React.createClass({
                 height: heightPercentText, 
             };
         var labelStyle = {
-            fontSize: '5vmin', 
+            fontSize: '200%', 
             textTransform: 'none',
             verticalAlign: 'middle',
         };

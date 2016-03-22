@@ -24,7 +24,7 @@ const buttonLabelStyle = {
 }
 
 var AdminQuestionnary = React.createClass({
-    labelStyle: {textTransform: 'none'},
+    labelStyle: {textTransform: 'none', fontSize: '150%', textAlign: 'centered'},
 	getInitialState: function(){
 		return {okToStart:false, questionIndex:-1}
 	},
@@ -94,15 +94,6 @@ var AdminQuestionnary = React.createClass({
             var datashow = {answers:answersLabels, time:time, question: questionTitle};
 	        socket.emit("question", data);
             socket.emit("question-show", datashow);
-//	        var answersNodes = answersLabelsCorrect.map(function(labelCorrect) {
-//                var className = "answer-node " + (labelCorrect.correct ? "true" : "false");
-//	        	return(
-//		        	<li className={className}>
-//		                <p>{labelCorrect.label} </p>
-//		            </li>);
-//	        });
-
-	        //CHART DATA
 
 		    var numberOfAnswers = answersIds.length;
 			var initResults = this.zeroArray(numberOfAnswers);
@@ -113,6 +104,13 @@ var AdminQuestionnary = React.createClass({
 					datasets: [{label: 'Resultats', data: initResults, fillColor: rand}]
 				};
             socket.emit("chartData", chartData);
+            var buttonStyle = {
+                width:"60%",
+                display: 'block',
+                marginLeft: 'auto',
+                marginRight: 'auto',
+                width: '50%',
+                marginTop:'10%'};
             var buttonStyle2 = {width:"100%", display:"block", padding:'0px'};
             var centerStyle = {textAlign:'center'};
             var divStyle = {width:"100%", display:"block", padding:'0px', marginTop:"3%"};
