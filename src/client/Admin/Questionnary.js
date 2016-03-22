@@ -3,6 +3,7 @@ import Barchart from 'react-chartjs';
 import AdminView from './AdminView';
 import RaisedButton from 'material-ui/lib/raised-button';
 import WaitPage from './WaitPage';
+import AdminAnswers from './AdminAnswers';
 
 var socket;
 var BarChart = require("react-chartjs").Bar;
@@ -10,6 +11,7 @@ var BarChart = require("react-chartjs").Bar;
 const ADMIN2_TYPE = 'ADMIN2_TYPE';
 
 var colors = ['#607D8B', '#FF5722', '#795548', '#FF9800', '#FFC107', '#FFEB3B', '#CDDC39', '#8BC34A', '#4CAF50', '#009688', '#00BCD4', '#00BCD4', '#3F51B5', '#673AB7', '#9C27B0', '#E91E63', '#F44336']; 
+
 
 var AdminQuestionnary = React.createClass({
     labelStyle: {textTransform: 'none'},
@@ -86,13 +88,13 @@ var AdminQuestionnary = React.createClass({
             var datashow = {answers:answersLabels, time:time, question: questionTitle};
 	        socket.emit("question", data);
             socket.emit("question-show", datashow);
-	        var answersNodes = answersLabelsCorrect.map(function(labelCorrect) {
-                var className = "answer-node " + (labelCorrect.correct ? "true" : "false");
-	        	return(
-		        	<li className={className}>
-		                <p>{labelCorrect.label} </p>
-		            </li>);
-	        });
+//	        var answersNodes = answersLabelsCorrect.map(function(labelCorrect) {
+//                var className = "answer-node " + (labelCorrect.correct ? "true" : "false");
+//	        	return(
+//		        	<li className={className}>
+//		                <p>{labelCorrect.label} </p>
+//		            </li>);
+//	        });
 
 	        //CHART DATA
 
@@ -108,10 +110,8 @@ var AdminQuestionnary = React.createClass({
             var buttonStyle2 = {width:"60%"};
 			return (
 				<div>
-					<p className="centered big padding6">{questionTitle}</p>
-					<ul>
-						{answersNodes}
-					</ul>
+					<p className="centered medium padding6">{questionTitle}</p>
+                    <AdminAnswers answersLabelsCorrect={answersLabelsCorrect}/>
                     <div className="center-button-container">
                         <RaisedButton
                             label="Question suivante"
