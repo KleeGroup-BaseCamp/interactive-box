@@ -209,5 +209,120 @@
                             "correct":true
                         }
                   ]
+    },
+    {
+        "title":"Quizz Centrale",
+        "id":1,
+        "author":"Interactive Box Team",
+        "questions":[
+            {
+                "qid":1,
+                "text":"En quelle année a été fondée l'Ecole Centrale Paris ?",
+                "answers": ["1.1","1.2", "1.3" ],
+                "time":10
+                        },
+            
+             {
+                "qid":2,
+                "text":"Quel est le nom officiel de l'Ecole Centrale Paris ?",
+                "answers":["2.1", "2.2", "2.3"],
+                "time":10
+                },   
+            {
+                "qid":3,
+                "text": "Autrefois comment était appelé les anciens Centraliens ?",
+                "answers":["3.1", "3.2", "3.3"],
+                "time":10
+            },
+            {
+                "qid":4,
+                "text": "Quel est le symbole historique de Centrale Paris ?",
+                "answers":["4.1", "4.2", "4.3"],
+                "time":10
+            },
+            {
+                "qid":5,
+                "text": "Quel président de la République a inauguré le campus de Châtenay ?",
+                "answers":["5.1", "5.2", "5.3"],
+                "time":10
+            }
+            ],
+        "answers":[ 
+                        {
+                            "rid":"1.1",
+                            "label":"1854",
+                            "correct":false
+                        },
+                        {
+                            "rid":"1.2",
+                            "label":"1829",
+                            "correct":true
+                        },
+                        {
+                            "rid":"1.3",
+                            "label":"1842",
+                            "correct":false
+                        },
+                        {
+                            "rid":"2.1",
+                            "label":"Ecole Centrale des Arts et Manufacture",
+                            "correct":true
+                        },
+                        {
+                            "rid":"2.2",
+                            "label":"Ecole Centrale de Paris",
+                            "correct":false
+                        },
+                        {
+                            "rid":"2.3",
+                            "label":"Ecole Centrale des Arts Industriels",
+                            "correct":false
+                        },
+                        {
+                            "rid":"3.1",
+                            "label":"Les pistons",
+                            "correct":true
+                        },
+                        {
+                            "rid":"3.2",
+                            "label":"Les cylindres",
+                            "correct":false
+                        },
+                        {
+                            "rid":"3.3",
+                            "label":"Les soupapes",
+                            "correct":false
+                        },
+                        {
+                            "rid":"4.1",
+                            "label":"La coccinelle",
+                            "correct":false
+                        },
+                        {
+                            "rid":"4.2",
+                            "label":"L'araignée",
+                            "correct":false
+                        },
+                        {
+                            "rid":"4.3",
+                            "label":"L'abeille",
+                            "correct":true
+                        },
+                        {
+                            "rid":"5.1",
+                            "label":"François Mitterand",
+                            "correct":false
+                        },
+                        {
+                            "rid":"5.2",
+                            "label":"Georges Pompidou",
+                            "correct":true
+                        },
+                        {
+                            "rid":"5.3",
+                            "label":"Valéry Giscard d'Estaing",
+                            "correct":false
+                        }
+                  ]
     }
 ]
