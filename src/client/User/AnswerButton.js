@@ -53,7 +53,8 @@ var AnswerButton = React.createClass({
             };
         var labelStyle = {
             fontSize: '5vmin', 
-            textTransform: 'none'
+            textTransform: 'none',
+            verticalAlign: 'middle',
         };
 	 	return(
             <div>

@@ -26,7 +26,6 @@ var AdminQuestionnary = React.createClass({
 		});
 		socket.emit("launch-quizz", this.props.questionnary.qid);
 		socket.on("answer", function(indexOfAnswer){
-			console.log("Receivend answer " + indexOfAnswer);
 		});
         socket.on("end-time-request", function(){
             t.stopTime();
