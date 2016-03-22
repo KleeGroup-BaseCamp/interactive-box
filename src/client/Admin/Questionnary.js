@@ -14,6 +14,14 @@ const ADMIN2_TYPE = 'ADMIN2_TYPE';
 
 var colors = ['#607D8B', '#FF5722', '#795548', '#FF9800', '#FFC107', '#FFEB3B', '#CDDC39', '#8BC34A', '#4CAF50', '#009688', '#00BCD4', '#00BCD4', '#3F51B5', '#673AB7', '#9C27B0', '#E91E63', '#F44336']; 
 
+const titleStyle = {
+    paddingTop:'3%',
+    fontSize:'5vmin', 
+};
+
+const buttonLabelStyle = {
+    fontSize:'5vmin'
+}
 
 var AdminQuestionnary = React.createClass({
     labelStyle: {textTransform: 'none'},
@@ -50,19 +58,16 @@ var AdminQuestionnary = React.createClass({
 	        	for (var k = 0; k<answersObjects.length; k++){
 	                if (answersObjects[k].rid == answersIds[i]){
                         if(answersObjects[k].correct){
-                            console.log("Correct :" + i);
                             arrayOfGoodAnswers.push(i);
                         }
 	                }
 	            }
 	        }
         }
-        console.log(arrayOfGoodAnswers);
         socket.emit("end-time", arrayOfGoodAnswers);  
     },
     showBarChart: function(){
         socket.emit("showBarChart");
-        console.log("I emitted showBarChart");
     },
   	_renderWaitPage() {
         return (<WaitPage launchQuizz={this.incrementCounter} okToStart={this.state.okToStart}/>);
@@ -87,7 +92,6 @@ var AdminQuestionnary = React.createClass({
 	        }
             var time = question.time || 10;
             var data = {answers:answersLabels, time:time, question: questionTitle};
-            console.log(data);
             var datashow = {answers:answersLabels, time:time, question: questionTitle};
 	        socket.emit("question", data);
             socket.emit("question-show", datashow);
@@ -110,39 +114,41 @@ var AdminQuestionnary = React.createClass({
 					datasets: [{label: 'Resultats', data: initResults, fillColor: rand}]
 				};
             socket.emit("chartData", chartData);
-            var buttonStyle2 = {width:"100%", display:"block"};
-            var centerStyle = {textAlign:'center', marginTop:"5%"};
-            var divStyle = {width:"33%", marginLeft:'auto', marginRight:'auto', display:'inline-block'};
+            var buttonStyle2 = {width:"100%", display:"block", padding:'0px'};
+            var centerStyle = {textAlign:'center'};
+            var divStyle = {width:"100%", display:"block", padding:'0px', marginTop:"3%"};
 			return (
 				<div>
-					<p className="centered medium padding6">{questionTitle}</p>
+					<p className="centered little padding6">{questionTitle}</p>
                     <AdminAnswers answersLabelsCorrect={answersLabelsCorrect}/>
-                    <div style={centerStyle}>
-                        <div style={divStyle}>
-                            <RaisedButton
-                                label="Question suivante"
-                                buttonStyle={buttonStyle2}
-                                onMouseDown={this.incrementCounter}
-                                labelStyle={this.labelStyle}
-                            />
-                        </div>
-                        <div style={divStyle}>
-                            <RaisedButton
-                                label="Arrêter le chronomètre"
-                                buttonStyle={buttonStyle2}
-                                onMouseDown={this.stopTime}
-                                labelStyle={this.labelStyle}
-                        />
-                        </div>
-                        <div style={divStyle}>
-                            <RaisedButton
-                                label="Afficher les réponses"
-                                buttonStyle={buttonStyle2}
-                                onMouseDown={this.showBarChart}
-                                labelStyle={this.labelStyle}
-                        />
-                        </div>
-                    </div>
+                    <table style={divStyle}>
+                        <tr>
+                            <td style={centerStyle}>
+                                <RaisedButton
+                                    label="Question suivante"
+                                    buttonStyle={buttonStyle2}
+                                    onMouseDown={this.incrementCounter}
+                                    labelStyle={this.labelStyle}
+                                />
+                            </td>
+                            <td style={centerStyle}>
+                                <RaisedButton
+                                    label="Arrêter le chronomètre"
+                                    buttonStyle={buttonStyle2}
+                                    onMouseDown={this.stopTime}
+                                    labelStyle={this.labelStyle}
+                                />
+                            </td>
+                            <td style={centerStyle}>
+                                <RaisedButton
+                                    label="Afficher les réponses"
+                                    buttonStyle={buttonStyle2}
+                                    onMouseDown={this.showBarChart}
+                                    labelStyle={this.labelStyle}
+                                />
+                            </td>
+                        </tr>   
+                    </table>
 					<Chart
                         socket={socket}
                         data={chartData}
@@ -172,7 +178,7 @@ var AdminQuestionnary = React.createClass({
 	    if(this.state.userType == undefined) {
             return(
 	        <div>
-	        	<h1 className="red little centered padding6">{this.props.questionnary.title}</h1>
+	        	<h1 style={titleStyle} className="red centered">{this.props.questionnary.title}</h1>
 	   			{content}
 	        </div>
 	    );
@@ -196,12 +202,9 @@ var Chart = React.createClass({
 	componentDidMount: function(){
 		var socket = this.props.socket;
 		var t = this;
-        console.log("chart mounted");
-        console.log(t.state.data);
         for (var i = 0; i<this.props.data.labels.length;i++) {
             var newData = this.props.data;
             var label = this.props.data.labels[i];
-            console.log(label);
             var TruncatedLabel = label.substring(0,10);
             newData.labels[i]=TruncatedLabel;
             this.setState({data: newData});
@@ -213,12 +216,10 @@ var Chart = React.createClass({
 	        newData.datasets[0].data[indexOfAnswer]++; 
 	        t.setState({data: newData});
             socket.emit("chartData", t.state.data);
-            console.log("i emitted chartdata");
-            console.log(t.state.data);
 		});
 	},
 	render: function(){
-        var centerChartStyle = {marginLeft:'auto', marginRight:'auto', display:'block', width:'80%', height:'20%'};
+        var centerChartStyle = {marginLeft:'auto', marginRight:'auto', display:'block', width:'80%', height:'40%', marginTop:'3%'};
 		return <BarChart data = {this.state.data}
                                 style={centerChartStyle}
                         className="coucoucouc"/>;

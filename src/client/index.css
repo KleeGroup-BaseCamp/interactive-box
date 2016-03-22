@@ -12,6 +12,9 @@ body{
 
 .middle-content{
     height:80%;
+    max-width: 800px;
+    margin-left:auto;
+    margin-right:auto;
 }
 
 .index-title, .index-title-little{
@@ -30,6 +33,10 @@ body{
 
 .centered{
     text-align: center;
+}
+
+.tiny{
+    font-size:2vmin;
 }
 
 .little{
