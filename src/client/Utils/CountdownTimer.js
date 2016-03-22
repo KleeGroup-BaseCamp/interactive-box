@@ -10,30 +10,21 @@ var PieChart = require("react-chartjs").Pie;
 var CountdownTimer = React.createClass({
 
     duree: 10,
-    chartOptions:{animationEasing: "easeOutCirc"},
+    chartOptions:{animation: false},
    
     
     getInitialState: function() {
         this.duree = Number(this.props.duration);
-        console.log("coucou");
-        /*this.setState({ data:[{
-            value: 10,
-            color:"#F7464A",
-            highlight:"#FF5A5E",
-            label:"RED"
-            }
-        ]});*/
+       
         return {data: [{
                 value: 10,
                 color:"#F7464A",
                 highlight:"#FF5A5E",
-                label:"RED"
             },
             {
                 value: 0,
                 color:"#FFEEEE",
                 highlight:"#ABABAB",
-                label:"BLUE"
             }
         ]};
     },
@@ -44,11 +35,7 @@ var CountdownTimer = React.createClass({
         
         this.interval = setInterval(this.tick, 1000);
     },
-     /*componentWillReceiveProps: function(nextProps){
-        if(nextProps.secondsRemaining == 0){
-            this.setState({secondsRemaining:nextProps.secondsRemaining});
-        }
-    },*/
+
 
     tick: function() {
         this.setState({secondsRemaining: this.state.secondsRemaining - 1});
