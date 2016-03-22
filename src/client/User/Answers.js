@@ -61,7 +61,6 @@ var Answers = React.createClass({
         
         this.props.socket.on("end-time", function(arrayOfGoodAnswers){
             t.setState({timeOut:true});
-            console.log(arrayOfGoodAnswers);
             if(arrayOfGoodAnswers){
                 if(arrayOfGoodAnswers.length>0){
                     //S'il y a des bonnes réponses
@@ -134,12 +133,10 @@ var CountdownTimer = React.createClass({
     }
   },
   componentDidMount: function() {
-    console.log("did mount");
     this.setState({ secondsRemaining: this.props.secondsRemaining });
     this.interval = setInterval(this.tick, 1000);
   },
   componentWillUnmount: function() {
-          console.log("unmount");
     clearInterval(this.interval);
   },
   render: function() {

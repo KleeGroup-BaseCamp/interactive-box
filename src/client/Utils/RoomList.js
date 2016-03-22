@@ -46,7 +46,6 @@ var RoomList = React.createClass({
 		this.setState(function(previousState, currentProps){
 			var prevUsers = previousState.users;
             var index = prevUsers.indexOf(userName);
-            console.log("he");
             if (index > -1) {
                 prevUsers.splice(index, 1);
             }

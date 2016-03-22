@@ -42,7 +42,6 @@ var AnswerButton = React.createClass({
         var marginPercent = heightPercent/this.props.nQuestions;
         var marginPercentText = marginPercent+'vmin';
         var backgroundColor = this._findBackgroundColor();
-        console.log(backgroundColor);
         var buttonStyle = 
             {
                 display: 'block',

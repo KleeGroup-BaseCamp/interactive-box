@@ -2,6 +2,7 @@ import React from 'react';
 import Result from './Result';
 import AnswerButton from "./AnswerButton"
 import CountdownTimer from "../Utils/CountdownTimer"
+import "./AnswersList.css"
 
 //Modes des réponses
 const CLICKABLE = "clickable";
@@ -25,7 +26,8 @@ var AnswersList = React.createClass({
         return {
             answers:[], 
             timeOut:false,          
-            time:"6"
+            time:"6",
+            questionLabel:"truc"
         };
     },
     createAnswersTable: function(labels){
@@ -59,11 +61,14 @@ var AnswersList = React.createClass({
     componentDidMount: function(){
         var t  = this;
         var socket = t.props.socket;
-        console.log("i did componentDidMount");
 		socket.on("question", function(data){
+            console.log('La Question recue');
+            console.log(data);
             t.hasAlreadyAnswered = false;
             t.qCount++;
-            t.setState({time:data.time, answers:t.createAnswersTable(data.answers), timeOut:false});
+            t.setState({time:data.time, answers:t.createAnswersTable(data.answers), timeOut:false, questionLabel:data.question});
+            console.log("this is the question");
+            console.log(t.state.questionLabel);
         });
         
         this.props.socket.on("end-time", function(arrayOfGoodAnswers){
@@ -77,7 +82,10 @@ var AnswersList = React.createClass({
             t.setState({timeOut:true});
         });
         
-        t.setState({answers:t.createAnswersTable(this.props.firsts.answers), time:this.props.firsts.time});
+        console.log(this.props.firsts.question);
+        t.setState({answers:t.createAnswersTable(this.props.firsts.answers), time:this.props.firsts.time, questionLabel:this.props.firsts.question});
+        console.log("this is the question2");
+        console.log(t.state.questionLabel);
         this.qCount++;
     },
     qCount: -1,
@@ -133,13 +141,10 @@ var AnswersList = React.createClass({
         var answersButtonsArray = this._renderAnswersButton();
         var result = this._renderResult();
         var key = this.qCount;
-        console.log("key : " + key);
         var time = this.state.timeOut ? "0" : this.state.time;
-        console.log("le time est: ");
-        console.log(time);
 		return(
 			<div className="middle-content">
-                
+                <h1 className = "big-title"> {this.state.questionLabel} </h1>
                 <CountdownTimer duration = {time} timeOut={this.setTimeOut} key = {key}/>
 				<ul>{answersButtonsArray}</ul>
                 {result}
