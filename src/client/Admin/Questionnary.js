@@ -14,7 +14,7 @@ var colors = ['#607D8B', '#FF5722', '#795548', '#FF9800', '#FFC107', '#FFEB3B', 
 
 
 var AdminQuestionnary = React.createClass({
-    labelStyle: {textTransform: 'none'},
+    labelStyle: {textTransform: 'none', fontSize: '150%', textAlign: 'centered'},
 	getInitialState: function(){
 		return {okToStart:false, questionIndex:-1}
 	},
@@ -47,19 +47,16 @@ var AdminQuestionnary = React.createClass({
 	        	for (var k = 0; k<answersObjects.length; k++){
 	                if (answersObjects[k].rid == answersIds[i]){
                         if(answersObjects[k].correct){
-                            console.log("Correct :" + i);
                             arrayOfGoodAnswers.push(i);
                         }
 	                }
 	            }
 	        }
         }
-        console.log(arrayOfGoodAnswers);
         socket.emit("end-time", arrayOfGoodAnswers);  
     },
     showBarChart: function(){
         socket.emit("showBarChart");
-        console.log("I emitted showBarChart");
     },
   	_renderWaitPage() {
         return (<WaitPage launchQuizz={this.incrementCounter} okToStart={this.state.okToStart}/>);
@@ -84,19 +81,9 @@ var AdminQuestionnary = React.createClass({
 	        }
             var time = question.time || 10;
             var data = {answers:answersLabels, time:time, question: questionTitle};
-            console.log(data);
             var datashow = {answers:answersLabels, time:time, question: questionTitle};
 	        socket.emit("question", data);
             socket.emit("question-show", datashow);
-//	        var answersNodes = answersLabelsCorrect.map(function(labelCorrect) {
-//                var className = "answer-node " + (labelCorrect.correct ? "true" : "false");
-//	        	return(
-//		        	<li className={className}>
-//		                <p>{labelCorrect.label} </p>
-//		            </li>);
-//	        });
-
-	        //CHART DATA
 
 		    var numberOfAnswers = answersIds.length;
 			var initResults = this.zeroArray(numberOfAnswers);
@@ -107,7 +94,20 @@ var AdminQuestionnary = React.createClass({
 					datasets: [{label: 'Resultats', data: initResults, fillColor: rand}]
 				};
             socket.emit("chartData", chartData);
-            var buttonStyle2 = {width:"60%"};
+            var buttonStyle = {
+                width:"60%",
+                display: 'block',
+                marginLeft: 'auto',
+                marginRight: 'auto',
+                width: '50%',
+                marginTop:'10%'};
+            var buttonStyle2 = {
+                width:"60%",
+                display: 'block',
+                marginLeft: 'auto',
+                marginRight: 'auto',
+                width: '50%',
+                marginTop:'10%'};
 			return (
 				<div>
 					<p className="centered medium padding6">{questionTitle}</p>
@@ -189,12 +189,9 @@ var Chart = React.createClass({
 	componentDidMount: function(){
 		var socket = this.props.socket;
 		var t = this;
-        console.log("chart mounted");
-        console.log(t.state.data);
         for (var i = 0; i<this.props.data.labels.length;i++) {
             var newData = this.props.data;
             var label = this.props.data.labels[i];
-            console.log(label);
             var TruncatedLabel = label.substring(0,10);
             newData.labels[i]=TruncatedLabel;
             this.setState({data: newData});
@@ -206,8 +203,6 @@ var Chart = React.createClass({
 	        newData.datasets[0].data[indexOfAnswer]++; 
 	        t.setState({data: newData});
             socket.emit("chartData", t.state.data);
-            console.log("i emitted chartdata");
-            console.log(t.state.data);
 		});
 	},
 	render: function(){

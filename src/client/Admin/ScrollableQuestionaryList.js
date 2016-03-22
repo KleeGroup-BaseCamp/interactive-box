@@ -32,7 +32,6 @@ var ScrollableQuestionaryList = React.createClass({
     render: function() {
         
          var quest = this.props.data[0];
-        console.log(this.props.data);
         var t = this;
         var launchQuest = function(){
             t.props.launchQuizz(quest);
