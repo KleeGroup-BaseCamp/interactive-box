@@ -13,15 +13,16 @@ var AdminAnswers = React.createClass({
                     marginTop:'2%',
                     textAlign: 'center',
                     display: 'table', 
-                    backgroundColor: labelCorrect.correct ? "green" : "red",
+                    backgroundColor: labelCorrect.correct ? "#b6edc1" : "#dba8a8",
                     verticalAlign: 'middle'
                 };
                 var pStyle={
                     display: 'table-cell',
-                    verticalAlign: 'middle'
+                    verticalAlign: 'middle',
+                    fontSize: '5vmin'
                 };
 	        	return(
-		        	<Paper style={paperStyle} zDepth={2}>
+		        	<Paper style={paperStyle} zDepth={2} rounded={false}>
 		                <p style={pStyle}>{labelCorrect.label} </p>
 		            </Paper>
                 );
