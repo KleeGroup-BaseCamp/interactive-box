@@ -18,6 +18,16 @@ const INITIAL_STATE = 'home';
 const PSEUDO = 'pseudo';
 const WAITING = 'waiting';
 
+var Router = React.createClass({
+   render: function(){
+       var hash = window.location.hash;
+       if(hash==="#admin"){return(<p>Admin</p>);}
+       if(hash==="#showroom"){return(<p>ShowRoom</p>);}
+       return(<p>User</p>);
+                                   
+   } 
+});
+
 var WelcomeBox = React.createClass({
   getInitialState() {
       return {};
@@ -100,6 +110,6 @@ var WelcomeBox = React.createClass({
 
 
 ReactDOM.render(
-  <WelcomeBox/>,
+  <Router/>,
   document.getElementById('interactive-box')
 );
