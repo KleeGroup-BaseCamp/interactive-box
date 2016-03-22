@@ -230,7 +230,7 @@
                 },   
             {
                 "qid":3,
-                "text": "Autrefois comment était appelé les anciens Centraliens ?",
+                "text": "Autrefois comment étaient appelés les anciens de l'Ecole Centrale Paris ?",
                 "answers":["3.1", "3.2", "3.3"],
                 "time":10
             },
@@ -324,5 +324,56 @@
                             "correct":false
                         }
                   ]
-    }
+    },
+    {
+        "title":"Petit sondage",
+        "id":1,
+        "author":"Interactive Box Team",
+        "questions":[
+            {
+                "qid":1,
+                "text":"En général, vous trouvez les présentations PowerPoint :",
+                "answers": ["1.1","1.2", "1.3" ],
+                "time":15
+                        },
+            
+             {
+                "qid":2,
+                "text":"Une solution pratique pour suciter l'intérêt de son auditoire serait :",
+                "answers":["2.1", "2.2", "2.3"],
+                "time":15
+                }
+            ],
+        "answers":[ 
+                        {
+                            "rid":"1.1",
+                            "label":"Dynamiques et passionnantes",
+                            "correct":false
+                        },
+                        {
+                            "rid":"1.2",
+                            "label":"D'un ennui mortel",
+                            "correct":false
+                        },
+                        {
+                            "rid":"1.3",
+                            "label":"Un brin soporifiques",
+                            "correct":false
+                        },
+                        {
+                            "rid":"2.1",
+                            "label":"Une appli qui crée de l'interactivité",
+                            "correct":false
+                        },
+                        {
+                            "rid":"2.2",
+                            "label":"Une bonne blague belge à la fin de chaque slide",
+                            "correct":false
+                        },
+                        {
+                            "rid":"2.3",
+                            "label":"Une décharge électrique pour ceux qui quittent l'éran de présentation des yeux pendant plus de 5 secondes",
+                            "correct":false
+                        }
+                  ]
 ]
