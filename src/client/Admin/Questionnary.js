@@ -4,6 +4,8 @@ import AdminView from './AdminView';
 import RaisedButton from 'material-ui/lib/raised-button';
 import WaitPage from './WaitPage';
 import AdminAnswers from './AdminAnswers';
+import Toolbar from 'material-ui/lib/toolbar/toolbar';
+import ToolbarGroup from 'material-ui/lib/toolbar/toolbar-group';
 
 var socket;
 var BarChart = require("react-chartjs").Bar;
@@ -12,6 +14,14 @@ const ADMIN2_TYPE = 'ADMIN2_TYPE';
 
 var colors = ['#607D8B', '#FF5722', '#795548', '#FF9800', '#FFC107', '#FFEB3B', '#CDDC39', '#8BC34A', '#4CAF50', '#009688', '#00BCD4', '#00BCD4', '#3F51B5', '#673AB7', '#9C27B0', '#E91E63', '#F44336']; 
 
+const titleStyle = {
+    paddingTop:'3%',
+    fontSize:'5vmin', 
+};
+
+const buttonLabelStyle = {
+    fontSize:'5vmin'
+}
 
 var AdminQuestionnary = React.createClass({
     labelStyle: {textTransform: 'none', fontSize: '150%', textAlign: 'centered'},
@@ -101,41 +111,41 @@ var AdminQuestionnary = React.createClass({
                 marginRight: 'auto',
                 width: '50%',
                 marginTop:'10%'};
-            var buttonStyle2 = {
-                width:"60%",
-                display: 'block',
-                marginLeft: 'auto',
-                marginRight: 'auto',
-                width: '50%',
-                marginTop:'10%'};
+            var buttonStyle2 = {width:"100%", display:"block", padding:'0px'};
+            var centerStyle = {textAlign:'center'};
+            var divStyle = {width:"100%", display:"block", padding:'0px', marginTop:"3%"};
 			return (
 				<div>
-					<p className="centered medium padding6">{questionTitle}</p>
+					<p className="centered little padding6">{questionTitle}</p>
                     <AdminAnswers answersLabelsCorrect={answersLabelsCorrect}/>
-                    <div className="center-button-container">
-                        <RaisedButton
-                            label="Question suivante"
-                            buttonStyle={buttonStyle2}
-                            onMouseDown={this.incrementCounter}
-                            labelStyle={this.labelStyle}
-                        />
-                    </div>
-                    <div className="center-button-container">
-                        <RaisedButton
-                            label="Arrêter le chronomètre"
-                            buttonStyle={buttonStyle2}
-                            onMouseDown={this.stopTime}
-                            labelStyle={this.labelStyle}
-                        />
-                    </div>
-                    <div className="center-button-container">
-                        <RaisedButton
-                            label="Afficher les réponses"
-                            buttonStyle={buttonStyle2}
-                            onMouseDown={this.showBarChart}
-                            labelStyle={this.labelStyle}
-                        />
-                    </div>
+                    <table style={divStyle}>
+                        <tr>
+                            <td style={centerStyle}>
+                                <RaisedButton
+                                    label="Question suivante"
+                                    buttonStyle={buttonStyle2}
+                                    onMouseDown={this.incrementCounter}
+                                    labelStyle={this.labelStyle}
+                                />
+                            </td>
+                            <td style={centerStyle}>
+                                <RaisedButton
+                                    label="Arrêter le chronomètre"
+                                    buttonStyle={buttonStyle2}
+                                    onMouseDown={this.stopTime}
+                                    labelStyle={this.labelStyle}
+                                />
+                            </td>
+                            <td style={centerStyle}>
+                                <RaisedButton
+                                    label="Afficher les réponses"
+                                    buttonStyle={buttonStyle2}
+                                    onMouseDown={this.showBarChart}
+                                    labelStyle={this.labelStyle}
+                                />
+                            </td>
+                        </tr>   
+                    </table>
 					<Chart
                         socket={socket}
                         data={chartData}
@@ -165,7 +175,7 @@ var AdminQuestionnary = React.createClass({
 	    if(this.state.userType == undefined) {
             return(
 	        <div>
-	        	<h1 className="red little centered padding6">{this.props.questionnary.title}</h1>
+	        	<h1 style={titleStyle} className="red centered">{this.props.questionnary.title}</h1>
 	   			{content}
 	        </div>
 	    );
@@ -206,7 +216,10 @@ var Chart = React.createClass({
 		});
 	},
 	render: function(){
-		return <BarChart data = {this.state.data}/>;
+        var centerChartStyle = {marginLeft:'auto', marginRight:'auto', display:'block', width:'80%', height:'40%', marginTop:'3%'};
+		return <BarChart data = {this.state.data}
+                                style={centerChartStyle}
+                        className="coucoucouc"/>;
 	}
 });
 
