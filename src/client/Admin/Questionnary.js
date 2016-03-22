@@ -4,6 +4,8 @@ import AdminView from './AdminView';
 import RaisedButton from 'material-ui/lib/raised-button';
 import WaitPage from './WaitPage';
 import AdminAnswers from './AdminAnswers';
+import Toolbar from 'material-ui/lib/toolbar/toolbar';
+import ToolbarGroup from 'material-ui/lib/toolbar/toolbar-group';
 
 var socket;
 var BarChart = require("react-chartjs").Bar;
@@ -108,34 +110,38 @@ var AdminQuestionnary = React.createClass({
 					datasets: [{label: 'Resultats', data: initResults, fillColor: rand}]
 				};
             socket.emit("chartData", chartData);
-            var buttonStyle2 = {width:"60%"};
+            var buttonStyle2 = {width:"100%", display:"block"};
+            var centerStyle = {textAlign:'center', marginTop:"5%"};
+            var divStyle = {width:"33%", marginLeft:'auto', marginRight:'auto', display:'inline-block'};
 			return (
 				<div>
 					<p className="centered medium padding6">{questionTitle}</p>
                     <AdminAnswers answersLabelsCorrect={answersLabelsCorrect}/>
-                    <div className="center-button-container">
-                        <RaisedButton
-                            label="Question suivante"
-                            buttonStyle={buttonStyle2}
-                            onMouseDown={this.incrementCounter}
-                            labelStyle={this.labelStyle}
+                    <div style={centerStyle}>
+                        <div style={divStyle}>
+                            <RaisedButton
+                                label="Question suivante"
+                                buttonStyle={buttonStyle2}
+                                onMouseDown={this.incrementCounter}
+                                labelStyle={this.labelStyle}
+                            />
+                        </div>
+                        <div style={divStyle}>
+                            <RaisedButton
+                                label="Arrêter le chronomètre"
+                                buttonStyle={buttonStyle2}
+                                onMouseDown={this.stopTime}
+                                labelStyle={this.labelStyle}
                         />
-                    </div>
-                    <div className="center-button-container">
-                        <RaisedButton
-                            label="Arrêter le chronomètre"
-                            buttonStyle={buttonStyle2}
-                            onMouseDown={this.stopTime}
-                            labelStyle={this.labelStyle}
+                        </div>
+                        <div style={divStyle}>
+                            <RaisedButton
+                                label="Afficher les réponses"
+                                buttonStyle={buttonStyle2}
+                                onMouseDown={this.showBarChart}
+                                labelStyle={this.labelStyle}
                         />
-                    </div>
-                    <div className="center-button-container">
-                        <RaisedButton
-                            label="Afficher les réponses"
-                            buttonStyle={buttonStyle2}
-                            onMouseDown={this.showBarChart}
-                            labelStyle={this.labelStyle}
-                        />
+                        </div>
                     </div>
 					<Chart
                         socket={socket}
@@ -212,7 +218,10 @@ var Chart = React.createClass({
 		});
 	},
 	render: function(){
-		return <BarChart data = {this.state.data}/>;
+        var centerChartStyle = {marginLeft:'auto', marginRight:'auto', display:'block', width:'80%', height:'20%'};
+		return <BarChart data = {this.state.data}
+                                style={centerChartStyle}
+                        className="coucoucouc"/>;
 	}
 });
 
