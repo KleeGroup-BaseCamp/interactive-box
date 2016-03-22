@@ -62,13 +62,9 @@ var AnswersList = React.createClass({
         var t  = this;
         var socket = t.props.socket;
 		socket.on("question", function(data){
-            console.log('La Question recue');
-            console.log(data);
             t.hasAlreadyAnswered = false;
             t.qCount++;
             t.setState({time:data.time, answers:t.createAnswersTable(data.answers), timeOut:false, questionLabel:data.question});
-            console.log("this is the question");
-            console.log(t.state.questionLabel);
         });
         
         this.props.socket.on("end-time", function(arrayOfGoodAnswers){
@@ -82,10 +78,7 @@ var AnswersList = React.createClass({
             t.setState({timeOut:true});
         });
         
-        console.log(this.props.firsts.question);
         t.setState({answers:t.createAnswersTable(this.props.firsts.answers), time:this.props.firsts.time, questionLabel:this.props.firsts.question});
-        console.log("this is the question2");
-        console.log(t.state.questionLabel);
         this.qCount++;
     },
     qCount: -1,

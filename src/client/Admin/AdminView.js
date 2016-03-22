@@ -13,7 +13,6 @@ var selectedPollKey;
 var AdminView = React.createClass({
     socket: undefined,
     loadQuestionnariesFromServer: function() {
-        console.log("je suis dans loadQuestionnaries");
         $.ajax({
             url: this.props.url,
             dataType: 'json',
@@ -45,7 +44,6 @@ var AdminView = React.createClass({
     },
     render: function() {
         if(!this.state.quizzLaunched){
-            console.log(this.state.data);
             return (
                 <div className="middle-content" ref="heightListener">
                     <SimpleCounter 

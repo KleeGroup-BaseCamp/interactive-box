@@ -85,7 +85,7 @@ var Answers = React.createClass({
         var answersIds = answersLabels.length;
         var nombre = this.state.aCount/this.state.qaCount;
 		return(
-			<div className="middle-content">
+			<div height = '20%' className="middle-content">
                 <h1 className="index-title">{this.state.questionLabel} </h1>
                 <CountdownTimer className="index-title" duration = {this.state.time} timeOut={this.setTimeOut} key = {this.state.answersLabels[0]}/>
                 <h2> {nombre} ont répondu !</h2>
@@ -109,7 +109,7 @@ var Answers = React.createClass({
     render: function(){
         var content = this.state.showChart ?  this._renderBarChart() : this._renderQuizzPage();
 	    return(
-	        <div>
+	        <div height = '70%'>
 	   			{content}
 	        </div>
 	    );
@@ -141,8 +141,6 @@ var Chart = React.createClass({
         console.log("Chart did mount");
         console.log(t.state.data);
         this.props.socket.on("chartData", function(newData){
-            console.log("i received chartData");
-            console.log(newData);
             t.setState({data:newData});
 
         });
