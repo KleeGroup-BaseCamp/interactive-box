@@ -6,9 +6,6 @@ var SimpleCounter = React.createClass({
     }, 
     componentDidMount: function(){
         var t = this;
-        this.props.socket.on(this.props.fixCountMessage, function(count){
-            t.setState({counter: count});
-        });
         this.props.socket.on(this.props.addMessage, function(){
             t.setState({counter: t.state.counter+1});
         });
@@ -17,16 +14,16 @@ var SimpleCounter = React.createClass({
         });
     },
     _generateLabel: function(){
-        if(this.state.counter == 1) {return " utilisateur connecté";}
-        return " utilisateurs connectés";
+        return this.state.counter == 1 ? " utilisateur connecté" : " utilisateurs connectés";
     },
     render: function(){
         if(this.state.counter == 0) {return(<div className="compteur">Aucun utilisateur connecté</div>);}
         var label = this._generateLabel();
-        return(<div className="compteur">
-                    <span>{this.state.counter}</span>
-                    {label}
-               </div>);
+        return(
+            <div className="compteur">
+                <span>{this.state.counter}</span>
+                {label}
+           </div>);
     }
 });
 

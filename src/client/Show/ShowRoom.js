@@ -1,26 +1,31 @@
 import io from 'socket.io-client';
 import React from 'react';
 import ShowQuestion from './ShowQuestions';
+import RoomList from '../Utils/RoomList'
 
 const ROOM="waiting";
 const QUESTION="question";
 const FINISHED="finished";
+
 var firsts;
-var socket;
 
 import "./Room.css"
 
 var ShowRoomBox = React.createClass({
+    socket:undefined,
 	getInitialState: function(){
 		return{currentState:ROOM};
 	},
+    componentWillMount: function(){
+        this.socket = io("/showRoom");
+    },
 	componentDidMount: function(){
         var t = this;    
-        socket.on("end-questionnary", function(){
+        this.socket.on("end-questionnary", function(){
         	t.setState({currentState:FINISHED});
             firsts=undefined;
         });
-        socket.on("question-show", function(answersLabels){
+        this.socket.on("question-show", function(answersLabels){
             firsts = answersLabels;
             t.setState({currentState:QUESTION});
         });
@@ -29,7 +34,7 @@ var ShowRoomBox = React.createClass({
 		return(
 		    <div className="middle-content">
 		        <h1 className="index-title-little">On attend juste les autres</h1>
-		        <RoomiesList socket={socket}/>
+		        <RoomList socket={this.socket} maxNumber={2} intervalMS={1000}/>
 		    </div>
 	    );
 	},
@@ -39,42 +44,10 @@ var ShowRoomBox = React.createClass({
 		} else if(this.state.currentState==FINISHED){
             return (<p className="middle-content index-title-little">Merci de votre participation !</p>);
         } else if(this.state.currentState==QUESTION){
-            return <ShowQuestion socket={socket} firsts={firsts}/>;
+            return <ShowQuestion socket={this.socket} firsts={firsts}/>;
         } else {
             return (<p>Erreur !</p>);
         }
-	}
-});
-
-var RoomiesList = React.createClass({
-	getInitialState: function() {
-	    return {users: []};
-	},
-	componentDidMount: function() {
-		var t = this;
-        socket = io("/showRoom");
-		socket.on("userName", function(userName){
-            console.log("Received : " + userName);
-            t.addElement(userName);
-        });
-        socket.emit("readyToReceiveUsers");
-	},
-	addElement: function(userName){
-		this.setState(function(previousState, currentProps){
-			var prevUsers = previousState.users;
-			prevUsers.push(userName);
-	    	return {users: prevUsers};
-	    });
-	},
-	render: function(){
-	var roomiesList = this.state.users.map(function(userName) {
-	      return (<li className="user-name" key={userName}>{userName}</li>);
-	    });
-	    return (
-	      <div>
-		      <ul>{roomiesList}</ul>
-	      </div>
-	    );
 	}
 });
 

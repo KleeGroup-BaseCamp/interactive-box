@@ -23,13 +23,17 @@ var RoomList = React.createClass({
 	componentDidMount: function() {
 		var t = this;
 		var socket = this.props.socket;
-        socket.on("userName", function(userName){
+        socket.on("user-name", function(userName){
             t.addElement(userName); 
+            console.log("receive", userName);
         });
-        socket.on("removeUserName", function(userName){
+        socket.on("remove-user-name", function(userName){
             t.removeElement(userName);
+            console.log("remove", userName);
         });
         this.interval = setInterval(this.roll, this.props.intervalMS);
+        socket.emit("ready-to-receive-users");
+        console.log("request users ...");
 	},
 	addElement: function(userName){
 		this.setState(function(previousState, currentProps){
@@ -49,19 +53,36 @@ var RoomList = React.createClass({
 	    	return {users: prevUsers};
 	    });
     },
+    _generateLabel: function(count){
+        return count == 1 ? " utilisateur connecté" : " utilisateurs connectés";
+    },
+    _renderCounterLabel: function(count){
+        if(count == 0) {return(<div className="compteur">Aucun utilisateur connecté</div>);}
+        var label = this._generateLabel(count);
+        return(
+            <div className="compteur">
+                <span>{count}</span>
+                {label}
+           </div>);
+    },
 	render: function(){
-    var usersSliced = this.rollTheList(this.state.users, this.state.startIndex, this.props.maxNumber);
-	var roomiesList = usersSliced.map(function(userName) {
-	      return (<li className="user-name" key={userName}>{userName}</li>);
-	    });
+        var usersSliced = this.rollTheList(this.state.users, this.state.startIndex, this.props.maxNumber);
+        console.log(usersSliced);
+        var roomiesList = usersSliced.map(function(userName) {
+            return (<li className="user-name" key={userName}>{userName}</li>);
+        });
+        var counter = this._renderCounterLabel(this.state.users.length);
 	    return (
-	      <div>
-		      <ul>{roomiesList}</ul>
-	      </div>
+            <div>
+                {counter}
+                <ul>{roomiesList}</ul>
+            </div>
 	    );
 	},
     roll: function(){
         var t = this;
+        console.log(this.state.users);
+        console.log(this.state.users.length, this.state.startIndex, (this.state.startIndex+1) % this.state.users.length);
         this.setState({startIndex : t.state.startIndex == t.state.users.length-1 ? 0 : t.state.startIndex+1}); 
     },
     componentWillUnmount: function() {

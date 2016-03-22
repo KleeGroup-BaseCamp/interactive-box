@@ -25,22 +25,14 @@ var RoomBox = React.createClass({
             firsts = data;
             t.setState({currentState:QUESTION});
         }); 
-        socket.on("registered", function(){
-	    	socket.emit("readyToReceiveUsers");
-	    	socket.on("launch-quizz", function(){
-	        	socket.emit("ready-to-receive-question");
-	        });
-		});
+        socket.on("launch-quizz", function(){
+            socket.emit("ready-to-receive-question");
+        });
 	},
 	renderRoom: function(){
 		return(
 		    <div className="middle-content">
 		        <h1 className="index-title-little">On attend juste les autres</h1>
-                <SimpleCounter 
-                    socket={this.props.socket} 
-                    addMessage="userName"
-                    removeMessage="removeUserName"
-                    fixCountMessage="fix-count"/>
                 <RoomList socket={this.props.socket} maxNumber={10} intervalMS={3000}/>
 		    </div>
 	    );
