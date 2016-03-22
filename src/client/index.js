@@ -32,7 +32,6 @@ var WelcomeBox = React.createClass({
         this.setState({userType: SHOW_TYPE});  
     },
     _setUserToHome(){
-        console.log("coucouc");
         this.setState({userType: undefined});  
     },
   _renderHomepage() {

@@ -82,7 +82,8 @@ var AdminQuestionnary = React.createClass({
 	            }
 	        }
             var time = question.time || 10;
-            var data = {answers:answersLabels, time:time};
+            var data = {answers:answersLabels, time:time, question: questionTitle};
+            console.log(data);
             var datashow = {answers:answersLabels, time:time, question: questionTitle};
 	        socket.emit("question", data);
             socket.emit("question-show", datashow);
