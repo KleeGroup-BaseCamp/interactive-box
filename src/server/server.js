@@ -113,7 +113,6 @@ function show (socket){
     showSocket = socket;
     sendUserNamesRequest(socket);
     socket.on ('disconnect', function(){showSocket = undefined;});
-    socket.emit("confirm-connection");
 }
 
 //  Envoi des pseudos de tous les utilisateurs

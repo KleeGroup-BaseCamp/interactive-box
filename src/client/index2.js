@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 
 import AdminHome from './Admin/AdminHome'; 
 import UserHome from './User/UserHome';
-import ShowView from './Show/ShowRoom';
+import PublicShowHome from './Show/PublicShowHome';
 import AppBar from 'material-ui/lib/app-bar';
 
 import "./index.css";
@@ -14,7 +14,7 @@ var Router = React.createClass({
     renderContent: function(){
         var hash = window.location.hash;
         if(hash==="#admin"){return(<AdminHome/>);}
-        if(hash==="#show"){return(<ShowView/>);}
+        if(hash==="#show"){return(<p> cc </p>);}
         return(<UserHome/>);
     },
     render: function(){

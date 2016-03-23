@@ -26,7 +26,6 @@ var AdminHome = React.createClass({
         this.socket = io("/admin");
     },
     redirect: function(){
-        console.log("REDIRECT !!");
         this.setState({status: INDEX, questionnaryLaunched:undefined});
     },
     goToEnd: function(){
@@ -34,11 +33,16 @@ var AdminHome = React.createClass({
         this.socket.emit('end-questionnary');
     },
     launchQuestionnary: function(questionnary){
+        console.log("try to set state to wait");
         this.setState({status: WAIT, questionnaryLaunched: questionnary});
+        console.log("set state to wait");
         this.socket.emit("launch-quizz", questionnary.qid);
+        console.log("emitted launch quizz");
     },
     startQuestionnary: function(){
+        console.log("try to set state to questionnary");
         this.setState({status: QUESTIONNARY});
+        console.log("set state to questionnary");
     },
     render: function(){
         var content = <br></br>;
@@ -48,9 +52,11 @@ var AdminHome = React.createClass({
             content = (<AdminView socket={this.socket} launchQuestionnary={this.launchQuestionnary}/>);
             title = "Interactive Box";
         } else if(this.state.status == WAIT) {
+                console.log("state is wait");
             content = (<WaitPage socket={this.socket} launchQuizz={this.startQuestionnary}/>);
             title = this.state.questionnaryLaunched.title;
         } else if(this.state.status == QUESTIONNARY) {
+                console.log("state is questionnary");
             content = (<Questionnary socket={this.socket} goToEnd={this.goToEnd} questionnary={this.state.questionnaryLaunched}/>);
             title = this.state.questionnaryLaunched.title;
         } else if(this.state.status == END){

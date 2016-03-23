@@ -1,136 +1,230 @@
 import React from 'react';
 
 import CountdownTimer from "../Utils/CountdownTimer";
-import './ShowQuestionsStyle.css';
+import AnswerButton from '../User/AnswerButton';
 
 var BarChart = require("react-chartjs").Bar;
-var answersLabels=[];
+var questionnaryUtils = require("../Utils/QuestionnaryUtils.js");
 
-var Answers = React.createClass({
-    //To DO: define initial arrays for chart
+import './ShowQuestionsStyle.css';
 
+var colors = ['#607D8B', '#FF5722', '#795548', '#FF9800', '#FFC107', '#FFEB3B', '#CDDC39', '#8BC34A', '#4CAF50', '#009688', '#00BCD4', '#00BCD4', '#3F51B5', '#673AB7', '#9C27B0', '#E91E63', '#F44336']; 
+
+const titleStyle = {
+    paddingTop:'3%',
+    fontSize:'5vmin', 
+};
+
+const buttonLabelStyle = {
+    fontSize:'5vmin'
+};
+
+const labelStyle = {
+    textTransform: 'none',
+    fontSize: '150%',
+    textAlign: 'centered'
+};
+
+//Modes des réponses
+const CLICKABLE = "clickable";
+const GOOD = "good";
+const WRONG = "wrong";
+const CORRECT = "correct";
+const NOT_CORRECT = "not-correct";
+const POLL = "poll";
+
+const circularProgressStyle = {
+    display:'block',
+    marginTop:'20%', 
+    maringBottom:'20%', 
+    marginLeft:'auto', 
+    marginRight:'auto'
+};
+
+var ShowQuestions = React.createClass({
     getInitialState: function(){
-        
-        return {questionLabel: undefined, answersLabels:[], selectedAnswer:undefined, timeOut:false, time:30, showChart:false, qaCount:1, aCount:-1, chartData:
-{
-                    labels: ["Bla", "Bla", "Bla"],
-                    datasets: [{label: 'Resultats', data: []}]
-                }};
+        return {
+            waiting:true,
+            questionLabel:"le truc",
+            answers:[],
+            timeOut:false,
+            time:"6", 
+            showChart:false,
+            qaCount:1,
+            aCount:-1,
+            chartData:{
+                labels: ["Bla", "Bla", "Bla"],
+                datasets: [{label: 'Resultats', data: []}]
+            }
+        };
+    },
+    createAnswersTable: function(labels){
+        return labels.map(function(label){
+            return ({
+                label: label,
+                correct: POLL
+            });
+        });
+    },
+    determineMode: function(answer){
+        var mode;
+        if(this.state.timeOut){
+            if(answer.correct==CORRECT){
+                mode = GOOD;
+            } else if (answer.correct == NOT_CORRECT){
+                mode = WRONG;
+            } else if (answer.correct==POLL){
+                mode = POLL;
+            }
+        } else {
+            mode = CLICKABLE;
+        }
+        return mode;
     },
     componentDidMount: function(){
-        var t  = this;
-        var socket = this.props.socket;
-		socket.on("question-show", function(data){
-            console.log("I received question-show");
+        var self  = this;
+        
+		this.props.socket.on("question", function(data){
             var numberOfAnswers = data.answers.length;
             var initResults = Array.apply(null, {length:numberOfAnswers}).map(function() {return 0;});
-			var firstChartData = 
-				{
-					labels: data.answers,
-					datasets: [{label: 'Resultats', data: initResults}]
-				};
-            t.setState({time:data.time, 
-                        questionLabel:data.question, 
-                        answersLabels:data.answers, 
-                        selectedAnswer:undefined, 
-                        timeOut:false, 
-                        showChart:false, 
-                        chartData:firstChartData});
-            t.setState({qaCount: t.state.qaCount +  1});
-            t.setState({aCount: -1});
-            console.log("this is after i received a question");
-            console.log("aCount: ");
-            console.log(t.state.aCount)
-            console.log("qaCount: ");
-            console.log(t.state.qaCount);
+			var firstChartData = {
+                labels: data.answers,
+                datasets: [{label: 'Resultats', data: initResults}]
+            };
+            self.setState({
+                time:data.time,
+                answers:self.createAnswersTable(data.answers),
+                timeOut:false,
+                questionLabel:data.question,
+                waiting:false, 
+                showChart:false, 
+                chartData:firstChartData, 
+                qaCount: self.state.qaCount+1, 
+                aCount: 0
+            });
         });
-        socket.on("end-time", function(){
-            t.setState({timeOut:true});
-            if(t.state.selectedAnswer){
-            } else {
-            }
-        });
-        socket.on("showBarChart", function(){
-            t.setState({showChart:!t.state.showChart});
+
+        this.props.socket.on("showBarChart", function(){
+            self.setState({showChart:!self.state.showChart});
         });
         
-        socket.on("chartData", function(newData){
-            console.log("i received chartData");
-            //t.setState({qaCount: t.state.qaCount + 1});
-            t.setState({aCount:t.state.aCount + 1})
-            t.setState({chartData:newData});
-            console.log('this is after I received charData');
-            console.log("aCount: ");
-            console.log(t.state.aCount);
-            console.log("qaCount: ");
-            console.log(t.state.qaCount);
-
+        this.props.socket.on("end-time", function(arrayOfGoodAnswers){
+            self.setState({timeOut:true});
         });
         
-        t.setState({answersLabels:this.props.firsts.answers});
-        t.setState({time:this.props.firsts.time});
-        t.setState({questionLabel:this.props.firsts.question});
-        //TO DO: try out firsts
-    },
-    setTimeOut: function(){
-        this.setState({timeOut:true});  
-    },
-    
-    _renderQuizzPage(){
-        var indexOfAnswer = -1;
-		var t = this;
-        var answersNodes = this.state.answersLabels.map(function(label) {
-        	return(<li><Answer label={label}/></li>);
+        this.props.socket.on("chartData", function(newData){
+            self.setState({aCount:t.state.aCount + 1})
+            self.setState({chartData:newData});
         });
-        var answersIds = answersLabels.length;
-        var nombre = this.state.aCount/this.state.qaCount;
-		return(
-			<div height = '20%' className="middle-content">
-                <h1 className="index-title">{this.state.questionLabel} </h1>
-                <CountdownTimer className="index-title" duration = {this.state.time} timeOut={this.setTimeOut} key = {this.state.answersLabels[0]}/>
-                <h2> {nombre} ont répondu !</h2>
-				<ul>{answersNodes}</ul>
-			</div>
-		);
 
-    
+        this.props.socket.emit('ready-to-start-quizz');
     },
-    
-    _renderBarChart(){
-        var socket = this.props.socket;
+    setTimeOut: function(){ // demande des réponses à la fin du temps TODO a régler
+        this.setState({timeOut:true}); 
+        this.props.socket.emit("end-time-request");
+    },
+    _renderAnswersButton: function(){
+        var self  = this;
+        var indexNew = -1;
+        return this.state.answers.map(function(answer){
+            indexNew++;
+            var index = indexNew;
+            var label = answer.label;
+            var mode = self.determineMode(answer);
+            return (<li>
+                        <AnswerButton
+                            key={label}
+                            answerText={label}
+                            mode={mode}
+                            nQuestions={self.state.answers.length}/>
+                    </li>
+                );
+        });
+    },
+    _renderWaitPage(){
         return(
-            <div className="barchart">
-            <Chart className="barchart" socket={socket} data={this.state.chartData} key={this.state.questionLabel}/>
-            
-            </div>
-        );
+                <CircularProgress style={circularProgressStyle}/>
+              );  
     },
-    
+    _renderAnswers: function(){
+        var answersButtonsArray = this._renderAnswersButton();
+        var key = this.state.questionLabel;
+        var time = this.state.timeOut ? "0" : this.state.time;
+        if(this.state.waiting){
+            return this._renderWaitPage();
+        } else {  
+            return(
+                <div className="middle-content">
+                    <h1 className = "big-title"> {this.state.questionLabel} </h1>
+                    <CountdownTimer duration = {time} timeOut={this.setTimeOut} key = {key}/>
+                    <ul>{answersButtonsArray}</ul>
+                    <h2>{this.state.aCount} ont répondu !</h2>
+                </div>
+            );
+        }
+    }, 
     render: function(){
-        var content = this.state.showChart ?  this._renderBarChart() : this._renderQuizzPage();
-	    return(
-	        <div height = '70%'>
-	   			{content}
-	        </div>
-	    );
-  	}
-
-});
-
-
-
-var Answer = React.createClass({
-	render: function(){
-	 	return(
-            <div>
-                <p className="answer">{this.props.label}</p>
-            </div>
-        );
-	}
+        if(this.state.showChart){
+            return (
+                <div>
+                   {this._renderAnswers()}
+                    <Chart
+                        socket={this.props.socket}
+                        data={chartData}
+                        key={this.state.questionIndex}
+                    />
+                </div>
+           );
+        } else {
+            return this._renderAnswers();
+        }
+    }
 });
 
 
 var Chart = React.createClass({
+	getInitialState: function(){
+		var t = this;
+		return({data:t.props.data});
+	}, 
+	componentDidMount: function(){
+		var socket = this.props.socket;
+		var t = this;
+        for (var i = 0; i<this.props.data.labels.length;i++) {
+            var newData = this.props.data;
+            var label = this.props.data.labels[i];
+            var TruncatedLabel = label.substring(0,10);
+            newData.labels[i]=TruncatedLabel;
+            this.setState({data: newData});
+    // d'autres instructions
+}
+            
+		socket.on("answer", function(indexOfAnswer){
+			var newData = t.state.data;
+	        newData.datasets[0].data[indexOfAnswer]++; 
+	        t.setState({data: newData});
+            socket.emit("chartData", t.state.data);
+		});
+	},
+	render: function(){
+        var centerChartStyle = {
+            marginLeft:'auto', 
+            marginRight:'auto', 
+            display:'block', 
+            width:'80%', 
+            height:'40%', 
+            marginTop:'3%'
+        };
+		return <BarChart 
+            data = {this.state.data}
+            style={centerChartStyle}
+            className="chart-class"
+        />;
+	}
+});
+
+
+var ChartOld = React.createClass({
 	getInitialState: function(){
 		var t = this;
 		return({data:t.props.data});
@@ -155,4 +249,4 @@ var Chart = React.createClass({
 
 
 
-export default Answers;
+export default ShowQuestions;
