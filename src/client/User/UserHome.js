@@ -28,12 +28,23 @@ var UserHome = React.createClass({
 
         //Passage de room à question
         this.socket.on("start-quizz", function(){
-            self.setState({status:QUESTION});
+            if(self.state.status==ROOM || self.state.status==FINISH){ 
+                self.setState({status:QUESTION});
+            }
         }); 
+        
+        this.socket.on('abort-quizz', function(){
+            if(self.state.status==QUESTION || self.state.status==FINISH){
+                self.setState({status:ROOM});
+            }
+        });
         
         //Passage de question à finished
         this.socket.on("end-questionnary", function(){
-        	self.setState({status:FINISH});
+            console.log("received end-questionnary");
+            if(self.state.status==QUESTION){
+        	   self.setState({status:FINISH});
+            }
         });
     },
     render: function(){

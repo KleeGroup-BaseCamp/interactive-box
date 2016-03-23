@@ -26,7 +26,11 @@ const RESULT_WRONG = "wrong";
 const RESULT_NO_ANSWER = "no";
 const RESULT_NEUTRAL = "neutral";
 
-
+const circularProgressStyle = {
+    marginLeft:'auto', 
+    marginRight:'auto', 
+    textAlign:'center'
+};
 
 
 var AnswersList = React.createClass({
@@ -96,7 +100,7 @@ var AnswersList = React.createClass({
         });
         
         this.props.socket.on("end-time", function(arrayOfGoodAnswers){
-            for(var i=0;i<t.state.answers.length;i++){
+            for(var i=0;i<self.state.answers.length;i++){
                 if(arrayOfGoodAnswers.length>0){
                     self.state.answers[i].correct = (arrayOfGoodAnswers.indexOf(i)==-1) ? NOT_CORRECT : CORRECT;
                 } else {
@@ -158,7 +162,7 @@ var AnswersList = React.createClass({
     },
     
     _renderWaitPage(){
-        return(<CircularProgress />);  
+        return(<CircularProgress innerStyle={circularProgressStyle}/>);  
     },
     
     render: function(){

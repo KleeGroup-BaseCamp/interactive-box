@@ -25,15 +25,12 @@ var RoomList = React.createClass({
 		var socket = this.props.socket;
         socket.on("user-name", function(userName){
             t.addElement(userName); 
-            console.log("receive", userName);
         });
         socket.on("remove-user-name", function(userName){
             t.removeElement(userName);
-            console.log("remove", userName);
         });
         this.interval = setInterval(this.roll, this.props.intervalMS);
         socket.emit("ready-to-receive-users");
-        console.log("request users ...");
 	},
 	addElement: function(userName){
 		this.setState(function(previousState, currentProps){
@@ -66,7 +63,6 @@ var RoomList = React.createClass({
     },
 	render: function(){
         var usersSliced = this.rollTheList(this.state.users, this.state.startIndex, this.props.maxNumber);
-        console.log(usersSliced);
         var roomiesList = usersSliced.map(function(userName) {
             return (<li className="user-name" key={userName}>{userName}</li>);
         });
@@ -80,8 +76,7 @@ var RoomList = React.createClass({
 	},
     roll: function(){
         var t = this;
-        console.log(this.state.users);
-        console.log(this.state.users.length, this.state.startIndex, (this.state.startIndex+1) % this.state.users.length);
+        //console.log(this.state.users.length, this.state.startIndex, (this.state.startIndex+1) % this.state.users.length);
         this.setState({startIndex : t.state.startIndex == t.state.users.length-1 ? 0 : t.state.startIndex+1}); 
     },
     componentWillUnmount: function() {

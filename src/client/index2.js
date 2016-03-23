@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import AdminView from './Admin/AdminView'; 
+import AdminHome from './Admin/AdminHome'; 
 import UserHome from './User/UserHome';
 import ShowView from './Show/ShowRoom';
 import AppBar from 'material-ui/lib/app-bar';
@@ -13,7 +13,7 @@ const element = <br></br>;
 var Router = React.createClass({
     renderContent: function(){
         var hash = window.location.hash;
-        if(hash==="#admin"){return(<AdminView url='/questionnaries'/>);}
+        if(hash==="#admin"){return(<AdminHome/>);}
         if(hash==="#show"){return(<ShowView/>);}
         return(<UserHome/>);
     },

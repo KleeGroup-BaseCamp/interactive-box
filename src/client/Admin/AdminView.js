@@ -2,19 +2,17 @@ import io from 'socket.io-client';
 import React from 'react';
 import $ from 'jquery';
 
-import AdminQuestionnary from './Questionnary';
-import QuestionnaryButtonsList from './QuestionnaryButtonsList'
 import ScrollableQuestionaryList from './ScrollableQuestionaryList'
-import "./Admin.css"
 import SimpleCounter from '../Utils/SimpleCounter'
+
+import "./Admin.css"
 
 var selectedPollKey;
 
 var AdminView = React.createClass({
-    socket: undefined,
     loadQuestionnariesFromServer: function() {
         $.ajax({
-            url: this.props.url,
+            url: '/questionnaries',
             dataType: 'json',
             cache: false,
             success: function(data) {
@@ -26,42 +24,31 @@ var AdminView = React.createClass({
         });
     },
     getInitialState: function() {
-        return {data: [], quizzLaunched:undefined, h:100};
-    },
-    componentWillMount: function(){
-        this.socket = io("/admin");
+        return {data: [], h:100};
     },
     componentDidMount: function() {
         this.loadQuestionnariesFromServer();
-        var t = this;
+        var self = this;
         var node = this.refs.heightListener.getDOMNode(); // TODO pas bien d'utiliser cette fonction, enfin il parrait
-        window.addEventListener("resize", function(e){ t.setState({h:node.offsetHeight}); });
-        t.setState({h:node.offsetHeight});  
-        this.socket.emit("ready-to-receive-users");
+        window.addEventListener("resize", function(e){ self.setState({h:node.offsetHeight}); });
+        this.setState({h:node.offsetHeight});  
+        this.props.socket.emit("ready-to-receive-users");
     },
     launchQuizz: function(questionnary){
-        this.setState({quizzLaunched: questionnary});
+        this.props.launchQuestionnary(questionnary);
     },
     render: function() {
-        if(!this.state.quizzLaunched){
-            return (
-                <div className="middle-content" ref="heightListener">
-                    <SimpleCounter 
-                        socket={this.socket} 
-                        addMessage="user-name"
-                        removeMessage="remove-user-name"/>
-                    <h1 className="index-title-little">Choisissez un questionnaire à lancer ?</h1>
-                    <br></br>
-                    <ScrollableQuestionaryList data={this.state.data} launchQuizz={this.launchQuizz} height={this.state.h*5/10}/>
-                </div>
-            );
-        } else {
-            return (
-                <div className="middle-content">
-                    <AdminQuestionnary questionnary={this.state.quizzLaunched} socket={this.socket}/>
-                </div>
-            );
-        }
+        return (
+            <div className="middle-content" ref="heightListener">
+                <SimpleCounter 
+                    socket={this.props.socket} 
+                    addMessage="user-name"
+                    removeMessage="remove-user-name"/>
+                <h1 className="index-title-little">Choisissez un questionnaire à lancer ?</h1>
+                <br></br>
+                <ScrollableQuestionaryList data={this.state.data} launchQuizz={this.launchQuizz} height={this.state.h*5/10}/>
+            </div>
+        );
     }
 });
 

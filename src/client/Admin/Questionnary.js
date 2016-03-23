@@ -1,16 +1,12 @@
 import React from 'react';
+
 import Barchart from 'react-chartjs';
-import AdminView from './AdminView';
 import RaisedButton from 'material-ui/lib/raised-button';
-import WaitPage from './WaitPage';
 import AdminAnswers from './AdminAnswers';
-import Toolbar from 'material-ui/lib/toolbar/toolbar';
-import ToolbarGroup from 'material-ui/lib/toolbar/toolbar-group';
 
-var socket;
+var questionnaryUtils = require("../Utils/QuestionnaryUtils.js");
+
 var BarChart = require("react-chartjs").Bar;
-
-const ADMIN2_TYPE = 'ADMIN2_TYPE';
 
 var colors = ['#607D8B', '#FF5722', '#795548', '#FF9800', '#FFC107', '#FFEB3B', '#CDDC39', '#8BC34A', '#4CAF50', '#009688', '#00BCD4', '#00BCD4', '#3F51B5', '#673AB7', '#9C27B0', '#E91E63', '#F44336']; 
 
@@ -21,24 +17,23 @@ const titleStyle = {
 
 const buttonLabelStyle = {
     fontSize:'5vmin'
-}
+};
+
+const labelStyle = {
+    textTransform: 'none',
+    fontSize: '150%',
+    textAlign: 'centered'
+};
 
 var AdminQuestionnary = React.createClass({
-    labelStyle: {textTransform: 'none', fontSize: '150%', textAlign: 'centered'},
 	getInitialState: function(){
-		return {okToStart:false, questionIndex:-1}
+		return {questionIndex:0}
 	},
 	componentDidMount: function(){
-		var t = this;
-		socket = this.props.socket;
-		socket.on("all-users-are-ready", function(){
-			t.setState({okToStart:true});
-		});
-		socket.emit("launch-quizz", this.props.questionnary.qid);
-		socket.on("answer", function(indexOfAnswer){
-		});
-        socket.on("end-time-request", function(){
-            t.stopTime();
+		var self = this;
+        this.props.socket.on("end-time-request", function(){
+            self.stopTime(); // C'est à dire ?
+            //TODO gestion de la fin du temps
         });
 	},
 	incrementCounter: function(){
@@ -46,32 +41,16 @@ var AdminQuestionnary = React.createClass({
 		this.setState({questionIndex:oldQuestionIndex+1});
 	},
     stopTime: function(){
-        var arrayOfGoodAnswers = [];
-        var questionnary = this.props.questionnary;
-		var maxIndex = questionnary.questions.length;
-        if(this.state.questionIndex<maxIndex){
-            var question = questionnary.questions[this.state.questionIndex];
-            var answersIds = question.answers;
-            var answersObjects = questionnary.answers;
-            for(var i=0;i<answersIds.length;i++){
-	        	for (var k = 0; k<answersObjects.length; k++){
-	                if (answersObjects[k].rid == answersIds[i]){
-                        if(answersObjects[k].correct){
-                            arrayOfGoodAnswers.push(i);
-                        }
-	                }
-	            }
-	        }
-        }
-        socket.emit("end-time", arrayOfGoodAnswers);  
+        var arrayOfGoodAnswers = questionnaryUtils.arrayOfGoodAnswers(this.props.questionnary, this.state.questionIndex);
+        this.props.socket.emit("end-time", arrayOfGoodAnswers);  
     },
     showBarChart: function(){
-        socket.emit("showBarChart");
+        this.props.socket.emit("showBarChart");
     },
-  	_renderWaitPage() {
-        return (<WaitPage launchQuizz={this.incrementCounter} okToStart={this.state.okToStart}/>);
+    zeroArray: function(n){
+		return Array.apply(null, {length: n}).map(function() {return 0;});
 	},
-	_renderQuizzPage(){
+	render(){
 		var questionnary = this.props.questionnary;
 		var maxIndex = questionnary.questions.length;
 		if(this.state.questionIndex<maxIndex){
@@ -92,8 +71,8 @@ var AdminQuestionnary = React.createClass({
             var time = question.time || 10;
             var data = {answers:answersLabels, time:time, question: questionTitle};
             var datashow = {answers:answersLabels, time:time, question: questionTitle};
-	        socket.emit("question", data);
-            socket.emit("question-show", datashow);
+	        this.props.socket.emit("question", data);
+            this.props.socket.emit("question-show", datashow);
 
 		    var numberOfAnswers = answersIds.length;
 			var initResults = this.zeroArray(numberOfAnswers);
@@ -103,7 +82,7 @@ var AdminQuestionnary = React.createClass({
 					labels: answersLabels,
 					datasets: [{label: 'Resultats', data: initResults, fillColor: rand}]
 				};
-            socket.emit("chartData", chartData);
+            this.props.socket.emit("chartData", chartData);
             var buttonStyle = {
                 width:"60%",
                 display: 'block',
@@ -147,47 +126,15 @@ var AdminQuestionnary = React.createClass({
                         </tr>   
                     </table>
 					<Chart
-                        socket={socket}
+                        socket={this.props.socket}
                         data={chartData}
                         key={this.state.questionIndex}
                     />
 				</div>
 			);
 		} else {
-			socket.emit("end-questionnary");
-			return (
-                <RaisedButton
-                    buttonStyle={this.buttonStyle}
-                    label="Lancer un nouveau quizz"
-                    onMouseDown={this.returnToAdmin}
-                    labelStyle={this.labelStyle}
-                />
-            );
+            this.props.goToEnd();
 		}
-	},
-                    
-    returnToAdmin : function(){
-                this.setState({userType: ADMIN2_TYPE});
-            },
-	//TODO ajouter le compte des utilisateurs
-  	render: function(){
-	    var content = this.state.questionIndex>-1 ? this._renderQuizzPage() : this._renderWaitPage();
-	    if(this.state.userType == undefined) {
-            return(
-	        <div>
-	        	<h1 style={titleStyle} className="red centered">{this.props.questionnary.title}</h1>
-	   			{content}
-	        </div>
-	    );
-        }
-        else if (this.state.userType == ADMIN2_TYPE){
-            return(
-                <AdminView url='/questionnaries'/>
-            );
-        }
-  	}, 
-  	zeroArray: function(n){
-		return Array.apply(null, {length: n}).map(function() {return 0;});
 	}
 });
 

@@ -15,8 +15,11 @@ var WaitPage = React.createClass({
 	getInitialState: function(){
 		return {okToStart:false}
 	},
-    componentWillReceiveProps: function(newProps){
-        this.setState({okToStart:newProps.okToStart});
+    componentWillMount: function(){
+        var self = this;
+        this.props.socket.on("all-users-are-ready", function(){
+            self.setState({okToStart: true});
+        });
     },
   	render:function() {   
         var startButton = <RaisedButton 

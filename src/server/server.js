@@ -42,11 +42,11 @@ nspShowRoom.on('connection', function(socket){
 function disconnectUser(socket){
     var pseudo = sockets[socket.id].pseudo;
     console.log("Déconnexion du socket de " + pseudo + ", id : " + socket.id);
-    
-    io.of("/user").emit("remove-user-name", pseudo);
-    io.of("/admin").emit("remove-user-name", pseudo);
-    io.of("/showRoom").emit("remove-user-name", pseudo);
-    
+    if(sockets[socket.id].loggedIn){
+        io.of("/user").emit("remove-user-name", pseudo);
+        io.of("/admin").emit("remove-user-name", pseudo);
+        io.of("/showRoom").emit("remove-user-name", pseudo);
+    }
     delete sockets[socket.id];
 };
 
@@ -101,7 +101,11 @@ function admin (socket){
 	adminSession = socket.handshake.sessionID;
     pollAdmin.manageAdminPoll(socket, io);
     sendUserNamesRequest(socket);
-    socket.on ('disconnect', function(){adminSocket = undefined;});
+    socket.on ('disconnect', function(){
+        adminSocket = undefined;
+        io.of('/user').emit('abort-quizz');
+        io.of('/showroom').emit('abort-quizz');
+    });
 	socket.emit("registered");
 }
 

@@ -13,7 +13,7 @@ var ScrollableQuestionaryList = React.createClass({
     _noRowsRenderer : function() {
         return (
             <div>
-                <p>Aucun questionnaire chargé</p>
+                <p>Aucun questionnaire à charger dans questionnaries.json</p>
             </div>
         )
     }, 
@@ -35,10 +35,10 @@ var ScrollableQuestionaryList = React.createClass({
             var count = questi.questions.length;
             var countLabel = count == 1 ? "question" : "questions";
             var label = count + " " + countLabel;
-            var primaryText = <div>
+            var primaryText = (<div>
                 <p className="quest-title">{questi.title}</p>
                 <p className="quest-count">{count} {countLabel}</p>
-            </div>;
+            </div>);
                 
             return(
                 <ListItem 
