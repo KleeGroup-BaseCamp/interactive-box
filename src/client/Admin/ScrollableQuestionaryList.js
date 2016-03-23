@@ -10,7 +10,6 @@ import {SelectableContainerEnhance} from 'material-ui/lib/hoc/selectable-enhance
 let SelectableList = SelectableContainerEnhance(List);
 
 var ScrollableQuestionaryList = React.createClass({
-
     _noRowsRenderer : function() {
         return (
             <div>
@@ -18,53 +17,43 @@ var ScrollableQuestionaryList = React.createClass({
             </div>
         )
     }, 
-    
-    
-    
-    
-                                                  
-        /*
-                <QuestionnaryButton title={quest.title} key={quest.id} author={quest.author} questionCount={count} id={quest.id} launchQuizz = {launchQuest}/>
-            </div>
-               );*/
-    
-    
     render: function() {
-        
-         var quest = this.props.data[0];
-        var t = this;
+        var quest = this.props.data[0];
+        var self = this;
         var launchQuest = function(){
-            t.props.launchQuizz(quest);
+            self.props.launchQuizz(quest);
         }
-        //return quest.title;
-        
+
         var i = -1;
         var data = this.props.data;
         var questTitles = this.props.data.map(function(title) {
             i++;
             var launchQuest = function(){
-            t.props.launchQuizz(questi);
-        };
+                self.props.launchQuizz(questi);
+            };
             var questi=data[i]
             var count = questi.questions.length;
             var countLabel = count == 1 ? "question" : "questions";
             var label = count + " " + countLabel;
-	       return(
-		        	<ListItem value = {1} primaryText={<div>
-                    <p className="quest-title">{questi.title}</p>
+            var primaryText = <div>
+                <p className="quest-title">{questi.title}</p>
+                <p className="quest-count">{count} {countLabel}</p>
+            </div>;
                 
-                    <p className="quest-count">{count} {countLabel}</p>
-                </div>} onClick={launchQuest} >
-		            </ListItem>);
-	        });
+            return(
+                <ListItem 
+                    value = {1}
+                    primaryText={primaryText}
+                    onClick={launchQuest}
+                />
+            );
+        });
         return (
             <SelectableList value={3}>
-            {questTitles}
-        </SelectableList>
-               );
-        
-    }, 
-    
+                {questTitles}
+            </SelectableList>
+        );
+    }
 });
 
 export default ScrollableQuestionaryList;

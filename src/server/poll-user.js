@@ -1,28 +1,22 @@
 var numberOfReadyUsers = 0;
+var totalAmountOfUsers = 0;
+var ioReference = undefined;
 
 function manageUserPoll(userSocket, io){
-
+    ioReference = io;
+    
 	userSocket.on("answer", function(indexOfAnswer){
 		io.of('/showRoom').emit("answer", indexOfAnswer);
 		io.of('/admin').emit("answer", indexOfAnswer);
         console.log("I emitted an answer to admin");
 	});
 
-	userSocket.on("ready-to-receive-question", function(){
+	userSocket.on("ready-to-start-quizz", function(){
 		numberOfReadyUsers++;
-		console.log("RECEIVED A READY");
-
-		var nRoom = 0;
-
-		Object.keys(io.nsps['/user'].connected).forEach(function(socketID) {
-    		nRoom++;
-		});
-
-		if(nRoom = numberOfReadyUsers){
+		console.log("RECEIVED READY from a user socket");
+		if(totalAmountOfUsers = numberOfReadyUsers){
 			console.log("Tout le monde est prêt");
 			io.of('/admin').emit("all-users-are-ready");
-		} else {
-			console.log("Tout le monde n'est pas prêt");
 		}
 	});
     
@@ -33,6 +27,11 @@ function manageUserPoll(userSocket, io){
 
 function reset(){
 	numberOfReadyUsers = 0;
+    totalAmountOfUsers = 0;
+    Object.keys(ioReference.nsps['/user'].connected).forEach(function(socketID) {
+        totalAmountOfUsers++;
+    });
+    console.log("Waiting answer from " + totalAmountOfUsers + " users");
 }
 
 exports.manageUserPoll = manageUserPoll;

@@ -37,7 +37,7 @@ function manageAdminPoll(adminSocket, io){
 	adminSocket.on("launch-quizz", function(idOfQuestionnary){
 		readQuestionnary(idOfQuestionnary);
 		pollUser.reset();
-		io.of('/user').emit('launch-quizz');
+		io.of('/user').emit('start-quizz');
 	});
 
 	adminSocket.on("question", function(data){

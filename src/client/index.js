@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 
 import AdminView from './Admin/AdminView'; 
 import ShowView from './Show/ShowRoom';
-import LoginView from './User/LoginView';
+import UserHome from './User/UserHome';
 import LinkButton from "./Utils/LinkButton";
 import AppBar from 'material-ui/lib/app-bar';
 import RaisedButton from 'material-ui/lib/raised-button';
@@ -71,7 +71,7 @@ var WelcomeBox = React.createClass({
       return <AdminView url='/questionnaries'/>;
   },
   _renderLoginPage() {
-      return <LoginView/>;
+      return <UserHome/>;
   },
   _renderShowRoomPage(){
         return <ShowView/>;  
