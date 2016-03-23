@@ -27,9 +27,11 @@ const RESULT_NO_ANSWER = "no";
 const RESULT_NEUTRAL = "neutral";
 
 const circularProgressStyle = {
+    display:'block',
+    marginTop:'20%', 
+    maringBottom:'20%', 
     marginLeft:'auto', 
-    marginRight:'auto', 
-    textAlign:'center'
+    marginRight:'auto'
 };
 
 
@@ -162,7 +164,7 @@ var AnswersList = React.createClass({
     },
     
     _renderWaitPage(){
-        return(<CircularProgress innerStyle={circularProgressStyle}/>);  
+        return(<CircularProgress style={circularProgressStyle}/>);  
     },
     
     render: function(){
