@@ -44,7 +44,7 @@ var AdminView = React.createClass({
                     socket={this.props.socket} 
                     addMessage="user-name"
                     removeMessage="remove-user-name"/>
-                <h1 className="index-title-little">Choisissez un questionnaire à lancer ?</h1>
+                <h1 className="index-title-little">Choisissez un questionnaire à lancer</h1>
                 <br></br>
                 <ScrollableQuestionaryList data={this.state.data} launchQuizz={this.launchQuizz} height={this.state.h*5/10}/>
             </div>
