@@ -1,5 +1,5 @@
 *{
-    font-family:"Roboto", Helvetica, "Segoe UI", Arial, freesans, sans-serif;
+    font-family:Roboto, Helvetica, "Segoe UI", Arial, freesans, sans-serif;
     margin-top:0px;
     margin-bottom:0px;
 }
@@ -25,6 +25,7 @@ body{
     margin-bottom:6vh;
     padding-top:6vh;
     background-color: rgba(255, 255, 255, 0);
+    font-family: Roboto;
 }
 
 .red{
@@ -156,4 +157,12 @@ ul li{
     height:20%;
     margin-top:10%;
     margin-bottom:10%;
+}
+
+@font-face {
+    font-family: 'Roboto';
+    src: 
+          'url(' + 
+          require('../big_noodle_titling.ttf') + 
+          ') format("ttf")';
 }
