@@ -27,7 +27,7 @@ const labelStyle = {
 
 var AdminQuestionnary = React.createClass({
 	getInitialState: function(){
-		return {questionIndex:0}
+		return {questionIndex:0, showBarChart:false}
 	},
 	componentDidMount: function(){
 		var self = this;
@@ -38,10 +38,11 @@ var AdminQuestionnary = React.createClass({
 	},
 	incrementCounter: function(){
 		var oldQuestionIndex = this.state.questionIndex;
-		this.setState({questionIndex:oldQuestionIndex+1});
+		this.setState({questionIndex:oldQuestionIndex+1, showBarChart:false});
 	},
     showBarChart: function(){
         this.props.socket.emit("showBarChart");
+        this.setState({showBarChart:!this.state.showBarChart});
     },
     zeroArray: function(n){
 		return Array.apply(null, {length: n}).map(function() {return 0;});
@@ -105,7 +106,7 @@ var AdminQuestionnary = React.createClass({
                             </td>
                             <td style={centerStyle}>
                                 <RaisedButton
-                                    label="Afficher les réponses"
+                                    label={this.state.showBarChart ? "Cacher les réponses" : "Afficher les réponses"}
                                     buttonStyle={buttonStyle2}
                                     onMouseDown={this.showBarChart}
                                     labelStyle={labelStyle}
