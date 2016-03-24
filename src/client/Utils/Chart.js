@@ -53,7 +53,7 @@ var Chart = React.createClass({
                 datasets: [{label:'Resultats', data:this.state.values, fillColor: rand}]
             };
         } else {
-            for(var i=0;i<this.chartData.datasets[0].data.length;i++){-
+            for(var i=0;i<this.chartData.datasets[0].data.length;i++){
                 this.chartData.datasets[0].data[i] = this.state.values[i];
             }
         }
