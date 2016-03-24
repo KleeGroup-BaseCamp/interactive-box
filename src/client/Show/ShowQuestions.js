@@ -2,6 +2,7 @@ import React from 'react';
 
 import CountdownTimer from "../Utils/CountdownTimer";
 import AnswerButton from '../User/AnswerButton';
+import CircularProgress from 'material-ui/lib/circular-progress';
 
 var BarChart = require("react-chartjs").Bar;
 var questionnaryUtils = require("../Utils/QuestionnaryUtils.js");
@@ -50,6 +51,7 @@ var ShowQuestions = React.createClass({
             timeOut:false,
             time:"6", 
             showChart:false,
+            answerCount:0,
             qaCount:1,
             aCount:-1,
             chartData:{
@@ -100,12 +102,17 @@ var ShowQuestions = React.createClass({
                 showChart:false, 
                 chartData:firstChartData, 
                 qaCount: self.state.qaCount+1, 
-                aCount: 0
+                aCount: 0, 
+                answerCount:0
             });
         });
 
         this.props.socket.on("showBarChart", function(){
             self.setState({showChart:!self.state.showChart});
+        });
+        
+        this.props.socket.on('answer', function(){
+            self.setState({answerCount: self.state.answerCount +1 }); 
         });
         
         this.props.socket.on("end-time", function(arrayOfGoodAnswers){
@@ -120,7 +127,7 @@ var ShowQuestions = React.createClass({
         });
         
         this.props.socket.on("chartData", function(newData){
-            self.setState({aCount:t.state.aCount + 1})
+            self.setState({aCount:self.state.aCount + 1})
             self.setState({chartData:newData});
         });
 
@@ -165,7 +172,7 @@ var ShowQuestions = React.createClass({
                     <h1 className = "big-title"> {this.state.questionLabel} </h1>
                     <CountdownTimer duration = {time} timeOut={this.setTimeOut} key = {key}/>
                     <ul>{answersButtonsArray}</ul>
-                    <h2>{this.state.aCount} ont répondu !</h2>
+                    <h2>{this.state.answerCount} ont répondu !</h2>
                 </div>
             );
         }
@@ -177,7 +184,7 @@ var ShowQuestions = React.createClass({
                    {this._renderAnswers()}
                     <Chart
                         socket={this.props.socket}
-                        data={chartData}
+                        data={this.state.chartData}
                         key={this.state.questionIndex}
                     />
                 </div>
@@ -191,12 +198,11 @@ var ShowQuestions = React.createClass({
 
 var Chart = React.createClass({
 	getInitialState: function(){
-		var t = this;
-		return({data:t.props.data});
+		return({data:this.props.data});
 	}, 
 	componentDidMount: function(){
 		var socket = this.props.socket;
-		var t = this;
+		var self = this;
         for (var i = 0; i<this.props.data.labels.length;i++) {
             var newData = this.props.data;
             var label = this.props.data.labels[i];
@@ -207,9 +213,9 @@ var Chart = React.createClass({
 }
             
 		socket.on("answer", function(indexOfAnswer){
-			var newData = t.state.data;
+			var newData = self.state.data;
 	        newData.datasets[0].data[indexOfAnswer]++; 
-	        t.setState({data: newData});
+	        self.setState({data: newData});
             socket.emit("chartData", t.state.data);
 		});
 	},

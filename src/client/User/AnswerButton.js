@@ -55,19 +55,33 @@ var AnswerButton = React.createClass({
         var labelStyle = {
             fontSize: '200%', 
             textTransform: 'none',
-            verticalAlign: 'middle',
+            verticalAlign: 'middle', 
+            textAlign:'center'
         };
+        var pStyle = {
+            textAlign:'center',
+            fontSize:'100%',
+            position:'absolute',
+            top: "50%",
+            left:"50%",
+            width:'90%',
+            transform: "translate(-50%, -50%)"};
+        var divStyle = {height:'100%', position:'relative'};
 	 	return(
             <div>
                 <RaisedButton 
-                    label={this.props.answerText} 
                     onMouseDown={this.action} 
                     style={buttonStyle} 
                     className={className} 
                     labelStyle={labelStyle}
                     disabled={this.state.mode != CLICKABLE}
                     disabledBackgroundColor={this.state.mode == LOCKED ? 'lightgrey' : backgroundColor}
-                    backgroundColor={backgroundColor}/>
+                    backgroundColor={backgroundColor}
+                >   
+                    <div style={divStyle}>
+                        <p style={pStyle}>{this.props.answerText}</p>
+                    </div>
+                </RaisedButton>
             </div>
         );
 	}

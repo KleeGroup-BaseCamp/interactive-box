@@ -40,7 +40,7 @@ var PublicShowHome = React.createClass({
         if(this.state.status == ROOM) {
             return(<PublicShowRoom socket={this.socket}/>);
         } else if(this.state.status == QUESTION) {
-            return(<PublicShowQuestions socket={this.socket}/>);
+            return(<ShowQuestions socket={this.socket}/>);
         } else if(this.state.status == FINISH){
             return(<p className="middle-content index-title-little">Merci de votre participation !</p>);
         } else {
