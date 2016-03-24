@@ -76,7 +76,6 @@ var RoomList = React.createClass({
 	},
     roll: function(){
         var t = this;
-        //console.log(this.state.users.length, this.state.startIndex, (this.state.startIndex+1) % this.state.users.length);
         this.setState({startIndex : t.state.startIndex == t.state.users.length-1 ? 0 : t.state.startIndex+1}); 
     },
     componentWillUnmount: function() {

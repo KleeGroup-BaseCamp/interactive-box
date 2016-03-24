@@ -30,7 +30,6 @@ var Chart = React.createClass({
     questionID: undefined,
     chartData: undefined,
 	getInitialState: function(){
-        console.log("getInitialState");
 		return({
             values:[],
             visible:false
@@ -39,14 +38,12 @@ var Chart = React.createClass({
     componentWillReceiveProps: function(newProps){
         // but : regarder si c'est une nouvelle question ou pas
         if(!this.questionID || newProps.questionID != this.questionID){
-            console.log("new question", newProps.questionID, this.questionID);
             this.questionID = newProps.questionID;
             this.chartData = undefined;
         }
     },
     generateData:function(){
         if(!this.chartData){
-            console.log("INTERRUPT", this.state.values);
             this.setState({values: this.zeroArray(this.props.labels.length), visible:this.state.values.length != 0});    
             var rand = colors[Math.floor(Math.random() * colors.length)];
             var truncatedLabels = this.props.labels.map(function(label){return label.substring(0,10);});
@@ -56,10 +53,8 @@ var Chart = React.createClass({
             };
         } else {
             for(var i=0;i<this.chartData.datasets[0].data.length;i++){-
-                console.log("ACCKA", this.state.values);
                 this.chartData.datasets[0].data[i] = this.state.values[i];
             }
-            console.log("generated : ", this.chartData.datasets[0]);
         }
     },
     zeroArray: function(n){
@@ -70,7 +65,6 @@ var Chart = React.createClass({
 		var self = this;
         
 		socket.on("answer", function(indexOfAnswer){
-            console.log("received answer n", indexOfAnswer);
             var values = self.state.values;
             values[indexOfAnswer] = values[indexOfAnswer] + 1;
             self.setState({values:values});
@@ -92,7 +86,6 @@ var Chart = React.createClass({
             display:'block'
         };
         this.generateData();
-        console.log("render with data : ", this.chartData.labels, this.chartData.datasets[0].data);
 
         if(this.chartData.labels && this.chartData.labels.length>0 && this.chartData.datasets[0].data){
             if(this.chartData.datasets[0].data.length == 0){
@@ -100,7 +93,6 @@ var Chart = React.createClass({
                     this.chartData.datasets[0].data.push(0);
                 }
             }
-            console.log("Finally rendering with data : ", this.chartData.labels, this.chartData.datasets[0].data);
             return <BarChart 
                 data = {this.chartData}
                 style={centerChartStyle}
