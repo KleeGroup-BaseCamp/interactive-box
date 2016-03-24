@@ -47,8 +47,8 @@ var Chart = React.createClass({
     },
     generateData:function(){
         if(!this.chartData){
-            console.log("INTERRUPT", this.state.values);
-            this.setState({values: this.zeroArray(this.props.labels.length), visible:this.secretElement || this.state.values.length != 0});    
+            console.log("INTERRUPT", this.state.values.length != 0, this.state.visible, this.secretElement);
+            this.setState({values: this.zeroArray(this.props.labels.length), visible:this.state.visible});    
             var rand = colors[Math.floor(Math.random() * colors.length)];
             var truncatedLabels = this.props.labels.map(function(label){return label.substring(0,10);});
             this.chartData = {
@@ -74,6 +74,7 @@ var Chart = React.createClass({
             console.log("received answer n", indexOfAnswer);
             var values = self.state.values;
             values[indexOfAnswer] = values[indexOfAnswer] + 1;
+            this.secretElement = true;
             self.setState({values:values});
 		});
  
