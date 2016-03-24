@@ -4,11 +4,13 @@ import React from 'react';
 import LoginView from './LoginView';
 import UserRoom from './UserRoom';
 import AnswersList from './AnswersList';
+import MailBoxUser from './MailBoxUser';
 
 const LOGIN = 'login';
 const ROOM = 'room';
 const QUESTION = 'question';
 const FINISH = 'finish';
+const MAILBOX = 'mail';
 
 var UserHome = React.createClass({
     socket: undefined,
@@ -45,6 +47,13 @@ var UserHome = React.createClass({
         	   self.setState({status:FINISH});
             }
         });
+        
+        this.socket.on("mail-box", function(){
+            self.setState({status:MAILBOX});    
+        });
+    },
+    goToEnd: function(){
+        this.setState({status:FINISH});
     },
     render: function(){
         if(this.state.status == LOGIN) {
@@ -55,6 +64,8 @@ var UserHome = React.createClass({
             return(<AnswersList socket={this.socket}/>);
         } else if(this.state.status == FINISH){
             return(<p className="middle-content index-title-little">Merci de votre participation !</p>);
+        } else if(this.state.status == MAILBOX){
+            return(<MailBoxUser socket={this.socket} goToEnd={this.goToEnd}/>);           
         } else {
             return(<p>Fatale erreur ! statut : {this.state.status}</p>);
         }

@@ -33,7 +33,7 @@ var LoginView = React.createClass({
     handleSubmit: function() {
         var pseudo = this.state.pseudo;
         if(pseudo==''){
-            this.state.textFieldStatus = NO_PSEUDO;
+            this.setState({textFieldStatus: NO_PSEUDO});
             return;
         }
         this.props.socket.emit("login-request", pseudo);
