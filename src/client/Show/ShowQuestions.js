@@ -109,6 +109,13 @@ var ShowQuestions = React.createClass({
         });
         
         this.props.socket.on("end-time", function(arrayOfGoodAnswers){
+            for(var i=0;i<self.state.answers.length;i++){
+                if(arrayOfGoodAnswers.length>0){
+                    self.state.answers[i].correct = (arrayOfGoodAnswers.indexOf(i)==-1) ? NOT_CORRECT : CORRECT;
+                } else {
+                    self.state.answers[i].correct = POLL;
+                }
+            }
             self.setState({timeOut:true});
         });
         

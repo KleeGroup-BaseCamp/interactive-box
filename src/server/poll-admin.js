@@ -38,10 +38,13 @@ function manageAdminPoll(adminSocket, io){
 		readQuestionnary(idOfQuestionnary);
 		pollUser.reset();
 		io.of('/user').emit('start-quizz');
+		io.of('/showRoom').emit('start-quizz');
+        
 	});
 
 	adminSocket.on("question", function(data){
 		io.of("/user").emit("question", data);
+		io.of("/showRoom").emit("question", data);
 	});
     adminSocket.on("question-show", function(data){
 		io.of("/showRoom").emit("question-show", data);
@@ -54,6 +57,7 @@ function manageAdminPoll(adminSocket, io){
     });
 	adminSocket.on("end-time", function(arrayOfGoodAnswers){
         io.of("/user").emit("end-time", arrayOfGoodAnswers);
+        io.of("/showRoom").emit("end-time", arrayOfGoodAnswers);
     });
 	adminSocket.on("end-questionnary", function(){
         io.of("/user").emit("end-questionnary");

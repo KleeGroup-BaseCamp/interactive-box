@@ -14,7 +14,7 @@ var Router = React.createClass({
     renderContent: function(){
         var hash = window.location.hash;
         if(hash==="#admin"){return(<AdminHome/>);}
-        if(hash==="#show"){return(<p> cc </p>);}
+        if(hash==="#show"){return(<PublicShowHome/>);}
         return(<UserHome/>);
     },
     render: function(){

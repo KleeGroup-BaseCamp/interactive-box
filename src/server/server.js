@@ -104,7 +104,7 @@ function admin (socket){
     socket.on ('disconnect', function(){
         adminSocket = undefined;
         io.of('/user').emit('abort-quizz');
-        io.of('/showroom').emit('abort-quizz');
+        io.of('/showRoom').emit('abort-quizz');
     });
 	socket.emit("registered");
 }

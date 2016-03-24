@@ -33,16 +33,11 @@ var AdminHome = React.createClass({
         this.socket.emit('end-questionnary');
     },
     launchQuestionnary: function(questionnary){
-        console.log("try to set state to wait");
         this.setState({status: WAIT, questionnaryLaunched: questionnary});
-        console.log("set state to wait");
         this.socket.emit("launch-quizz", questionnary.qid);
-        console.log("emitted launch quizz");
     },
     startQuestionnary: function(){
-        console.log("try to set state to questionnary");
         this.setState({status: QUESTIONNARY});
-        console.log("set state to questionnary");
     },
     renderTitle: function(){
         if(this.state.status == INDEX) {
