@@ -1,5 +1,6 @@
 import io from 'socket.io-client';
 import React from 'react';
+import RaisedButton from 'material-ui/lib/raised-button';
 
 import AdminView from './AdminView';
 import WaitPage from './WaitPage';
@@ -27,6 +28,10 @@ var AdminHome = React.createClass({
     },
     redirect: function(){
         this.setState({status: INDEX, questionnaryLaunched:undefined});
+    },
+    backward: function(){
+        this.setState({status: INDEX, questionnaryLaunched:undefined});
+        this.socket.emit("abort-quizz");
     },
     goToEnd: function(){
         this.setState({status:END});
@@ -65,7 +70,7 @@ var AdminHome = React.createClass({
             return(<WaitPage 
                 socket={self.socket}
                    key="1"
-                launchQuizz={this.startQuestionnary} backward={this.redirect}/>);
+                launchQuizz={this.startQuestionnary} backward={this.backward}/>);
                    
         } else if(this.state.status == QUESTIONNARY) {
                 
@@ -85,9 +90,34 @@ var AdminHome = React.createClass({
                   );
         }
     },
+        
+     buttonStyle2: {
+        display: 'block',
+        marginTop: '10%',
+        width: '15%',
+        height: '10%',
+        textAlign: 'centered',
+        position: 'absolute',
+        top:'1%',
+        right:'2%',
+        color: '#B6B6B6'
+    },
+    labelStyle: {
+        textTransform: 'none',
+        fontSize: '100%',
+        lineHeight: '150%',
+            color: '#727272'
+    },
+        
     render: function(){
+        var returnButton = <RaisedButton 
+        label="Retour au choix des questionnaires" 
+        onMouseDown={this.backward} 
+        style={this.buttonStyle2}
+        labelStyle={this.labelStyle}/>
         return(<div>
                    <h1 style={titleStyle} className="red centered">{this.renderTitle()}</h1>
+                    {returnButton}
                    {this.renderContent()}
                 </div>
         );   
