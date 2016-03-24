@@ -63,6 +63,9 @@ function manageAdminPoll(adminSocket, io){
         io.of("/user").emit("end-questionnary");
         io.of("/showRoom").emit("end-questionnary");
     });
+    adminSocket.on("mail-box", function(){
+        io.of("/user").emit("mail-box"); 
+    });
 }
 
 exports.manageAdminPoll = manageAdminPoll;

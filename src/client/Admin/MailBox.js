@@ -28,7 +28,7 @@ var MailBox = React.createClass({
     },
     componentDidMount: function(){
         var self = this;
-        this.socket.on('mail', function(mail){
+        this.props.socket.on('mail', function(mail){
             var mails = self.state.mails;
             mails.push(mail);
             self.setState(mails);
@@ -44,7 +44,7 @@ var MailBox = React.createClass({
   		var message = "Adresses envoyées : ";
         
         var mailsNodes = this.state.mails.map(function(mail){
-            return <li style={liStyle}> mail </li>;    
+            return <li style={liStyle}> {mail} </li>;    
         });
         
   		return (<div>

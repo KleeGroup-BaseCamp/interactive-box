@@ -52,6 +52,9 @@ var UserHome = React.createClass({
             self.setState({status:MAILBOX});    
         });
     },
+    goToEnd: function(){
+        this.setState({status:FINISH});
+    },
     render: function(){
         if(this.state.status == LOGIN) {
             return(<LoginView socket={this.socket}/>);
@@ -62,7 +65,7 @@ var UserHome = React.createClass({
         } else if(this.state.status == FINISH){
             return(<p className="middle-content index-title-little">Merci de votre participation !</p>);
         } else if(this.state.status == MAILBOX){
-            return(<MailBoxUser socket={this.socket}/>);           
+            return(<MailBoxUser socket={this.socket} goToEnd={this.goToEnd}/>);           
         } else {
             return(<p>Fatale erreur ! statut : {this.state.status}</p>);
         }

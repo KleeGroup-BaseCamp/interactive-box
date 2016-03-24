@@ -28,56 +28,49 @@ var MailBoxUser = React.createClass({
     getInitialState: function() {
         return {email: '', textFieldStatus:TYPING};
     },
-    updatePseudo: function(e){
-        this.setState({pseudo: e.target.value, textFieldStatus:TYPING});
+    updateMail: function(e){
+        this.setState({email: e.target.value, textFieldStatus:TYPING});
     },
     handleSubmit: function() {
         var email = this.state.email;
         if(email==''){
-            this.state.textFieldStatus = NO_EMAIL;
+            this.setState({textFieldStatus:NO_EMAIL});
             return;
         }
         var regex = /\S+@\S+\.\S+/;
         if(!regex.test(email)){
-            this.state.textFieldStatus = NOT_VALID;
+            this.setState({textFieldStatus:NOT_VALID});
             return;
         }
         this.props.socket.emit("mail", email);
-    },
-    componentDidMount: function(){
-        var self = this;
-        
-        // Focus sur le textField
-        ReactDOM.findDOMNode(this.refs.inputPseudo).focus(); 
-        
-        this.props.socket.on("already-used-pseudo", function(){ self.setState({textFieldStatus:ALREADY_USED_PSEUDO}); });
+        this.props.goToEnd();
     },
     _generateErrorText: function(){
-        if(this.state.textFieldStatus == NO_PSEUDO){
-            return "Entrez un pseudo";
-        } else if(this.state.textFieldStatus == ALREADY_USED_PSEUDO){
-            return "Pseudo déjà utilisé";
+        if(this.state.textFieldStatus == NO_EMAIL){
+            return "Entrez une adresse email";
+        } else if(this.state.textFieldStatus == NOT_VALID){
+            return "Adresse non valide";
         } else {
             return '';
         }
     },
     render: function() {
+        var errorText = this._generateErrorText();
         return(
             <div className="middle-content">
-                <h1 className="index-title">Choisissez votre pseudo</h1>
+                <h1 className="index-title-little">Partagez votre adresse email</h1>
                 <div>
                     <TextField 
-                        hintText="Pseudo"
+                        hintText="Adresse email"
                         onEnterKeyDown={this.handleSubmit}
-                        onChange={this.updatePseudo}
-                        ref="inputPseudo"
+                        onChange={this.updateMail}
                         inputStyle={labelStyle}
                         style={buttonStyle}
-                        errorText={this._generateErrorText()}/>
+                        errorText={errorText}/>
                 </div>
                 <div>
                     <RaisedButton 
-                        label="Continuer"
+                        label="Envoyer"
                         onMouseDown={this.handleSubmit}
                         style={buttonStyle}
                         labelStyle={labelStyle}/>
