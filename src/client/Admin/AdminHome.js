@@ -3,7 +3,7 @@ import React from 'react';
 
 import AdminView from './AdminView';
 import WaitPage from './WaitPage';
-import Questionnary from './Questionnary';
+import AdminQuestionnary from './Questionnary';
 import EndPage from './EndPage';
 
 const INDEX = 'index';
@@ -44,34 +44,58 @@ var AdminHome = React.createClass({
         this.setState({status: QUESTIONNARY});
         console.log("set state to questionnary");
     },
-    render: function(){
-        var content = <br></br>;
-        var title = "Interactive Box";
-        
+    renderTitle: function(){
         if(this.state.status == INDEX) {
-            content = (<AdminView socket={this.socket} launchQuestionnary={this.launchQuestionnary}/>);
-            title = "Interactive Box";
+            return "Interactive Box";
         } else if(this.state.status == WAIT) {
-                console.log("state is wait");
-            content = (<WaitPage socket={this.socket} launchQuizz={this.startQuestionnary}/>);
-            title = this.state.questionnaryLaunched.title;
+            return this.state.questionnaryLaunched.title;
         } else if(this.state.status == QUESTIONNARY) {
-                console.log("state is questionnary");
-            content = (<Questionnary socket={this.socket} goToEnd={this.goToEnd} questionnary={this.state.questionnaryLaunched}/>);
-            title = this.state.questionnaryLaunched.title;
+            return this.state.questionnaryLaunched.title;
         } else if(this.state.status == END){
-            content = (<EndPage socket={this.socket} redirect={this.redirect}/>);
-            title = this.state.questionnaryLaunched.title;           
+            return this.state.questionnaryLaunched.title;           
         } else {
-            content = (<p>Fatale erreur ! statut : {this.state.status}</p>);
-            title = "Interactive Box";          
+            return "Interactive Box";          
         }
-        
+    },
+    renderContent: function(){
+        var self = this;
+        if(this.state.status == INDEX) {
+            
+            return(<AdminView 
+               socket={this.socket} 
+               launchQuestionnary={this.launchQuestionnary}/>);
+                   
+        } else if(this.state.status == WAIT) {
+                
+            return(<WaitPage 
+                socket={self.socket}
+                   key="1"
+                launchQuizz={this.startQuestionnary}/>);
+                   
+        } else if(this.state.status == QUESTIONNARY) {
+                
+            return(<AdminQuestionnary
+                socket={this.socket}
+                goToEnd={this.goToEnd}
+                questionnary={this.state.questionnaryLaunched}/>);
+                   
+        } else if(this.state.status == END){
+            return(<EndPage
+                   socket={this.socket}
+                   redirect={this.redirect}/>);          
+        } else {
+            return(<p>
+                   Fatale erreur ! statut : {this.state.status}
+                   </p>
+                  );
+        }
+    },
+    render: function(){
         return(<div>
-                   <h1 style={titleStyle} className="red centered">{title}</h1>
-                   {content}
+                   <h1 style={titleStyle} className="red centered">{this.renderTitle()}</h1>
+                   {this.renderContent()}
                 </div>
-        );        
+        );   
     }
 });
 
