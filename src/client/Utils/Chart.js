@@ -29,6 +29,7 @@ const colors = [
 var Chart = React.createClass({
     questionID: undefined,
     chartData: undefined,
+    secretElement: false,
 	getInitialState: function(){
         console.log("getInitialState");
 		return({
@@ -47,7 +48,7 @@ var Chart = React.createClass({
     generateData:function(){
         if(!this.chartData){
             console.log("INTERRUPT", this.state.values);
-            this.setState({values: this.zeroArray(this.props.labels.length), visible:this.state.values.length != 0});    
+            this.setState({values: this.zeroArray(this.props.labels.length), visible:this.secretElement || this.state.values.length != 0});    
             var rand = colors[Math.floor(Math.random() * colors.length)];
             var truncatedLabels = this.props.labels.map(function(label){return label.substring(0,10);});
             this.chartData = {
@@ -77,6 +78,7 @@ var Chart = React.createClass({
 		});
  
         this.props.socket.on("showBarChart", function(){
+            this.secretElement=true;
             self.setState({visible:!self.state.visible});
         });
 	},
