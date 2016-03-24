@@ -4,7 +4,6 @@ const GOOD_ANSWER = "good";
 const WRONG_ANSWER = "wrong";
 const NO_ANSWER = "no";
 const NEUTRAL = "neutral";
-const WAITING = "waiting";
 
 import "./result.css";
 
@@ -30,18 +29,12 @@ var Result = React.createClass({
             "./incorrect", 
             "./time", 
             "./like"]);
-        var text = this.chooseFromStatus([
-            "Bien joué ! !", 
-            "Raté !", 
-            "Trop tard !", 
-            "Merci !"]);
         var answers = this.props.answersList;
         return(
             <div className="result-block">
                 <div className="result-image-holder">
                     <img className="result-image" src={imageURL}/>
                 </div>
-                <p className ="result-text">{text}</p>
             </div>
         );
    } 

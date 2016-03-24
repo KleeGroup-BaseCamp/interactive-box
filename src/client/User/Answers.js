@@ -142,7 +142,7 @@ var CountdownTimer = React.createClass({
   render: function() {
       if (this.state.secondsRemaining > 0){
         return (
-        <div>Seconds Remaining: {this.state.secondsRemaining}</div>
+            <div>Seconds Remaining: {this.state.secondsRemaining}</div>
         );
       }
       else {

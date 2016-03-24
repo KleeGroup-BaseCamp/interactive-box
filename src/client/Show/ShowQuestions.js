@@ -1,15 +1,14 @@
 import React from 'react';
 
 import CountdownTimer from "../Utils/CountdownTimer";
+import Chart from "../Utils/Chart";
 import AnswerButton from '../User/AnswerButton';
 import CircularProgress from 'material-ui/lib/circular-progress';
 
-var BarChart = require("react-chartjs").Bar;
 var questionnaryUtils = require("../Utils/QuestionnaryUtils.js");
 
 import './ShowQuestionsStyle.css';
 
-var colors = ['#607D8B', '#FF5722', '#795548', '#FF9800', '#FFC107', '#FFEB3B', '#CDDC39', '#8BC34A', '#4CAF50', '#009688', '#00BCD4', '#00BCD4', '#3F51B5', '#673AB7', '#9C27B0', '#E91E63', '#F44336']; 
 
 const titleStyle = {
     paddingTop:'3%',
@@ -24,6 +23,13 @@ const labelStyle = {
     textTransform: 'none',
     fontSize: '150%',
     textAlign: 'centered'
+};
+
+const questionTitleStyle = {
+    textAlign:'center', 
+    color:'seagreen', 
+    fontSize:'5vmin',
+    marginTop:'3%'
 };
 
 //Modes des réponses
@@ -42,6 +48,10 @@ const circularProgressStyle = {
     marginRight:'auto'
 };
 
+const centeredStyle = {
+    textAlign: 'center'
+};
+
 var ShowQuestions = React.createClass({
     getInitialState: function(){
         return {
@@ -50,12 +60,7 @@ var ShowQuestions = React.createClass({
             answers:[],
             timeOut:false,
             time:"6", 
-            showChart:false,
-            answerCount:0,
-            chartData:{
-                labels: ["Bla", "Bla", "Bla"],
-                datasets: [{label: 'Resultats', data: []}]
-            }
+            answerCount:0
         };
     },
     createAnswersTable: function(labels){
@@ -74,7 +79,7 @@ var ShowQuestions = React.createClass({
             } else if (answer.correct == NOT_CORRECT){
                 mode = WRONG;
             } else if (answer.correct==POLL){
-                mode = POLL;
+                mode = CLICKABLE;
             }
         } else {
             mode = CLICKABLE;
@@ -87,24 +92,14 @@ var ShowQuestions = React.createClass({
 		this.props.socket.on("question", function(data){
             var numberOfAnswers = data.answers.length;
             var initResults = Array.apply(null, {length:numberOfAnswers}).map(function() {return 0;});
-			var firstChartData = {
-                labels: data.answers,
-                datasets: [{label: 'Resultats', data: initResults}]
-            };
             self.setState({
                 time:data.time,
                 answers:self.createAnswersTable(data.answers),
                 timeOut:false,
                 questionLabel:data.question,
                 waiting:false, 
-                showChart:false, 
-                chartData:firstChartData, 
                 answerCount:0
             });
-        });
-
-        this.props.socket.on("showBarChart", function(){
-            self.setState({showChart:!self.state.showChart});
         });
         
         this.props.socket.on('answer', function(){
@@ -120,10 +115,6 @@ var ShowQuestions = React.createClass({
                 }
             }
             self.setState({timeOut:true});
-        });
-        
-        this.props.socket.on("chartData", function(newData){
-            self.setState({chartData:newData});
         });
 
         this.props.socket.emit('ready-to-start-quizz');
@@ -141,6 +132,8 @@ var ShowQuestions = React.createClass({
             var mode = self.determineMode(answer);
             return (<li>
                         <AnswerButton
+                            height={30}
+                            fontSize='150%'
                             key={label}
                             answerText={label}
                             mode={mode}
@@ -154,105 +147,40 @@ var ShowQuestions = React.createClass({
                 <CircularProgress style={circularProgressStyle}/>
               );  
     },
-    _renderAnswers: function(){
+    _generateLabel(){
+        if(this.state.answerCount == 0){
+            return "Aucune réponse reçue";
+        } else if(this.state.answerCount == 1){
+            return "Une réponse reçue";
+        } else {
+            return this.state.answerCount + " réponses reçues";
+        }
+    },
+    render: function(){
         var answersButtonsArray = this._renderAnswersButton();
         var key = this.state.questionLabel;
         var time = this.state.timeOut ? "0" : this.state.time;
+        var answersLabels = this.state.answers.map(function(labelCorrect){return labelCorrect.label;});
         if(this.state.waiting){
             return this._renderWaitPage();
         } else {  
             return(
                 <div className="middle-content">
-                    <h1 className = "big-title"> {this.state.questionLabel} </h1>
+                    <h1 style={questionTitleStyle}> {this.state.questionLabel} </h1>
                     <CountdownTimer duration = {time} timeOut={this.setTimeOut} key = {key}/>
                     <ul>{answersButtonsArray}</ul>
-                    <h2>{this.state.answerCount} ont répondu !</h2>
+                    <h2 style={centeredStyle}>{this._generateLabel()}</h2>
+                    <Chart
+                        socket={this.props.socket}
+                        labels={answersLabels}
+                        key={this.state.questionLabel + "#key"}
+                        questionID={this.state.questionLabel}
+                    />
                 </div>
             );
         }
-    }, 
-    render: function(){
-        if(this.state.showChart){
-            return (
-                <div>
-                   {this._renderAnswers()}
-                    <Chart
-                        socket={this.props.socket}
-                        data={this.state.chartData}
-                        key={this.state.questionIndex}
-                    />
-                </div>
-           );
-        } else {
-            return this._renderAnswers();
-        }
     }
 });
-
-
-var Chart = React.createClass({
-	getInitialState: function(){
-		return({data:this.props.data});
-	}, 
-	componentDidMount: function(){
-		var socket = this.props.socket;
-		var self = this;
-        for (var i = 0; i<this.props.data.labels.length;i++) {
-            var newData = this.props.data;
-            var label = this.props.data.labels[i];
-            var TruncatedLabel = label.substring(0,10);
-            newData.labels[i]=TruncatedLabel;
-            this.setState({data: newData});
-        }
-		socket.on("answer", function(indexOfAnswer){
-			var newData = self.state.data;
-	        newData.datasets[0].data[indexOfAnswer]++; 
-	        self.setState({data: newData});
-		});
-        console.log("I MOUNTED from chart");
-        socket.emit("past-answers-request");
-	},
-	render: function(){
-        var centerChartStyle = {
-            marginLeft:'auto', 
-            marginRight:'auto', 
-            display:'block', 
-            width:'80%', 
-            height:'40%', 
-            marginTop:'3%'
-        };
-		return <BarChart 
-            data = {this.state.data}
-            style={centerChartStyle}
-            className="chart-class"
-        />;
-	}
-});
-
-
-var ChartOld = React.createClass({
-	getInitialState: function(){
-		var t = this;
-		return({data:t.props.data});
-	}, 
-	componentDidMount: function(){
-        
-		var t = this;
-        console.log("Chart did mount");
-        console.log(t.state.data);
-        this.props.socket.on("chartData", function(newData){
-            t.setState({data:newData});
-
-        });
-	},
-	render: function(){
-		return (<div>
-                <BarChart data = {this.state.data}/>
-               </div>
-               );
-	}
-});
-
 
 
 export default ShowQuestions;

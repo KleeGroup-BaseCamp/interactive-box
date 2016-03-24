@@ -34,6 +34,16 @@ const circularProgressStyle = {
     marginRight:'auto'
 };
 
+const questionTitleStyle = {
+    textAlign:'center', 
+    color:'seagreen', 
+    fontSize:'5vmin',
+    marginTop:'3%'
+};
+
+const pStyle = {
+    textAlign:'center'
+};
 
 var AnswersList = React.createClass({
     getInitialState: function(){
@@ -135,6 +145,8 @@ var AnswersList = React.createClass({
             var mode = self.determineMode(answer);
             return (<li>
                         <AnswerButton
+                            height={50}
+                            fontSize='200%'
                             action={chooseAnswer}
                             key={label}
                             answerText={label}
@@ -151,12 +163,12 @@ var AnswersList = React.createClass({
             return (<Result answerState={resultMode}/>);
         } else {
             if(this.state.answered){
-                return (<p>
+                return (<p style={pStyle}>
                             Réponse enregistrée
                         </p>
                     );
             } else{
-                return (<p>
+                return (<p style={pStyle}>
                             A vous de répondre !
                         </p>
                 );
@@ -178,7 +190,7 @@ var AnswersList = React.createClass({
         } else {  
             return(
                 <div className="middle-content">
-                    <h1 className = "big-title"> {this.state.questionLabel} </h1>
+                    <h1 style={questionTitleStyle}> {this.state.questionLabel} </h1>
                     <CountdownTimer duration = {time} timeOut={this.setTimeOut} key = {key}/>
                     <ul>{answersButtonsArray}</ul>
                     {result}

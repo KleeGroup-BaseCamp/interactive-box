@@ -33,12 +33,12 @@ var AnswerButton = React.createClass({
         if(this.state.mode==SELECTED){return '#93b1e0';}                     
         if(this.state.mode==LOCKED){return '#e3e3e3';}                     
         if(this.state.mode==POLL){return 'white';}                     
-        if(this.state.mode==GOOD){return '#b6edc1';}                     
-        if(this.state.mode==WRONG){return '#dba8a8';}                     
+        if(this.state.mode==GOOD){return '#47ad5b';}                     
+        if(this.state.mode==WRONG){return '#c45757';}                     
     },        
 	render: function(){
         var className = "answer-buttton " + this.state.mode;
-        var heightPercent = 50/(this.props.nQuestions+1);
+        var heightPercent = this.props.height/(this.props.nQuestions+1);
         var heightPercentText = heightPercent+'vmin';
         var marginPercent = heightPercent/this.props.nQuestions;
         var marginPercentText = marginPercent+'vmin';
@@ -59,11 +59,11 @@ var AnswerButton = React.createClass({
         };
         var pStyle = {
             textAlign:'center',
-            fontSize:'100%',
+            fontSize:this.props.fontSize,
             position:'absolute',
             top: "50%",
             left:"50%",
-            width:'90%',
+            width:'100%',
             transform: "translate(-50%, -50%)"};
         var divStyle = {height:'100%', position:'relative'};
 	 	return(
