@@ -93,20 +93,20 @@ var AdminHome = React.createClass({
         
      buttonStyle2: {
         display: 'block',
-        marginTop: '10%',
+        marginTop:'5%',
+        marginLeft:'auto',
+        marginRight:'auto',
         width: '15%',
-        height: '10%',
+        height: '3%',
         textAlign: 'centered',
-        position: 'absolute',
-        top:'1%',
-        right:'2%',
-        color: '#B6B6B6'
+        
     },
     labelStyle: {
         textTransform: 'none',
-        fontSize: '100%',
+        fontSize: '60%',
         lineHeight: '150%',
-            color: '#727272'
+        color: '#727272',
+        fontWeight:'bold'
     },
         
     render: function(){
@@ -117,8 +117,8 @@ var AdminHome = React.createClass({
         labelStyle={this.labelStyle}/>
         return(<div>
                    <h1 style={titleStyle} className="red centered">{this.renderTitle()}</h1>
-                    {returnButton}
                    {this.renderContent()}
+                    {returnButton}
                 </div>
         );   
     }
