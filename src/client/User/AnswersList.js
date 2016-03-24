@@ -101,7 +101,7 @@ var AnswersList = React.createClass({
             });
         });
         
-        this.props.socket.on("end-time", function(arrayOfGoodAnswers){
+        this.props.socket.on("good-answers", function(arrayOfGoodAnswers){
             for(var i=0;i<self.state.answers.length;i++){
                 if(arrayOfGoodAnswers.length>0){
                     self.state.answers[i].correct = (arrayOfGoodAnswers.indexOf(i)==-1) ? NOT_CORRECT : CORRECT;
@@ -109,6 +109,7 @@ var AnswersList = React.createClass({
                     self.state.answers[i].correct = POLL;
                 }
             }
+            //TODO a priori on peut effacer cette ligne, à voir
             self.setState({timeOut:true});
         });
         

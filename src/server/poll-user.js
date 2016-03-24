@@ -2,6 +2,8 @@ var numberOfReadyUsers = 0;
 var totalAmountOfUsers = 0;
 var ioReference = undefined;
 
+var numberOfTimeOut = 0;
+
 function manageUserPoll(userSocket, io){
     ioReference = io;
     
@@ -19,9 +21,13 @@ function manageUserPoll(userSocket, io){
 			io.of('/admin').emit("all-users-are-ready");
 		}
 	});
-    
-    userSocket.on("end-time-request", function(){
-        io.of('/admin').emit("end-time-request");
+}
+
+function resetTimeOut(){
+    numberOfTimeOut = 0;
+    totalAmountOfUsers = 0;
+    Object.keys(ioReference.nsps['/user'].connected).forEach(function(socketID) {
+        totalAmountOfUsers++;
     });
 }
 

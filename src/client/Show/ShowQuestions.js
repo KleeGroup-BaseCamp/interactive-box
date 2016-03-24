@@ -52,8 +52,6 @@ var ShowQuestions = React.createClass({
             time:"6", 
             showChart:false,
             answerCount:0,
-            qaCount:1,
-            aCount:-1,
             chartData:{
                 labels: ["Bla", "Bla", "Bla"],
                 datasets: [{label: 'Resultats', data: []}]
@@ -101,8 +99,6 @@ var ShowQuestions = React.createClass({
                 waiting:false, 
                 showChart:false, 
                 chartData:firstChartData, 
-                qaCount: self.state.qaCount+1, 
-                aCount: 0, 
                 answerCount:0
             });
         });
@@ -115,7 +111,7 @@ var ShowQuestions = React.createClass({
             self.setState({answerCount: self.state.answerCount +1 }); 
         });
         
-        this.props.socket.on("end-time", function(arrayOfGoodAnswers){
+        this.props.socket.on("good-answers", function(arrayOfGoodAnswers){
             for(var i=0;i<self.state.answers.length;i++){
                 if(arrayOfGoodAnswers.length>0){
                     self.state.answers[i].correct = (arrayOfGoodAnswers.indexOf(i)==-1) ? NOT_CORRECT : CORRECT;
@@ -127,7 +123,6 @@ var ShowQuestions = React.createClass({
         });
         
         this.props.socket.on("chartData", function(newData){
-            self.setState({aCount:self.state.aCount + 1})
             self.setState({chartData:newData});
         });
 
@@ -135,7 +130,6 @@ var ShowQuestions = React.createClass({
     },
     setTimeOut: function(){ // demande des réponses à la fin du temps TODO a régler
         this.setState({timeOut:true}); 
-        this.props.socket.emit("end-time-request");
     },
     _renderAnswersButton: function(){
         var self  = this;
@@ -209,15 +203,14 @@ var Chart = React.createClass({
             var TruncatedLabel = label.substring(0,10);
             newData.labels[i]=TruncatedLabel;
             this.setState({data: newData});
-    // d'autres instructions
-}
-            
+        }
 		socket.on("answer", function(indexOfAnswer){
 			var newData = self.state.data;
 	        newData.datasets[0].data[indexOfAnswer]++; 
 	        self.setState({data: newData});
-            socket.emit("chartData", t.state.data);
 		});
+        console.log("I MOUNTED from chart");
+        socket.emit("past-answers-request");
 	},
 	render: function(){
         var centerChartStyle = {

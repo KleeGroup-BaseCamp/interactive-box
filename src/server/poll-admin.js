@@ -55,9 +55,9 @@ function manageAdminPoll(adminSocket, io){
     adminSocket.on("chartData", function(newData){
         io.of("/showRoom").emit("chartData", newData);
     });
-	adminSocket.on("end-time", function(arrayOfGoodAnswers){
-        io.of("/user").emit("end-time", arrayOfGoodAnswers);
-        io.of("/showRoom").emit("end-time", arrayOfGoodAnswers);
+	adminSocket.on("good-answers", function(arrayOfGoodAnswers){
+        io.of("/user").emit("good-answers", arrayOfGoodAnswers);
+        io.of("/showRoom").emit("good-answers", arrayOfGoodAnswers);
     });
 	adminSocket.on("end-questionnary", function(){
         io.of("/user").emit("end-questionnary");

@@ -50,7 +50,7 @@ function disconnectUser(socket){
     delete sockets[socket.id];
 };
 
-
+var timedOutUsers = 0;
 
 function user(socket){
     sockets[socket.id] = {socket:socket, pseudo:"Nick", loggedIn:false};
@@ -94,6 +94,25 @@ function user(socket){
             sendUserNamesRequest(socket);
         }
     });
+    
+    socket.on("end-time-request", function(){
+        timedOutUsers++;
+        if(timedOutUsers == getNumberOfValidUsers()){
+            adminSocket.emit("end-time");
+            timedOutUsers = 0;
+        }
+    });
+}
+
+function getNumberOfValidUsers(){
+    var result = 0;
+    for(var socketID in sockets){
+        var userSession = sockets[socketID];
+        if(userSession.loggedIn){
+            result++;
+        }
+    }
+    return result;
 }
 
 function admin (socket){
@@ -106,7 +125,6 @@ function admin (socket){
         io.of('/user').emit('abort-quizz');
         io.of('/showRoom').emit('abort-quizz');
     });
-	socket.emit("registered");
 }
 
 function show (socket){
@@ -118,11 +136,9 @@ function show (socket){
 //  Envoi des pseudos de tous les utilisateurs
 function sendUserNamesRequest(socket) {
     socket.on("ready-to-receive-users", function(){
-        console.log("received request");
         for(var socketID in sockets){
             var userSession = sockets[socketID];
             if(userSession.loggedIn){
-                console.log("sending ..", userSession.pseudo);
                 socket.emit("user-name", userSession.pseudo);
             }
         }

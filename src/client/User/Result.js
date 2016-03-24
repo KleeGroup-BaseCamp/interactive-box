@@ -4,6 +4,7 @@ const GOOD_ANSWER = "good";
 const WRONG_ANSWER = "wrong";
 const NO_ANSWER = "no";
 const NEUTRAL = "neutral";
+const WAITING = "waiting";
 
 import "./result.css";
 

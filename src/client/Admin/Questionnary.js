@@ -31,19 +31,15 @@ var AdminQuestionnary = React.createClass({
 	},
 	componentDidMount: function(){
 		var self = this;
-        this.props.socket.on("end-time-request", function(){
-            self.stopTime(); // C'est à dire ?
-            //TODO gestion de la fin du temps
+        this.props.socket.on("end-time", function(){
+            var arrayOfGoodAnswers = questionnaryUtils.arrayOfGoodAnswers(self.props.questionnary, self.state.questionIndex);
+            self.props.socket.emit("good-answers", arrayOfGoodAnswers);  
         });
 	},
 	incrementCounter: function(){
 		var oldQuestionIndex = this.state.questionIndex;
 		this.setState({questionIndex:oldQuestionIndex+1});
 	},
-    stopTime: function(){
-        var arrayOfGoodAnswers = questionnaryUtils.arrayOfGoodAnswers(this.props.questionnary, this.state.questionIndex);
-        this.props.socket.emit("end-time", arrayOfGoodAnswers);  
-    },
     showBarChart: function(){
         this.props.socket.emit("showBarChart");
     },
@@ -94,7 +90,7 @@ var AdminQuestionnary = React.createClass({
             var centerStyle = {textAlign:'center'};
             var divStyle = {width:"100%", display:"block", padding:'0px', marginTop:"3%"};
 			return (
-				<div>
+				<div className='middle-content'>
 					<p className="centered little padding6">{questionTitle}</p>
                     <AdminAnswers answersLabelsCorrect={answersLabelsCorrect}/>
                     <table style={divStyle}>
@@ -104,15 +100,7 @@ var AdminQuestionnary = React.createClass({
                                     label="Question suivante"
                                     buttonStyle={buttonStyle2}
                                     onMouseDown={this.incrementCounter}
-                                    labelStyle={this.labelStyle}
-                                />
-                            </td>
-                            <td style={centerStyle}>
-                                <RaisedButton
-                                    label="Arrêter le chronomètre"
-                                    buttonStyle={buttonStyle2}
-                                    onMouseDown={this.stopTime}
-                                    labelStyle={this.labelStyle}
+                                    labelStyle={labelStyle}
                                 />
                             </td>
                             <td style={centerStyle}>
@@ -120,7 +108,7 @@ var AdminQuestionnary = React.createClass({
                                     label="Afficher les réponses"
                                     buttonStyle={buttonStyle2}
                                     onMouseDown={this.showBarChart}
-                                    labelStyle={this.labelStyle}
+                                    labelStyle={labelStyle}
                                 />
                             </td>
                         </tr>   

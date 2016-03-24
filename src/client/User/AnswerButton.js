@@ -43,15 +43,14 @@ var AnswerButton = React.createClass({
         var marginPercent = heightPercent/this.props.nQuestions;
         var marginPercentText = marginPercent+'vmin';
         var backgroundColor = this._findBackgroundColor();
-        var buttonStyle = 
-            {
-                display: 'block',
-                marginLeft: 'auto',
-                marginRight: 'auto',
-                width: '70%',
-                marginBottom: marginPercentText, 
-                height: heightPercentText, 
-            };
+        var buttonStyle = {
+            display: 'block',
+            marginLeft: 'auto',
+            marginRight: 'auto',
+            width: '70%',
+            marginBottom: marginPercentText, 
+            height: heightPercentText, 
+        };
         var labelStyle = {
             fontSize: '200%', 
             textTransform: 'none',
