@@ -6,11 +6,13 @@ import AdminView from './AdminView';
 import WaitPage from './WaitPage';
 import AdminQuestionnary from './Questionnary';
 import EndPage from './EndPage';
+import MailBox from './MailBox';
 
 const INDEX = 'index';
 const WAIT = 'wait';
 const QUESTIONNARY = 'questionnary';
 const END = 'end';
+const MAILBOX = 'mailbox';
 
 const titleStyle = {
     paddingTop:'3%',
@@ -44,17 +46,15 @@ var AdminHome = React.createClass({
     startQuestionnary: function(){
         this.setState({status: QUESTIONNARY});
     },
+    goToMail: function(){
+        this.setState({status:MAILBOX});  
+        this.socket.emit('mail-box');
+    },
     renderTitle: function(){
-        if(this.state.status == INDEX) {
-            return "Interactive Box";
-        } else if(this.state.status == WAIT) {
+        if(this.state.questionnaryLaunched) {
             return this.state.questionnaryLaunched.title;
-        } else if(this.state.status == QUESTIONNARY) {
-            return this.state.questionnaryLaunched.title;
-        } else if(this.state.status == END){
-            return this.state.questionnaryLaunched.title;           
         } else {
-            return "Interactive Box";          
+            return "Interactive Box";
         }
     },
     renderContent: function(){
@@ -82,7 +82,14 @@ var AdminHome = React.createClass({
         } else if(this.state.status == END){
             return(<EndPage
                    socket={this.socket}
+                   redirect={this.redirect}
+                   goToMail={this.goToMail}/>);          
+                   
+       } else if(this.state.status == MAILBOX){
+            return(<MailBox
+                   socket={this.socket}
                    redirect={this.redirect}/>);          
+                   
         } else {
             return(<p>
                    Fatale erreur ! statut : {this.state.status}
