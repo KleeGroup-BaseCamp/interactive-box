@@ -14,6 +14,14 @@ var WaitPage = React.createClass({
         width: '50%',
         marginTop:'10%'
     },
+    buttonStyle2: {
+        display: 'block',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        marginTop: '10%',
+        width: '50%',
+        textAlign: 'centered'
+    },
     labelStyle: {
         textTransform: 'none'
     },
@@ -33,6 +41,11 @@ var WaitPage = React.createClass({
             style={this.buttonStyle}
             disabled={!this.state.okToStart}
             labelStyle={this.labelStyle}/>
+        var returnButton = <RaisedButton 
+            label="Retour au choix des questionnaires" 
+            onMouseDown={this.props.backward} 
+            style={this.buttonStyle2}
+            labelStyle={this.labelStyle}/>
   		var waitMessage = this.state.okToStart ? 
             "Tous les utilisateurs sont prêts" :
             "En attente de tous les utilisateurs";
@@ -43,6 +56,7 @@ var WaitPage = React.createClass({
   		return (<div>
                     {waitLabel}
                     {startButton}
+                    {returnButton}
                 </div>);
 	}
 });

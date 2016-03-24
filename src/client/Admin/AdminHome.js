@@ -65,7 +65,7 @@ var AdminHome = React.createClass({
             return(<WaitPage 
                 socket={self.socket}
                    key="1"
-                launchQuizz={this.startQuestionnary}/>);
+                launchQuizz={this.startQuestionnary} backward={this.redirect}/>);
                    
         } else if(this.state.status == QUESTIONNARY) {
                 
