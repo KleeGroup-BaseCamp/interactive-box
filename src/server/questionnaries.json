@@ -339,7 +339,7 @@
             
              {
                 "qid":2,
-                "text":"Une solution pratique pour suciter l'intérêt de son auditoire serait :",
+                "text":"Une solution pratique pour susciter l'intérêt de son auditoire serait :",
                 "answers":["2.1", "2.2", "2.3"],
                 "time":15
                 }
@@ -372,7 +372,7 @@
                         },
                         {
                             "rid":"2.3",
-                            "label":"Une décharge électrique pour ceux qui quittent l'éran de présentation des yeux pendant plus de 5 secondes",
+                            "label":"Apporter des bonbons",
                             "correct":false
                         }
                   ]
