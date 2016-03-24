@@ -13,8 +13,10 @@ var AdminAnswers = React.createClass({
                     marginTop:'2%',
                     textAlign: 'center',
                     display: 'table', 
-                    backgroundColor: labelCorrect.correct ? "#b6edc1" : "#dba8a8",
-                    verticalAlign: 'middle'
+                    backgroundColor: labelCorrect.correct ? "#8BC34A" : "#F44336",
+                    verticalAlign: 'middle',
+                    color:'white',
+                    fontWeight:'bold'
                 };
                 var pStyle={
                     display: 'table-cell',
