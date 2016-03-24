@@ -23,7 +23,6 @@ var Result = React.createClass({
         } 
     },
     render: function(){
-        var answer = this.props.answerStatus;
         var imageURL = this.chooseFromStatus([
             "./correct", 
             "./incorrect", 
