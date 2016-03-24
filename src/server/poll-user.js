@@ -19,6 +19,9 @@ function manageUserPoll(userSocket, io){
 			io.of('/admin').emit("all-users-are-ready");
 		}
 	});
+    userSocket.on("mail", function(mail){
+        io.of('/admin').emit("mail", mail);
+    });
 }
 
 function reset(){
