@@ -19,6 +19,7 @@ const LOCKED = "locked";
 const CORRECT = "correct";
 const NOT_CORRECT = "not-correct";
 const POLL = "poll";
+const NOT_YET_INFO = 'not yet info';
 
 // Etat du résultat
 const RESULT_GOOD = "good";
@@ -61,7 +62,7 @@ var AnswersList = React.createClass({
             return ({
                 label: label,
                 selected: false, 
-                correct: POLL
+                correct: NOT_YET_INFO
             });
         });
     },
@@ -93,6 +94,8 @@ var AnswersList = React.createClass({
                 return RESULT_WRONG;
             } else if(answer.correct == POLL){
                 return RESULT_NEUTRAL;
+            } else if(answer.correct == NOT_YET_INFO){
+                return NOT_YET_INFO;
             }
         }
         return RESULT_NO_ANSWER;
@@ -160,7 +163,11 @@ var AnswersList = React.createClass({
     _renderResult: function(){
         if(this.state.timeOut){
             var resultMode = this.getResult();
-            return (<Result answerState={resultMode}/>);
+            if(resultMode == NOT_YET_INFO){
+                return <br></br>
+            } else {
+                return <Result answerState={resultMode}/>;
+            }
         } else {
             if(this.state.answered){
                 return (<p style={pStyle}>
@@ -177,7 +184,8 @@ var AnswersList = React.createClass({
     },
     
     _renderWaitPage(){
-        return(<CircularProgress style={circularProgressStyle}/>);  
+        return(<CircularProgress style={circularProgressStyle}/>
+              );  
     },
     
     render: function(){
