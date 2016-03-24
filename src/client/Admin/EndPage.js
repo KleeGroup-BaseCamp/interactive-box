@@ -1,6 +1,11 @@
 import React from 'react';
 import RaisedButton from 'material-ui/lib/raised-button';
 
+const pStyle = {
+    textAlign:'center', 
+    marginTop:'2%'
+};
+
 var EndPage = React.createClass({
     buttonStyle: {
         display: 'block',
@@ -21,7 +26,7 @@ var EndPage = React.createClass({
             labelStyle={self.labelStyle}/>
   		var message = "Le quizz est terminé";
   		return (<div>
-                    {message}
+                    <p style={pStyle}>{message}</p>
                     {relaunchButton}
                 </div>
         );

@@ -1,6 +1,11 @@
 import React from 'react';
 import RaisedButton from 'material-ui/lib/raised-button';
 
+const pStyle = {
+    textAlign:'center', 
+    marginTop:'5%'
+};
+
 var WaitPage = React.createClass({
     buttonStyle: {
         display: 'block',
@@ -31,7 +36,7 @@ var WaitPage = React.createClass({
   		var waitMessage = this.state.okToStart ? 
             "Tous les utilisateurs sont prêts" :
             "En attente de tous les utilisateurs";
-        var waitLabel = <p className="center-text"> {waitMessage} </p>
+        var waitLabel = <p style={pStyle}> {waitMessage} </p>
         
         // TODO ajouter la proportion d'utilisateurs enregistrés
         
