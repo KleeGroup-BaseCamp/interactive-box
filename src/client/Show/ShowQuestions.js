@@ -92,14 +92,20 @@ var ShowQuestions = React.createClass({
 		this.props.socket.on("question", function(data){
             var numberOfAnswers = data.answers.length;
             var initResults = Array.apply(null, {length:numberOfAnswers}).map(function() {return 0;});
+
+            console.log("resetting ", data.question, self.state.questionLabel)
+            if(data.question != self.state.questionLabel){
+                console.log("yes i reset");
+                self.setState({answerCount:0});
+            }
             self.setState({
                 time:data.time,
                 answers:self.createAnswersTable(data.answers),
                 timeOut:false,
                 questionLabel:data.question,
-                waiting:false, 
-                answerCount:0
+                waiting:false
             });
+            
         });
         
         this.props.socket.on('answer', function(){
