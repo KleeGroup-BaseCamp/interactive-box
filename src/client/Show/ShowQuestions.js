@@ -27,7 +27,7 @@ const labelStyle = {
 
 const questionTitleStyle = {
     textAlign:'center', 
-    color:'seagreen', 
+    color:'#8BC34A', 
     fontSize:'5vmin',
     marginTop:'3%'
 };

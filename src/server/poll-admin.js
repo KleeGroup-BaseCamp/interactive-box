@@ -67,10 +67,10 @@ function manageAdminPoll(adminSocket, io){
     adminSocket.on("abort-quizz", function(){
         io.of("/user").emit("abort-quizz");
         io.of("/showRoom").emit("abort-quizz");
-
+    })
     adminSocket.on("mail-box", function(){
         io.of("/user").emit("mail-box"); 
     });
-}
+};
 
 exports.manageAdminPoll = manageAdminPoll;

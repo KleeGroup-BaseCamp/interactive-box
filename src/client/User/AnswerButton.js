@@ -33,8 +33,8 @@ var AnswerButton = React.createClass({
         if(this.state.mode==SELECTED){return '#93b1e0';}                     
         if(this.state.mode==LOCKED){return '#e3e3e3';}                     
         if(this.state.mode==POLL){return 'white';}                     
-        if(this.state.mode==GOOD){return '#47ad5b';}                     
-        if(this.state.mode==WRONG){return '#c45757';}                     
+        if(this.state.mode==GOOD){return '#8BC34A';}                     
+        if(this.state.mode==WRONG){return '#F44336';}                     
     },        
 	render: function(){
         var className = "answer-buttton " + this.state.mode;
